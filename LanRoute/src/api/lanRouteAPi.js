@@ -19,6 +19,7 @@ export const lanRouteApi = createApi({
 
   endpoints: (builder) => ({
     getVerificationToken: builder.query({
+      query: (identifier, token) => ({
       query: () => ({
         url: `api/tokenverification/verify/${identifier}/${token}`,
       }),

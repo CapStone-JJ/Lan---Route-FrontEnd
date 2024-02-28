@@ -3,6 +3,7 @@ import { lanRouteApi } from "./api";
 const commentApi = lanRouteApi.injectEndpoints({
   endpoints: (builder) => ({
     getComments: builder.query({
+      query: (postId) => `/api/comments/post/${postId}`,
       query: () => `/api/comments/post/${postId}`,
     }),
     addComment: builder.mutation({
