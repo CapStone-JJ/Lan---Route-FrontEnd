@@ -27,13 +27,23 @@ const postApi = lanRouteApi.injectEndpoints({
                 method:'DELETE'
             })
         }),
-        likePost : builder.mutation({
+        getLikes: builder.query({
+            query: (postId)=> '/api/likes/'+postId,
+        }),
+        addLike : builder.mutation({
             query:(body)=>({
                 url:'/api/likes',
                 method:"POST",
                 body:body
             })
         }),
+        deleteLike:builder.mutation({
+            query:(id)=>({
+                url:'/api/likes/'+id,
+                method:'DELETE'
+            })
+        }),
+        
         // editPost: builder.mutation({
         //     query(data){
         //         const {id, ...body}=data;
