@@ -40,10 +40,9 @@ export default function Register() {
 
     firstName: "",
     lastName: "",
+    username: "",
     email: "",
     password: "",
-    address: "",
-    isAdmin: false,
   });
 
 
