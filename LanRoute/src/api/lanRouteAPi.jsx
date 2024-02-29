@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {createSlice} from "@reduxjs/toolkit";
 
 const CREDENTIALS = "credentials";
 
@@ -21,8 +20,9 @@ export const lanRouteApi = createApi({
   endpoints: (builder) => ({
     getVerificationToken: builder.query({
       query: (identifier, token) => ({
-      query: () => ({
-        url: `api/tokenverification/verify/${identifier}/${token}`,
+        query: () => ({
+          url: `api/tokenverification/verify/${identifier}/${token}`,
+        }),
       }),
     }),
 
@@ -39,3 +39,4 @@ export const {
   useGetVerificationTokenQuery,
   useDeleteVerificationTokenMutation,
 } = lanRouteApi;
+
