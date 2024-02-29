@@ -1,4 +1,4 @@
-import { lanRouteApi } from "./api";
+import { lanRouteApi } from "./lanRouteAPi";
 
 const authApi = lanRouteApi.injectEndpoints({
   endpoints: (builder) => ({

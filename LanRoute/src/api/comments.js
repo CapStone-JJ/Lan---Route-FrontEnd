@@ -1,4 +1,4 @@
-import { lanRouteApi } from "./api";
+import { lanRouteApi } from "./lanRouteAPi";
 
 const commentApi = lanRouteApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -45,3 +45,5 @@ export const {
   useAddVoteMutation,
   useDeleteVoteMutation,
 } = commentApi;
+
+export default commentApi;

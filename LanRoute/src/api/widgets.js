@@ -1,4 +1,4 @@
-import {lanRouteApi} from "./api";
+import { lanRouteApi } from "./lanRouteAPi";
 
 const widgetApi = lanRouteApi.injectEndpoints({
     endpoints: (builder)=>({
@@ -37,3 +37,5 @@ export const {
     useEditWidgetMutation,
     useDeleteWidgetMutation,
    } = widgetApi;
+
+   export default widgetApi;
