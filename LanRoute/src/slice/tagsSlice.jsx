@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import { lanRouteApi } from "../api/lanRouteAPi";
+import tagApi from "../api/tags";
 
 const tagSlice = createSlice({
     name: "tag",
@@ -8,16 +8,16 @@ const tagSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-          .addMatcher(lanRouteApi.endpoints.getTags.matchFulfilled, (state, { payload }) => {
+          .addMatcher(tagApi.endpoints.getTags.matchFulfilled, (state, { payload }) => {
             state.tags = payload; 
           })
-          .addMatcher(lanRouteApi.endpoints.getTag.matchFulfilled, (state, { payload }) => {
+          .addMatcher(tagApi.endpoints.getTag.matchFulfilled, (state, { payload }) => {
             state.tags = payload; 
           })
-          .addMatcher(lanRouteApi.endpoints.addTag.matchFulfilled, (state, { payload }) => {
+          .addMatcher(tagApi.endpoints.addTag.matchFulfilled, (state, { payload }) => {
             state.tags.push(payload);
           })
-          .addMatcher(lanRouteApi.endpoints.deleteTag.matchFulfilled, (state, { meta: { arg: tagId } }) => {
+          .addMatcher(tagApi.endpoints.deleteTag.matchFulfilled, (state, { meta: { arg: tagId } }) => {
             state.tags = state.tags.filter(tag => tag.id !== tagId);
           })
       },

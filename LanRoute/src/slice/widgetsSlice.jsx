@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import { lanRouteApi } from "../api/lanRouteAPi";
+import widgetApi from "../api/widgets";
 
 const widgetSlice = createSlice({
     name: "widget",
@@ -8,19 +8,19 @@ const widgetSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-          .addMatcher(lanRouteApi.endpoints.getWidgets.matchFulfilled, (state, { payload }) => {
+          .addMatcher(widgetApi.endpoints.getWidgets.matchFulfilled, (state, { payload }) => {
             state.widgets = payload; 
           })
-          .addMatcher(lanRouteApi.endpoints.editWidget.matchFulfilled, (state, { payload }) => {
+          .addMatcher(widgetApi.endpoints.editWidget.matchFulfilled, (state, { payload }) => {
             return {
                 ...state,
                 widgets: state.widgets.map(i => i.id === payload.id ? {...i, ...payload} : i)
             }
         }) 
-          .addMatcher(lanRouteApi.endpoints.addWidget.matchFulfilled, (state, { payload }) => {
+          .addMatcher(widgetApi.endpoints.addWidget.matchFulfilled, (state, { payload }) => {
             state.widgets.push(payload);
           })
-          .addMatcher(lanRouteApi.endpoints.deleteWidget.matchFulfilled, (state, { meta: { arg: widgetId } }) => {
+          .addMatcher(widgetApi.endpoints.deleteWidget.matchFulfilled, (state, { meta: { arg: widgetId } }) => {
             state.widgets = state.widgets.filter(widget => widget.id !== widgetId);
           })
       },

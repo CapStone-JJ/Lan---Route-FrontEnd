@@ -1,4 +1,4 @@
-import {lanRouteApi} from "./api";
+import { lanRouteApi } from "./lanRouteAPi";
 
 const postApi = lanRouteApi.injectEndpoints({
     endpoints: (builder)=>({
@@ -64,3 +64,5 @@ export const {
     useAddPostMutation,
     useDeletePostMutation,
     useLikePostMutation} = postApi;
+
+    export default postApi;

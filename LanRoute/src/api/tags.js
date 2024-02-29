@@ -1,4 +1,4 @@
-import { lanRouteApi } from "./api";
+import { lanRouteApi } from "./lanRouteAPi";
 
 const tagApi = lanRouteApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -30,3 +30,5 @@ export const {
   useAddTagMutation,
   useDeleteTagMutation,
 } = tagApi;
+
+export default tagApi;
