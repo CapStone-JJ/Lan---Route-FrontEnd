@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLoginMutation } from "../api/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 import { Link as RouterLink } from "react-router-dom";
 
 const defaultTheme = createTheme();
@@ -37,6 +38,21 @@ export default function Login() {
     setIsLoggedIn(true);
     console.log(token);
   };
+  
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+        const response = await loginUser(formData);
+        console.log(response);
+        const token = response.data.token;
+        handleLoginSuccess(token);
+        setIsLoggedIn(true);
+        navigate("/")
+        } catch (error) {
+        console.error("Login failed:", error);
+        
+        }
+    };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -156,9 +172,10 @@ export default function Login() {
                   </Link>
                 </Grid>
                 <Grid item>
+                <Link component={RouterLink} to="/Register" variant="body2">
                   <Link component={RouterLink} to="/Register" variant="body2">
                     {"Don't have an account? Sign Up"}
-                  </Link>
+                </Link>
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />
