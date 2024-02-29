@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useLoginMutation } from '../api/auth';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
@@ -38,20 +39,20 @@ export default function Login() {
   };
 
 
-const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await loginUser(formData);
-      console.log(response);
-      const token = response.data.token;
-      handleLoginSuccess(token);
-      setIsLoggedIn(true);
-      navigate("/")
-    } catch (error) {
-      console.error("Login failed:", error);
-      
-    }
-  };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+        const response = await loginUser(formData);
+        console.log(response);
+        const token = response.data.token;
+        handleLoginSuccess(token);
+        setIsLoggedIn(true);
+        navigate("/")
+        } catch (error) {
+        console.error("Login failed:", error);
+        
+        }
+    };
 
 function Copyright(props) {
   return (
@@ -144,9 +145,9 @@ function Copyright(props) {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                <Link component={RouterLink} to="/Register" variant="body2">
                     {"Don't have an account? Sign Up"}
-                  </Link>
+                </Link>
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />
