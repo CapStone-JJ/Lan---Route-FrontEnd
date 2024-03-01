@@ -5,6 +5,7 @@ import { lanRouteApi } from "../api/lanRouteAPi";
 const CREDENTIALS = "credentials";
 
 function storeToken(state, {payload}){
+    console.log(payload)
     state.credentials = {token: payload.token, user: {...payload.user}};
     window.sessionStorage.setItem(
         CREDENTIALS,

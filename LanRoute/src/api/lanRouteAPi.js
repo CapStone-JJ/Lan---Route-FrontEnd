@@ -7,11 +7,11 @@ export const lanRouteApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3333",
     prepareHeaders: (headers, { getState }) => {
-      const credentials = window.sessionStorage.getItem(CREDENTIALS);
-      const parsedCredentials = JSON.parse(credentials || "{}");
-      const token = parsedCredentials.token;
+      const credentials = JSON.parse(window.sessionStorage.getItem(CREDENTIALS));
+      const token = (credentials.token || "{}");
+      console.log(token)
       if (token) {
-        headers.set("Authorization", token);
+        headers.set("authorization", `Bearer ${token}`);
       }
       return headers;
     },

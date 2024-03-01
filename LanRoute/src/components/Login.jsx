@@ -16,7 +16,6 @@ import { useLoginMutation } from "../api/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from 'react-router-dom';
-import { Link as RouterLink } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
@@ -33,13 +32,16 @@ export default function Login() {
     setFormData({ ...formData, [name]: value });
   };
   const handleLoginSuccess = async (token) => {
+    console.log("hello")
     sessionStorage.setItem("authToken", token);
     setAuthToken(token);
     setIsLoggedIn(true);
+    navigate("/Feed")
     console.log(token);
   };
   
     const handleSubmit = async (event) => {
+      console.log("bye")
         event.preventDefault();
         try {
         const response = await loginUser(formData);
@@ -47,26 +49,12 @@ export default function Login() {
         const token = response.data.token;
         handleLoginSuccess(token);
         setIsLoggedIn(true);
-        navigate("/")
+        navigate("/Feed")
         } catch (error) {
         console.error("Login failed:", error);
         
         }
     };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await loginUser(formData);
-      console.log(response);
-      const token = response.data.token;
-      handleLoginSuccess(token);
-      setIsLoggedIn(true);
-      navigate("/");
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  };
 
   function Copyright(props) {
     return (
@@ -157,6 +145,7 @@ export default function Login() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
+              {/* <Link component={RouterLink} to="/Feed" style={{ textDecoration: 'none'}}> */}
               <Button
                 type="submit"
                 fullWidth
@@ -165,6 +154,7 @@ export default function Login() {
               >
                 Sign In
               </Button>
+              {/* </Link> */}
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
@@ -173,7 +163,6 @@ export default function Login() {
                 </Grid>
                 <Grid item>
                 <Link component={RouterLink} to="/Register" variant="body2">
-                  <Link component={RouterLink} to="/Register" variant="body2">
                     {"Don't have an account? Sign Up"}
                 </Link>
                 </Grid>
