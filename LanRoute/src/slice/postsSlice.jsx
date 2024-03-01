@@ -42,6 +42,12 @@ const postSlice = createSlice({
           .addMatcher(postApi.endpoints.addPost.matchFulfilled, (state, { payload }) => {
             state.posts.push(payload); // Update posts array with fetched post
           })
+          .addMatcher(postApi.endpoints.editPost.matchFulfilled, (state, {payload}) => {
+            return {
+                ...state,
+                posts: state.posts.map(i => i.id === payload.id ? {...i, ...payload} : i)
+            }
+        })
           .addMatcher(postApi.endpoints.deletePost.matchFulfilled, (state, { meta: { arg: postId } }) => {
             state.posts = state.posts.filter((post) => post.id !== postId);
           })

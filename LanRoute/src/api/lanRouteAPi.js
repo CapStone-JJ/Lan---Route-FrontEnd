@@ -8,8 +8,7 @@ export const lanRouteApi = createApi({
     baseUrl: "http://localhost:3333",
     prepareHeaders: (headers, { getState }) => {
       const credentials = JSON.parse(window.sessionStorage.getItem(CREDENTIALS));
-      const token = (credentials.token || "{}");
-      console.log(token)
+      const token = (credentials?.token || "{}");
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }

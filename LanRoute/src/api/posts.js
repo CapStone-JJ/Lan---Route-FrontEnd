@@ -44,16 +44,16 @@ const postApi = lanRouteApi.injectEndpoints({
             })
         }),
         
-        // editPost: builder.mutation({
-        //     query(data){
-        //         const {id, ...body}=data;
-        //         return {
-        //             url: '/api/posts/'+id,
-        //             method:"PUT",
-        //             body
-        //         }
-        //     }
-        // }),
+        editPost: builder.mutation({
+            query(data){
+                const {id, ...body}=data;
+                return {
+                    url: '/api/posts/'+id,
+                    method:"PUT",
+                    body
+                }
+            }
+        }),
     })
 })
 
@@ -63,6 +63,7 @@ export const {
     useSearchPostQuery,
     useAddPostMutation,
     useDeletePostMutation,
+    useEditPostMutation,
     useLikePostMutation} = postApi;
 
     export default postApi;
