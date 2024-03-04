@@ -2,7 +2,7 @@ import {useSelector} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner, faUser} from "@fortawesome/free-solid-svg-icons";
 import {useRef} from "react";
-import Button from "./Button";
+import Button from "./button.jsx";
 import {useEditUserMutation} from "../../api/auth";
 
 function Avatar({mod}) {

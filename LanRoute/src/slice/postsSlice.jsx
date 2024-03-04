@@ -67,4 +67,4 @@ const postSlice = createSlice({
     });
 
 export default postSlice.reducer;
-export const {clearSearch} = postSlice.actions;
+export const {clearPostSearch} = postSlice.actions;

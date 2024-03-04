@@ -87,4 +87,4 @@ const userSlice = createSlice({
 });
 
 export default  userSlice.reducer;
-export const {clearSearch} = userSlice.actions;
+export const {clearUserSearch} = userSlice.actions;
