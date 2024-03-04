@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useGetFeedQuery } from '../api/posts';
 import formatDate from './Inputs/formatDate';
 import { Link } from 'react-router-dom';
+import CreatePostForm from './Posts/createpostForm';
 
 const Feed = () => {
     const [token, setToken] = useState('');
@@ -24,6 +25,10 @@ const Feed = () => {
 
     return (
         <div>
+            {/* Render the CreatePostForm component */}
+            <CreatePostForm />
+
+            {/* Render feed posts */}
             {feedData && feedData.map(post => (
                 <div key={post.id}>
                     <Link className='post-link' to={`/posts/${post.id}`}>
