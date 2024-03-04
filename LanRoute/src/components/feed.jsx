@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useGetFeedQuery } from '../api/posts';
 import formatDate from './Inputs/formatDate';
+import { Link } from 'react-router-dom';
 
 const Feed = () => {
     const [token, setToken] = useState('');
@@ -25,10 +26,12 @@ const Feed = () => {
         <div>
             {feedData && feedData.map(post => (
                 <div key={post.id}>
+                    <Link className='post-link' to={`/posts/${post.id}`}>
                     <p>{post.author?.username}</p>
                     <p>{post.content}</p>
                     <p>{formatDate(post.createdAt)}</p>
                     <hr />
+                    </Link>
                 </div>
             ))}
         </div>

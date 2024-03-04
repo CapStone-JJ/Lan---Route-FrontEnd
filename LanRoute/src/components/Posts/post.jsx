@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useGetTagsQuery } from '../../api/tags';
-import { useDeletePostMutation, useEditPostMutation } from '../../api/posts';
+import { useDeletePostMutation, useEditPostMutation, useGetPostQuery } from '../../api/posts';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const PostPage = ({ postId }) => {
     const [post, setPost] = useState(null);
@@ -10,15 +11,24 @@ const PostPage = ({ postId }) => {
     const [editedPost, setEditedPost] = useState(null);
     const [tags, setTags] = useState([]);
     const { data: tagsData, isLoading: tagsLoading } = useGetTagsQuery();
+    const { data: postData, isLoading: postLoading } = useGetPostQuery(postId);
     const [deletePost, { isLoading: deleteLoading }] = useDeletePostMutation();
     const [editPost, { isLoading: editLoading }] = useEditPostMutation();
     const dispatch = useDispatch();
     const notLength = useSelector(state => state.length);
+    
 
     useEffect(() => {
-        // Fetch the post data using postId
-        // Example: fetchPost(postId).then((data) => setPost(data));
-    }, [postId]);
+        // Check if postData is available and set post state
+        if (postData) {
+            setPost(postData);
+            // Initialize editedPost with post data
+            setEditedPost({ ...postData });
+        }
+    }, [postData, postId]);
+
+    // Rest of your component code
+
 
     useEffect(() => {
         if (tagsData) {
@@ -28,7 +38,6 @@ const PostPage = ({ postId }) => {
 
     const handleEdit = () => {
         setEditMode(true);
-        // Initialize editedPost state with current post data
         setEditedPost({ ...post });
     };
 
@@ -61,10 +70,10 @@ const PostPage = ({ postId }) => {
         <div>
             {post ? (
                 <>
-                    <h1>{post.title}</h1>
+                    <h1>{post.author}</h1>
                     <p>{post.content}</p>
                     <div>
-                        {post.tags.map((tag) => (
+                        {post.tags && post.tags.map((tag) => (
                             <span key={tag.id}>{tag.name}</span>
                         ))}
                     </div>
@@ -95,5 +104,10 @@ const PostPage = ({ postId }) => {
     );
 };
 
+PostPage.propTypes = {
+    postId: PropTypes.number.isRequired,
+};
+
 export default PostPage;
+
 
