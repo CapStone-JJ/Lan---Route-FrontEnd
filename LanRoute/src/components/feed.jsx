@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useGetPostsQuery } from '../api/posts';
+import { useGetFeedQuery } from '../api/posts';
+import formatDate from './Inputs/formatDate';
 
 const Feed = () => {
     const [token, setToken] = useState('');
@@ -7,7 +8,7 @@ const Feed = () => {
         Authorization: '',
         'Content-Type': 'application/json',
     });
-    const { data: postsData } = useGetPostsQuery({ headers });
+    const { data: feedData } = useGetFeedQuery({ headers });
 
     useEffect(() => {
         const storedToken = sessionStorage.getItem('authToken');
@@ -22,10 +23,11 @@ const Feed = () => {
 
     return (
         <div>
-            {postsData && postsData.map(post => (
+            {feedData && feedData.map(post => (
                 <div key={post.id}>
-                    <h2>{post.title}</h2>
+                    <p>{post.author?.username}</p>
                     <p>{post.content}</p>
+                    <p>{formatDate(post.createdAt)}</p>
                     <hr />
                 </div>
             ))}

@@ -60,6 +60,9 @@ const postSlice = createSlice({
           .addMatcher(postApi.endpoints.deleteLike.matchFulfilled, (state, { meta: { arg: likeId } }) => {
             state.likes = state.likes.filter((like) => like.id !== likeId);
           })
+          .addMatcher(postApi.endpoints.getFeed.matchFulfilled, (state, { payload }) => {
+            state.feed = payload; // Update likes array with fetched feed
+          })
       },
     });
 

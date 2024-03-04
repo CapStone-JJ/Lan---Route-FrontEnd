@@ -54,6 +54,9 @@ const postApi = lanRouteApi.injectEndpoints({
                 }
             }
         }),
+        getFeed: builder.query({
+            query: () => 'api/feed',
+        })
     })
 })
 
@@ -64,6 +67,9 @@ export const {
     useAddPostMutation,
     useDeletePostMutation,
     useEditPostMutation,
-    useLikePostMutation} = postApi;
+    useAddLikeMutation,
+    useDeleteLikeMutation,
+    useGetFeedQuery,
+} = postApi;
 
     export default postApi;
