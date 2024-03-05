@@ -4,16 +4,19 @@ import { lanRouteApi } from "../api/lanRouteAPi";
 //session storage key
 const CREDENTIALS = "credentials";
 
-function storeToken(state, {payload}){
-    console.log(payload)
-    state.credentials = {token: payload.token, user: {...payload.user}};
+function storeToken(state, { payload }) {
+    console.log("Payload received in storeToken:", payload);
+    state.credentials = {
+        token: payload.token,
+        user: { ...payload.user, userId: payload.user.id } // Assign user ID from payload
+    };
     window.sessionStorage.setItem(
         CREDENTIALS,
         JSON.stringify({
             token: payload.token,
-            user: {...payload.user}
+            user: { ...payload.user, userId: payload.user.id } // Store user ID in session storage
         })
-    )
+    );
 }
 
 const userSlice = createSlice({

@@ -3,6 +3,7 @@ import { useGetFeedQuery } from '../api/posts';
 import formatDate from './Inputs/formatDate';
 import { Link } from 'react-router-dom';
 import CreatePostForm from './Posts/createpostForm';
+import { useAddPostMutation } from '../api/posts';
 
 const Feed = () => {
     const [token, setToken] = useState('');
@@ -10,7 +11,8 @@ const Feed = () => {
         Authorization: '',
         'Content-Type': 'application/json',
     });
-    const { data: feedData } = useGetFeedQuery({ headers });
+    const { data: feedData, refetch: refetchFeed } = useGetFeedQuery({ headers });
+    const [createPost] = useAddPostMutation();
 
     useEffect(() => {
         const storedToken = sessionStorage.getItem('authToken');
@@ -23,16 +25,26 @@ const Feed = () => {
         }
     }, []);
 
+    const handlePostSubmit = async (postData) => {
+        try {
+            await createPost(postData);
+            await refetchFeed({ throwOnError: true, force: true})
+        } catch (error) {
+            console.error('Error creating post:', error);
+            // Handle error
+        }
+    };
+
     return (
         <div>
-            {/* Render the CreatePostForm component */}
-            <CreatePostForm />
+            {/* Render the CreatePostForm component with handlePostSubmit passed as prop */}
+            <CreatePostForm onSubmit={handlePostSubmit} />
 
             {/* Render feed posts */}
             {feedData && feedData.map(post => (
                 <div key={post.id}>
-                    <Link className='post-link' to={`/posts/${post.id}`}>
-                    <p>{post.author?.username}</p>
+                    <Link className='post-link' to={{ pathname: `/posts/${post.id}`, state: { userId: post.userId } }}>
+                    <p>{post.username}</p>
                     <p>{post.content}</p>
                     <p>{formatDate(post.createdAt)}</p>
                     <hr />
