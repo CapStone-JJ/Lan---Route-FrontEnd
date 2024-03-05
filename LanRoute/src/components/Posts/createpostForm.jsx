@@ -1,82 +1,80 @@
-import { useState, useEffect } from "react";
-import TextInput from "../Inputs/textInput";
+import React, { useState } from "react";
 import { useAddPostMutation } from "../../api/posts";
-import { useGetTagQuery } from "../../api/tags";
-import Button from "../Inputs/button";
-import { useDispatch } from "react-redux";
+import { useGetTagsQuery, useAddTagMutation } from "../../api/tags";
+import AutocompleteInput from "../Inputs/autocompleteInput";
 
-function CreatePostForm() {
-    const [addPost, { isLoading: sendPost }] = useAddPostMutation();
-    const { data: tagsData, isLoading: tagsLoading, isError: tagsError } = useGetTagQuery();
-    const [text, setText] = useState("");
-    const [error, setError] = useState("");
-    const [tags, setTags] = useState([]);
-    const [change, setChange] = useState(false);
-    const dispatch = useDispatch();
+const CreatePostForm = ({ onPostCreated }) => {
+  const [content, setContent] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
 
-    const toggleTag = (tag) => {
-        const result = tags;
-        if (result.includes(tag)) {
-            const index = result.indexOf(tag);
-            result.splice(index, 1);
-        } else {
-            result.push(tag);
-        }
+  // RTK Query hooks for adding a post and fetching/adding tags
+  const [addPost, { isLoading: isPosting }] = useAddPostMutation();
+  const { data: tags, isLoading: isLoadingTags } = useGetTagsQuery();
+  const [addTag] = useAddTagMutation();
 
-        setTags(result);
-        setChange(!change);
-    };
+  // Handle change in post content
+  const handleContentChange = (event) => {
+    setContent(event.target.value);
+  };
 
-    const onSubmit = async () => {
-        if (text.length >= 3) {
-            await addPost({
-                content: text,
-                published: true
-            }).then(() => {
-                setText("");
-                setTags([]);
-                dispatch({
-                    type: "success",
-                    text: "Post Created!",
-                    active: true
-                });
-            }).catch(() => {
-                dispatch({
-                    type: "fail",
-                    text: "Error posting",
-                    active: true
-                });
-            });
-        } else {
-            setError("Not enough characters to submit post");
-        }
-    };
+  // Handle selecting a tag from autocomplete
+  const handleSelectTag = async (tagName) => {
+    // Check if the tag is already selected
+    if (!selectedTags.includes(tagName)) {
+      setSelectedTags([...selectedTags, tagName]);
 
-    useEffect(() => {
+      // Optionally, add a new tag if it doesn't exist in the fetched tags
+      if (!tags.some((tag) => tag.name === tagName)) {
+        await addTag({ name: tagName });
+      }
+    }
+  };
 
-    }, [change]);
+  // Handle removing a selected tag
+  const handleRemoveTag = (tagName) => {
+    setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
+  };
 
-    return (
-        <div className={"createForm"}>
-            <h1>Create a Post</h1>
-            <TextInput type={"text"} vl={text} chg={setText} />
-            <h3>Add Tags</h3>
-            <div className={"tags"}>
-                {tagsLoading ? (
-                    <div>Loading tags...</div>
-                ) : tagsError ? (
-                    <div>Error loading tags</div>
-                ) : (
-                    tagsData.map((i) =>
-                        <div key={i.id} className={"tag"} onClick={() => toggleTag(i)} style={{ border: tags.includes(i) ? "3px solid blue" : "none" }}>{i.name}</div>
-                    )
-                )}
-            </div>
-            <Button click={onSubmit} vl={"SUBMIT"} theme={"submit"} />
-            <h1 style={{ "color": "red" }}>{error}</h1>
-        </div>
-    );
-}
+  // Handle submitting the post
+  const handleSubmit = async () => {
+    if (content.trim()) {
+      try {
+        await addPost({
+          content,
+          tags: selectedTags.map((tag) => ({ name: tag })),
+        }).unwrap();
+        setContent("");
+        setSelectedTags([]);
+        if (onPostCreated) onPostCreated();
+      } catch (error) {
+        console.error("Error creating post:", error);
+      }
+    }
+  };
+
+  return (
+    <div>
+      <textarea
+        placeholder="What's happening?"
+        value={content}
+        onChange={handleContentChange}
+      />
+      <AutocompleteInput
+        suggestions={tags?.map((tag) => tag.name) || []}
+        onSelect={handleSelectTag}
+      />
+      <div>
+        {selectedTags.map((tag, index) => (
+          <span key={index} onClick={() => handleRemoveTag(tag)}>
+            {tag}
+          </span> // Click to remove tag
+        ))}
+      </div>
+      <button onClick={handleSubmit} disabled={isPosting}>
+        Post
+      </button>
+    </div>
+  );
+};
 
 export default CreatePostForm;
-
