@@ -1,82 +1,122 @@
-import { useState, useEffect } from "react";
-import TextInput from "../Inputs/textInput";
-import { useAddPostMutation } from "../../api/posts";
-import { useGetTagQuery } from "../../api/tags";
-import Button from "../Inputs/button";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useGetTagsQuery, useAddTagMutation } from '../../api/tags';
+import { useAddPostMutation, useGetPostsQuery } from '../../api/posts';
+import { useDispatch, useSelector } from 'react-redux';
+import AutocompleteInput from '../Inputs/autocompleteInput';
 
-function CreatePostForm() {
-    const [addPost, { isLoading: sendPost }] = useAddPostMutation();
-    const { data: tagsData, isLoading: tagsLoading, isError: tagsError } = useGetTagQuery();
-    const [text, setText] = useState("");
-    const [error, setError] = useState("");
-    const [tags, setTags] = useState([]);
-    const [change, setChange] = useState(false);
-    const dispatch = useDispatch();
+const CreatePostForm = () => {
+  const [content, setContent] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [tagInput, setTagInput] = useState('');
+  const { data: tagsData, refetch: refetchTags } = useGetTagsQuery();
+  const [createPost, { isLoading: createPostLoading }] = useAddPostMutation();
+  const dispatch = useDispatch();
+  const [addTag] = useAddTagMutation();
+  const { refetch: refetchPosts } = useGetPostsQuery(); // Refetch posts query
+  const userId = useSelector(state => state.user.credentials.user.userId);// Assuming you have a user state in Redux
 
-    const toggleTag = (tag) => {
-        const result = tags;
-        if (result.includes(tag)) {
-            const index = result.indexOf(tag);
-            result.splice(index, 1);
-        } else {
-            result.push(tag);
+  const handleTagInputChange = (event) => {
+    setTagInput(event.target.value);
+  };
+
+  const handleAddTag = () => {
+    if (tagInput.trim() !== '' && !selectedTags.includes(tagInput)) {
+        try {
+            console.log("Tag input value:", tagInput);
+
+            addTag({ variables: { name: tagInput } })
+                .then(({ data }) => {
+                    console.log("Data received from server:", data); // Add this line for debugging
+                    // Check if the mutation was successful and a tag was added
+                    if (data && data.addTag) {
+                        const addedTag = data.addTag;
+                        console.log("Tag added successfully:", addedTag.name);
+                        setSelectedTags([...selectedTags, addedTag.name]);
+                        setTagInput('');
+                        // Refetch tags after adding a new tag (optional)
+                        refetchTags();
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to add tag:', error.message);
+                    // Handle error
+                });
+        } catch (error) {
+            console.error('Failed to add tag:', error.message);
+            // Handle error
         }
+    }
+};
 
-        setTags(result);
-        setChange(!change);
+
+
+
+  
+  
+
+const handlePostSubmit = async () => {
+  console.log('Submitting post...'); // Check if the function is being called
+
+  if (content.trim() === '') {
+    // Handle empty content
+    console.error('Error: Post content is empty.');
+    return;
+  }
+
+  try {
+    const postData = {
+      content,
+      tags: selectedTags,
+      userId,
+      published: true,
+      refetchPosts
     };
 
-    const onSubmit = async () => {
-        if (text.length >= 3) {
-            await addPost({
-                content: text,
-                published: true
-            }).then(() => {
-                setText("");
-                setTags([]);
-                dispatch({
-                    type: "success",
-                    text: "Post Created!",
-                    active: true
-                });
-            }).catch(() => {
-                dispatch({
-                    type: "fail",
-                    text: "Error posting",
-                    active: true
-                });
-            });
-        } else {
-            setError("Not enough characters to submit post");
-        }
-    };
+    console.log('Creating post data:', postData); // Check the postData object
 
-    useEffect(() => {
+    await createPost(postData);
 
-    }, [change]);
+    console.log('Post created successfully.'); // Check if createPost mutation is executed
 
-    return (
-        <div className={"createForm"}>
-            <h1>Create a Post</h1>
-            <TextInput type={"text"} vl={text} chg={setText} />
-            <h3>Add Tags</h3>
-            <div className={"tags"}>
-                {tagsLoading ? (
-                    <div>Loading tags...</div>
-                ) : tagsError ? (
-                    <div>Error loading tags</div>
-                ) : (
-                    tagsData.map((i) =>
-                        <div key={i.id} className={"tag"} onClick={() => toggleTag(i)} style={{ border: tags.includes(i) ? "3px solid blue" : "none" }}>{i.name}</div>
-                    )
-                )}
-            </div>
-            <Button click={onSubmit} vl={"SUBMIT"} theme={"submit"} />
-            <h1 style={{ "color": "red" }}>{error}</h1>
-        </div>
-    );
-}
+    // Refetch both tags and posts data after successful post creation
+    refetchTags();
+    refetchPosts();
+    // Clear form fields after successful post creation
+    setContent('');
+    setSelectedTags([]);
+  } catch (error) {
+    console.error('Error creating post:', error);
+    // Handle error
+  }
+};
+
+
+return (
+  <div>
+    <textarea
+      placeholder="What's happening?"
+      value={content}
+      onChange={(e) => setContent(e.target.value)}
+    />
+    <div>
+      <input
+        type="text"
+        value={tagInput}
+        onChange={handleTagInputChange}
+        placeholder="Type a tag..."
+      />
+      <button onClick={handleAddTag}>Add Tag</button>
+    </div>
+    <div>
+      {selectedTags.map((tag, index) => (
+        <span key={index}>{tag}</span>
+      ))}
+    </div>
+    <button onClick={handlePostSubmit} disabled={createPostLoading}>Post</button>
+  </div>
+);
+};
 
 export default CreatePostForm;
+
 
