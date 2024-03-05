@@ -4,6 +4,7 @@ import { useDeletePostMutation, useEditPostMutation, useGetPostQuery } from '../
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import Comment from '../Comments/Comment'
 
 const PostPage = ({ postId }) => {
     const [post, setPost] = useState(null);
@@ -79,6 +80,7 @@ const PostPage = ({ postId }) => {
                     </div>
                     <Link to={`/edit/${postId}`}>Edit</Link>
                     <button onClick={handleDelete} disabled={deleteLoading}>Delete</button>
+                    <Comment postId={postId} />
                 </>
             ) : (
                 <p>Loading...</p>
