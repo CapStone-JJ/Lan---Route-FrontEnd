@@ -1,42 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   useAddVoteMutation,
   useDeleteVoteMutation,
   useGetVotesQuery,
-} from '../../api/comments';
+} from "../../api/comments";
 
 const Votes = ({ commentId }) => {
-  // RTK Query hooks for adding and deleting votes
+  const { data: votes, isLoading, refetch: refetchVotes } = useGetVotesQuery();
+  const [userVote, setUserVote] = useState(null);
   const [addVote] = useAddVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
+  const userId = useSelector(state => state.user.credentials.user.id);
 
-  // Fetching all votes to display them. You might want to adjust this to fetch only relevant votes or manage votes state differently for scalability.
-  const { data: votes } = useGetVotesQuery();
 
-  // Extract votes for this specific comment from the fetched votes
-  const votesForThisComment = votes?.filter(vote => vote.commentId === commentId) || [];
+  // Determine if the user has already voted on this comment
+  useEffect(() => {
+    if (isLoading) return;
+    // Find if the current user has voted on this comment
+    const vote = votes?.find(vote => vote.commentId === commentId && vote.userId === userId);
+    setUserVote(vote);
+  }, [votes, commentId, userId, isLoading]);
 
-  // Handling vote addition
-  const handleAddVote = async () => {
-    await addVote({ commentId }).unwrap(); // Assuming the body requires just the commentId. Adjust according to your API.
+  const handleVote = async () => {
+    if (userVote) {
+      // User has already voted, so remove the vote
+      await deleteVote(userVote.id).unwrap().then(() => refetchVotes());
+    } else {
+      // User has not voted, so add a vote
+      await addVote({ commentId, userId, type: "upvote" }).unwrap().then(() => refetchVotes());
+    }
   };
 
-  // Handling vote deletion
-  // This simplistic approach assumes each user can only vote once per comment, and you have the vote ID.
-  // In a real-world scenario, you would likely need to track user's votes more precisely.
-  const handleDeleteVote = async (voteId) => {
-    await deleteVote(voteId).unwrap();
-  };
+  // Disable the vote button if the votes are still loading
+  if (isLoading) return <p>Loading...</p>;
+
+  const totalVotes = votes?.filter(vote => vote.commentId === commentId).length || 0;
 
   return (
     <div>
-      <p>Votes: {votesForThisComment.length}</p>
-      <button onClick={handleAddVote}>Like</button>
-      {/* This button assumes a user can identify and choose to delete their specific vote. In practice, you may need a more complex approach to identify which vote to remove. */}
-      {votesForThisComment.map((vote) => (
-        <button key={vote.id} onClick={() => handleDeleteVote(vote.id)}>Unlike</button>
-      ))}
+      <span>Votes: {totalVotes}</span>
+      <button onClick={handleVote} disabled={isLoading}>
+        {userVote ? "Remove Vote" : "Vote"}
+      </button>
     </div>
   );
 };
