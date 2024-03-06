@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGetTagsQuery, useAddTagMutation } from '../../api/tags';
 import { useAddPostMutation, useGetPostsQuery } from '../../api/posts';
 import { useDispatch, useSelector } from 'react-redux';
-import AutocompleteInput from '../Inputs/autocompleteInput';
+
 
 const CreatePostForm = () => {
   const [content, setContent] = useState('');
@@ -15,14 +15,15 @@ const CreatePostForm = () => {
   const { refetch: refetchPosts } = useGetPostsQuery(); // Refetch posts query
   const userId = useSelector(state => state.user.credentials.user.userId);// Assuming you have a user state in Redux
 
+
   const handleTagInputChange = (event) => {
     setTagInput(event.target.value);
   };
 
+
   const handleAddTag = () => {
     if (tagInput.trim() !== '' && !selectedTags.includes(tagInput)) {
         try {
-            console.log("Tag input value:", tagInput);
 
             addTag({ variables: { name: tagInput } })
                 .then(({ data }) => {
@@ -49,19 +50,16 @@ const CreatePostForm = () => {
 };
 
 
-
-
-  
-  
-
 const handlePostSubmit = async () => {
   console.log('Submitting post...'); // Check if the function is being called
+
 
   if (content.trim() === '') {
     // Handle empty content
     console.error('Error: Post content is empty.');
     return;
   }
+
 
   try {
     const postData = {
@@ -72,11 +70,15 @@ const handlePostSubmit = async () => {
       refetchPosts
     };
 
+
     console.log('Creating post data:', postData); // Check the postData object
+
 
     await createPost(postData);
 
+
     console.log('Post created successfully.'); // Check if createPost mutation is executed
+
 
     // Refetch both tags and posts data after successful post creation
     refetchTags();
@@ -89,6 +91,8 @@ const handlePostSubmit = async () => {
     // Handle error
   }
 };
+
+
 
 
 return (
@@ -117,6 +121,8 @@ return (
 );
 };
 
+
 export default CreatePostForm;
+
 
 

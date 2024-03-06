@@ -1,16 +1,14 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetPostQuery, useDeletePostMutation, useEditPostMutation } from '../../api/posts';
 import { useGetTagsQuery } from '../../api/tags';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import Comment from '../Comments/Comment'
 import { useNavigate } from 'react-router-dom';
+import formatDate from '../Inputs/formatDate';
 
 const PostPage = () => {
   const { postId } = useParams();
   const { data: postData, isLoading: postLoading } = useGetPostQuery(postId);
+  console.log(postData)
   const { data: tagsData } = useGetTagsQuery();
   const [deletePost] = useDeletePostMutation();
   const [editPost] = useEditPostMutation();
@@ -45,18 +43,21 @@ const PostPage = () => {
     return <div>Post not found</div>;
   }
 
-  const { id, content, createdAt, author, tags } = postData;
+  const { id, content, createdAt, authorId, author, post_tag } = postData;
+
+  const username = author.username;
+
+  const tagNames = post_tag ? post_tag.map(tag => tag.name) : []; 
 
   return (
     <div>
-      <div>ID: {id}</div>
-      <div>Content: {content}</div>
-      <div>Created At: {createdAt}</div>
-      <div>Author: {author.username}</div>
-      <div>Tags: {postData.tags && tagsData.map(tag => tag.name).join(', ')}</div>
-      <button onClick={handleDelete}>Delete</button>
-      <button onClick={() => handleEdit("New content")}>Edit</button>
-      <Comment postId={postId} />
+        <div>{username}</div>
+        <div>{content}</div>
+        <div>{formatDate(createdAt)}</div>
+        <div>Tags: {tagNames.join(', ')}</div>
+        <button onClick={handleDelete}>Delete</button>
+        <button onClick={() => handleEdit("New content")}>Edit</button>
+        <Comment postId={postId} />
     </div>
   );
 
