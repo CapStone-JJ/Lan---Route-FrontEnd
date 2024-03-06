@@ -4,6 +4,7 @@ import formatDate from './Inputs/formatDate';
 import { Link } from 'react-router-dom';
 import CreatePostForm from './Posts/createpostForm';
 import { useAddPostMutation } from '../api/posts';
+import LikePost from './Likes/likes';
 
 const Feed = () => {
     const [token, setToken] = useState('');
@@ -47,7 +48,9 @@ const Feed = () => {
                     <p>{post.username}</p>
                     <p>{post.content}</p>
                     <p>{formatDate(post.createdAt)}</p>
+                    <LikePost postId={post.id} initialLikes={post.likes} userId={post.userId} />
                     <hr />
+                    
                     </Link>
                 </div>
             ))}

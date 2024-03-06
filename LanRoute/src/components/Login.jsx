@@ -41,7 +41,6 @@ export default function Login() {
   };
   
     const handleSubmit = async (event) => {
-      console.log("bye")
         event.preventDefault();
         try {
         const response = await loginUser(formData);

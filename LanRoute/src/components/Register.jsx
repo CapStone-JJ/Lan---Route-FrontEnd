@@ -62,9 +62,9 @@ export default function Register() {
     try {
       response = await addNewUser(formData);
 
-      if (response.data) {
+      if (response.data.user.id) {
         console.log("User registration successful.");
-        navigate("/login");
+        navigate("/Login");
       } else {
         console.error("User registration failed");
       }
