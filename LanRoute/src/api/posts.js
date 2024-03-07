@@ -23,7 +23,7 @@ const postApi = lanRouteApi.injectEndpoints({
         }),
         deletePost:builder.mutation({
             query:(id)=>({
-                url:'/api/posts/'+id,
+                url:`/api/posts/${id}`,
                 method:'DELETE'
             })
         }),

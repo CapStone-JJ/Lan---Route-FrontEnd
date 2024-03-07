@@ -4,26 +4,37 @@ import { useGetTagsQuery } from '../../api/tags';
 import Comment from '../Comments/Comment'
 import { useNavigate } from 'react-router-dom';
 import formatDate from '../Inputs/formatDate';
+import { useSelector } from 'react-redux';
+
 
 const PostPage = () => {
   const { postId } = useParams();
+  console.log("Post ID:", postId);
   const { data: postData, isLoading: postLoading } = useGetPostQuery(postId);
   console.log(postData)
   const { data: tagsData } = useGetTagsQuery();
   const [deletePost] = useDeletePostMutation();
   const [editPost] = useEditPostMutation();
   const navigate = useNavigate();
+  const userId = useSelector((state) => state.user.credentials.user.id);
 
-  const handleDelete = async () => {
+  const handleDeletePost = async (postId) => {
     try {
-      await deletePost(postId);
-      // Handle successful deletion
+      await deletePost(postId).unwrap(); 
     } catch (error) {
-      console.error('Error deleting post:', error);
-      // Handle error
-      navigate('/Feed');
+      if (error.status === 404) {
+        // Handle 404 error (Post not found)
+        console.error('Post not found');
+        alert('Post not found');
+      } else {
+        // Handle other errors
+        console.error('Error deleting post:', error);
+        // Navigate to a different page or display a generic error message
+        navigate('/Feed');
+      }
     }
   };
+  
 
   const handleEdit = async (newContent) => {
     try {
@@ -42,6 +53,7 @@ const PostPage = () => {
   if (!postData) {
     return <div>Post not found</div>;
   }
+  
 
   const { id, content, createdAt, authorId, author, post_tag } = postData;
 
@@ -55,7 +67,7 @@ const PostPage = () => {
         <div>{content}</div>
         <div>{formatDate(createdAt)}</div>
         <div>Tags: {tagNames.join(', ')}</div>
-        <button onClick={handleDelete}>Delete</button>
+        <button onClick={() => handleDeletePost(postId)}>Delete</button>
         <button onClick={() => handleEdit("New content")}>Edit</button>
         <Comment postId={postId} />
     </div>

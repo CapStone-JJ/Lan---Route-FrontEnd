@@ -28,13 +28,14 @@ const Feed = () => {
 
     const handlePostSubmit = async (postData) => {
         try {
-            await createPost(postData);
-            await refetchFeed({ throwOnError: true, force: true})
+          await createPost(postData);
+          // Refetch the feed data after successful post creation
+          refetchFeed();
         } catch (error) {
-            console.error('Error creating post:', error);
-            // Handle error
+          console.error('Error creating post:', error);
+          // Handle error
         }
-    };
+      };
 
     return (
         <div>
@@ -48,7 +49,7 @@ const Feed = () => {
                     <p>{post.username}</p>
                     <p>{post.content}</p>
                     <p>{formatDate(post.createdAt)}</p>
-                    <LikePost postId={post.id} initialLikes={post.likes} userId={post.userId} />
+                    <LikePost postId={post.id} initialLikes={post.likes.length} userId={post.userId} />
                     <hr />
                     
                     </Link>

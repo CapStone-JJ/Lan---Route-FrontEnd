@@ -9,7 +9,8 @@ const postSlice = createSlice({
         results: {
             search: false,
             rslt: []
-        }
+        },
+        feed: [],
     },
     reducers:{
         clearSearch: (state) => {
