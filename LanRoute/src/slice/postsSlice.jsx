@@ -5,6 +5,7 @@ const postSlice = createSlice({
     name: "post",
     initialState: {
         posts: [],
+        currentPost: null,
         likes: [],
         results: {
             search: false,
@@ -29,7 +30,7 @@ const postSlice = createSlice({
             state.posts = payload; // Update comments array with fetched comments
           })
           .addMatcher(postApi.endpoints.getPost.matchFulfilled, (state, { payload }) => {
-            state.posts= payload; // Add new comment to comments array
+            state.currentPost= payload; // Add new comment to comments array
           })
           .addMatcher(postApi.endpoints.searchPost.matchFulfilled, (state, {payload}) => {
             return {
