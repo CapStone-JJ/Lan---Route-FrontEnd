@@ -5,41 +5,50 @@ import Comment from '../Comments/Comment'
 import { useNavigate } from 'react-router-dom';
 import formatDate from '../Inputs/formatDate';
 import { useSelector } from 'react-redux';
-
+import { useState, useEffect } from 'react';
 
 const PostPage = () => {
   const { postId } = useParams();
-  console.log("Post ID:", postId);
-  const { data: postData, isLoading: postLoading } = useGetPostQuery(postId);
-  console.log(postData)
+  const { data: postData, isLoading: postLoading, refetch: refetchPost } = useGetPostQuery(postId);
   const { data: tagsData } = useGetTagsQuery();
   const [deletePost] = useDeletePostMutation();
   const [editPost] = useEditPostMutation();
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.credentials.user.id);
 
+  const [editedContent, setEditedContent] = useState('');
+  const [editedTags, setEditedTags] = useState('');
+  const [isEditing, setIsEditing] = useState(false); // Track whether the user is editing
+
+  useEffect(() => {
+    // Set initial state when component mounts
+    if (postData) {
+      setEditedContent(postData.content);
+      const tagNames = postData.Post_tag ? postData.Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
+      setEditedTags(tagNames.join(', '));
+    }
+  }, [postData]);
+
   const handleDeletePost = async (postId) => {
     try {
       await deletePost(postId).unwrap(); 
     } catch (error) {
       if (error.status === 404) {
-        // Handle 404 error (Post not found)
         console.error('Post not found');
         alert('Post not found');
       } else {
-        // Handle other errors
         console.error('Error deleting post:', error);
-        // Navigate to a different page or display a generic error message
         navigate('/Feed');
       }
     }
   };
   
-
-  const handleEdit = async (newContent) => {
+  const handleEdit = async () => {
     try {
-      await editPost({ id: postId, content: newContent });
+      await editPost({ id: postId, content: editedContent, tags: editedTags });
+      setIsEditing(false); // Exit edit mode after saving changes
       // Handle successful edit
+      await refetchPost();
     } catch (error) {
       console.error('Error editing post:', error);
       // Handle error
@@ -54,27 +63,49 @@ const PostPage = () => {
     return <div>Post not found</div>;
   }
   
-
-  const { id, content, createdAt, authorId, author, post_tag } = postData;
-
+  const { content, createdAt, author, Post_tag } = postData;
   const username = author.username;
-
-  const tagNames = post_tag ? post_tag.map(tag => tag.name) : []; 
-
+  const tagNames = Post_tag ? Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
+  
   return (
     <div>
         <div>{username}</div>
-        <div>{content}</div>
+        {isEditing ? (
+          <>
+            <div>
+              Content:
+              <textarea value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
+            </div>
+            <div>
+              Tags:
+              <input type="text" value={editedTags} onChange={(e) => setEditedTags(e.target.value)} />
+            </div>
+          </>
+        ) : (
+          <>
+            <div>{content}</div>
+            <div>{tagNames.join(', ')}</div>
+          </>
+        )}
         <div>{formatDate(createdAt)}</div>
-        <div>Tags: {tagNames.join(', ')}</div>
-        <button onClick={() => handleDeletePost(postId)}>Delete</button>
-        <button onClick={() => handleEdit("New content")}>Edit</button>
+        {!isEditing && (
+          <>
+            <button onClick={() => setIsEditing(true)}>Edit</button>
+            <button onClick={() => handleDeletePost(postId)}>Delete</button>
+          </>
+        )}
+        {isEditing && (
+          <>
+            <button onClick={handleEdit}>Save Changes</button>
+            <button onClick={() => setIsEditing(false)}>Cancel</button>
+          </>
+        )}
         <Comment postId={postId} />
     </div>
   );
-
 };
 
 export default PostPage;
+
 
 
