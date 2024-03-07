@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useGetFeedQuery } from '../../api/posts';
-import formatDate from '../Inputs/formatDate';
+import { useGetFeedQuery } from '../api/posts';
+import formatDate from './Inputs/formatDate';
 import { Link } from 'react-router-dom';
-import CreatePostForm from './createpostForm';
-import { useAddPostMutation } from '../../api/posts';
-import LikePost from '../Likes/likes';
+import CreatePostForm from './Posts/createpostForm';
+import { useAddPostMutation } from '../api/posts';
+import LikePost from './Likes/likes';
 
 const Feed = () => {
     const [token, setToken] = useState('');
@@ -36,7 +36,7 @@ const Feed = () => {
           // Handle error
         }
       };
-      console.log(feedData)
+
     return (
         <div>
             {/* Render the CreatePostForm component with handlePostSubmit passed as prop */}
@@ -46,9 +46,8 @@ const Feed = () => {
             {feedData && feedData.map(post => (
                 <div key={post.id}>
                     <Link className='post-link' to={{ pathname: `/posts/${post.id}`, state: { userId: post.userId } }}>
-                    <p>{post.author?.username}</p>
+                    <p>{post.username}</p>
                     <p>{post.content}</p>
-                    <p>{post.tags?.map(tag => tag.name).join(',')}</p>
                     <p>{formatDate(post.createdAt)}</p>
                     <LikePost postId={post.id} initialLikes={post.likes.length} userId={post.userId} />
                     <hr />
