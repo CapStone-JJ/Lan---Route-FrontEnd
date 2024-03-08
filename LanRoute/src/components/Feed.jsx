@@ -12,8 +12,8 @@ const Feed = () => {
     Authorization: "",
     "Content-Type": "application/json",
   });
-  const { data: feedData, refetch: refetchFeed } = useGetFeedQuery({ headers });
-  const [createPost] = useAddPostMutation();
+  const { data: feedData } = useGetFeedQuery({ headers });
+  const [addPost, { isLoading: isAddingPost }] = useAddPostMutation();
 
   useEffect(() => {
     const storedToken = sessionStorage.getItem("authToken");
@@ -26,12 +26,10 @@ const Feed = () => {
     }
   }, []);
 
-
   const handlePostSubmit = async (postData) => {
     try {
-      await createPost(postData).unwrap();;
-      // Refetch the feed data after successful post creation
-      refetchFeed();
+      await addPost(postData).unwrap();
+      console.log("Post added successfully");
     } catch (error) {
       console.error("Error creating post:", error);
       // Handle error

@@ -9,6 +9,7 @@ import Comment from "../Comments/Comment";
 import { useNavigate } from "react-router-dom";
 import formatDate from "../Inputs/formatDate";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -20,20 +21,18 @@ const PostPage = () => {
   const [editPost] = useEditPostMutation();
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.credentials.user.id);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeletePost = async (postId) => {
+    setIsDeleting(true);
     try {
       await deletePost(postId).unwrap();
       navigate("/Feed");
     } catch (error) {
       console.error("Error deleting post:", error);
-      // Handle error appropriately
-      if (error.status === 404) {
-        alert("Post not found");
-      } else {
-        // Handle other errors
-        console.error("Error deleting post:", error);
-      }
+      alert("Error deleting post");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -67,7 +66,9 @@ const PostPage = () => {
       <div>{content}</div>
       <div>{formatDate(createdAt)}</div>
       <div>Tags: {tagNames.join(", ")}</div>
-      <button onClick={() => handleDeletePost(postId)}>Delete</button>
+      <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>
+        Delete
+      </button>
       <button onClick={() => handleEdit("New content")}>Edit</button>
       <Comment postId={postId} />
     </div>
