@@ -19,6 +19,20 @@ const PostPage = () => {
   const [editPost] = useEditPostMutation();
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.credentials.user.id);
+  const [editedContent, setEditedContent] = useState('');
+  const [editedTags, setEditedTags] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // Track whether the user is editing
+
+  useEffect(() => {
+    // Set initial state when component mounts
+    if (postData) {
+      setEditedContent(postData.content);
+      const tagNames = postData.Post_tag ? postData.Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
+      setEditedTags(tagNames.join(', '));
+    }
+  }, [postData]);
+
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeletePost = async (postId) => {
@@ -58,7 +72,7 @@ const PostPage = () => {
   const username = author.username;
   const tagNames = Post_tag ? Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
   
-  return (
+return (
     <div className='container'>
     <div className="post">
       <div>{username}</div>
@@ -80,11 +94,20 @@ const PostPage = () => {
         </>
       )}
       <div>{formatDate(createdAt)}</div>
-      <div>Tags: {tagNames.join(", ")}</div>
-      <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>
+      {!isEditing && (
+        <>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>
         Delete
       </button>
-      <button onClick={() => handleEdit("New content")}>Edit</button>
+        </>
+      )}
+      {isEditing && (
+        <>
+          <button onClick={handleEdit}>Save Changes</button>
+          <button onClick={() => setIsEditing(false)}>Cancel</button>
+        </>
+      )}
       <Comment postId={postId} />
     </div>
     </div>

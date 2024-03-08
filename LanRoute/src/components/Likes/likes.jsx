@@ -9,7 +9,7 @@ const LikePost = ({ postId, initialLikes }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [addLike, { isLoading: addingLike }] = useAddLikeMutation();
   const [deleteLike, { isLoading: deletingLike }] = useDeleteLikeMutation();
-
+  
   // Retrieve userId from Redux store
   const userId = useSelector((state) => state.user.credentials.user.userId);
 
@@ -45,10 +45,8 @@ const LikePost = ({ postId, initialLikes }) => {
     </div>
   );
 };
-
 LikePost.propTypes = {
   postId: PropTypes.number.isRequired,
   initialLikes: PropTypes.number.isRequired, // Add initialLikes as a required prop
 };
-
 export default LikePost;
