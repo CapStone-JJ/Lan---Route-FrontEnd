@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useGetTagsQuery, useAddTagMutation } from '../../api/tags';
 import { useAddPostMutation, useGetPostsQuery } from '../../api/posts';
 import { useDispatch, useSelector } from 'react-redux';
+import "../Styles/createPost.css"
 
 
 const CreatePostForm = () => {
@@ -123,22 +124,26 @@ const handlePostSubmit = async () => {
 
 
 return (
+  <div className="create-post-form">
+  <textarea
+    className="post-content"
+    placeholder="What's happening?"
+    value={content}
+    onChange={(e) => setContent(e.target.value)}
+  />
   <div>
-    <textarea
-      placeholder="What's happening?"
-      value={content}
-      onChange={(e) => setContent(e.target.value)}
-    />
-    <div>
     <input
+      className="tag-input"
       type="text"
       value={tagInput}
       onChange={handleTagInputChange} // Handle changes in the tag input field
       placeholder="Type a tag..."
     />
   </div>
-    <button onClick={handlePostSubmit} disabled={createPostLoading}>Post</button>
-  </div>
+  <button className="post-button" onClick={handlePostSubmit} disabled={createPostLoading}>
+    Post
+  </button>
+</div>
 );
 };
 
