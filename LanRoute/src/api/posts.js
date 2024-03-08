@@ -11,6 +11,9 @@ const postApi = lanRouteApi.injectEndpoints({
         // getPagePost: builder.query({
         //     query: (num)=> '/api/posts/page/'+num
         // }),
+        userPost: builder.query({
+            query: (userId)=> `/api/posts/user/${userId}`,
+        }),
         searchPost: builder.query({
             query: (search)=>'/api/postSearch/'+search
         }),
@@ -63,6 +66,7 @@ const postApi = lanRouteApi.injectEndpoints({
 export const {
     useGetPostsQuery,
     useGetPostQuery,
+    useUserPostQuery,
     useSearchPostQuery,
     useAddPostMutation,
     useDeletePostMutation,

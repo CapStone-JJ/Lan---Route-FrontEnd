@@ -1,0 +1,53 @@
+/* Create post form container */
+.create-post-form {
+    background-color: #ffffff; /* White background */
+    border-radius: 16px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    padding: 20px; /* Padding */
+    margin-bottom: 20px; /* Add some space below the form */
+    transition: box-shadow 0.3s ease; /* Smooth transition for box-shadow */
+    width: 400px; /* Fixed width */
+    height: auto; /* Let the height adjust based on content */
+    align-content: center;
+  }
+  
+  .create-post-form:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+  }
+  
+  /* Textarea for post content */
+  .post-content {
+    width: 100%; /* Take full width of the container */
+    padding: 10px; /* Padding */
+    border: none; /* Remove default border */
+    border-radius: 8px; /* Rounded corners */
+    resize: none; /* Allow vertical resizing */
+    margin-bottom: 10px; /* Add space below the textarea */
+  }
+  
+  /* Tag input */
+  .tag-input {
+    width: 100%; /* Take full width of the container */
+    padding: 10px; /* Padding */
+    border: none; /* Remove default border */
+    border-radius: 8px; /* Rounded corners */
+    margin-bottom: 10px; /* Add space below the input */
+  }
+  
+  /* Post button */
+  .post-button {
+    background-color: #1da1f2; /* Twitter blue */
+    color: #ffffff; /* White text color */
+    border: none; /* Remove border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    cursor: pointer; /* Change cursor on hover */
+  }
+  
+  .post-button:hover {
+    background-color: #0d8efc; /* Darker shade of blue on hover */
+  }
+  
+
+  
+  

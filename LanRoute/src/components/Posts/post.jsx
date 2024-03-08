@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import formatDate from '../Inputs/formatDate';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
+import "../Styles/post.css"
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -69,39 +70,41 @@ const PostPage = () => {
   const tagNames = Post_tag ? Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
   
   return (
-    <div>
-        <div>{username}</div>
-        {isEditing ? (
-          <>
-            <div>
-              Content:
-              <textarea value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
-            </div>
-            <div>
-              Tags:
-              <input type="text" value={editedTags} onChange={(e) => setEditedTags(e.target.value)} />
-            </div>
-          </>
-        ) : (
-          <>
-            <div>{content}</div>
-            <div>{tagNames.join(', ')}</div>
-          </>
-        )}
-        <div>{formatDate(createdAt)}</div>
-        {!isEditing && (
-          <>
-            <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button onClick={() => handleDeletePost(postId)}>Delete</button>
-          </>
-        )}
-        {isEditing && (
-          <>
-            <button onClick={handleEdit}>Save Changes</button>
-            <button onClick={() => setIsEditing(false)}>Cancel</button>
-          </>
-        )}
-        <Comment postId={postId} />
+    <div className='container'>
+    <div className="post">
+      <div>{username}</div>
+      {isEditing ? (
+        <>
+          <div>
+            Content:
+            <textarea value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
+          </div>
+          <div>
+            Tags:
+            <input type="text" value={editedTags} onChange={(e) => setEditedTags(e.target.value)} />
+          </div>
+        </>
+      ) : (
+        <>
+          <div>{content}</div>
+          <div>{tagNames.join(', ')}</div>
+        </>
+      )}
+      <div>{formatDate(createdAt)}</div>
+      {!isEditing && (
+        <>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <button onClick={() => handleDeletePost(postId)}>Delete</button>
+        </>
+      )}
+      {isEditing && (
+        <>
+          <button onClick={handleEdit}>Save Changes</button>
+          <button onClick={() => setIsEditing(false)}>Cancel</button>
+        </>
+      )}
+      <Comment postId={postId} />
+    </div>
     </div>
   );
 };

@@ -1,49 +1,63 @@
-import {useSelector} from "react-redux";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner, faUser} from "@fortawesome/free-solid-svg-icons";
-import {useRef} from "react";
-import Button from "./button.jsx";
-import {useEditUserMutation} from "../../api/auth";
+import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Button from '@mui/material/Button';
+import { useEditUserMutation } from '../../api/auth';
+import { Avatar as MuiAvatar, CircularProgress } from '@mui/material';
 
-function Avatar({mod}) {
+const Avatar = ({ mod }) => {
+  const { image } = useSelector((state) => state.user.credentials.user); // Get user's image from Redux store
+  const [editUser, { isLoading }] = useEditUserMutation();
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
+  const handleImageUpload = async (event) => {
+    try {
+      setUploading(true);
+      const file = event.target.files[0];
+      const base64Image = await convertBase64(file);
+      await editUser({ image: base64Image });
+      setUploading(false);
+      alert('Profile image updated successfully!');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Error uploading profile image. Please try again.');
+      setUploading(false);
+    }
+  };
 
-    const me = useSelector(state => state.auth.credentials.user);
-    const [edit, {isLoading}] = useEditUserMutation();
-    const fileButton = useRef(null);
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
 
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            };
-
-            fileReader.onerror = (error) => {
-                reject(error);
-            };
-        });
-    };
-
-    const uploadImage = async (event) => {
-        const file = event.target.files[0];
-        const base64 = await convertBase64(file);
-        edit({image: base64})
-    };
-
-    return (
+  return (
+    <>
+      <MuiAvatar alt="Profile Image" src={image} />
+      {uploading && <CircularProgress />}
+      {mod && (
         <>
-            <div className={"avatar"}>
-                {!me.image ? <FontAwesomeIcon icon={faUser}/>: <img alt={"profile"} src={`${me.image}`}/>}
-            </div>
-            {isLoading&& <FontAwesomeIcon icon={faSpinner} spin/>}
-            {mod && <input ref={fileButton} type={"file"} style={{"display": "none"}} accept=".jpg, .jpeg, .png" onChange={uploadImage}/>}
-            {mod &&<Button click={()=>fileButton.current.click()}  vl={"CHANGE PROFILE IMAGE"} theme={"submit"}/>}
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+          />
+          <Button onClick={() => fileInputRef.current.click()} variant="contained" color="primary">
+            Change Profile Image
+          </Button>
         </>
-    )
-
-
-}
+      )}
+    </>
+  );
+};
 
 export default Avatar;
+

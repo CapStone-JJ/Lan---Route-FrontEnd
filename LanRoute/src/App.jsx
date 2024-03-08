@@ -4,7 +4,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import PostPage from "./components/Posts/post";
 import MainFeed from "./components/Main/mainFeed";
-import ProfilePage from "./components/UserProfile/profilePage";
+import MainProfile from "./components/Main/mainProfile";
 
 const PostPageWrapper = () => {
   const { postId } = useParams();
@@ -22,8 +22,7 @@ function App() {
           <Route path="/Register" element={<Register />} />
           <Route path="/mainFeed" element={<MainFeed />} />
           <Route path="/posts/:postId" element={<PostPageWrapper />} />
-          <Route path="/profilePage" element={<ProfilePage />} />
-
+          <Route path="/mainProfile" element={<MainProfile />} />
         </Routes>
       </div>
     </>

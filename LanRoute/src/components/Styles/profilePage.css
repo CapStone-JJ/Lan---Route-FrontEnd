@@ -1,0 +1,52 @@
+/* styles.css */
+
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+    margin-top: 20px; /* Add margin from the top */
+  }
+  
+  .user-posts {
+    width: 100%; /* Make the user posts container full width */
+    max-width: 600px; /* Limit the width of the user posts container */
+  }
+  
+  .post {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .interaction-options {
+    display: flex;
+    justify-content: space-between; /* Align buttons to the ends */
+  }
+  
+  .create-post-form-container {
+    width: 100%; /* Make the form container full width */
+    max-width: 600px; /* Limit the width of the form container */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 20px auto; /* Center the form horizontally and add margin from the top and bottom */
+  }
+  
+  .create-post-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-post-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .create-post-form button {
+    align-self: flex-end; /* Align the button to the right */
+  }
+  

@@ -3,7 +3,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import HouseIcon from '@mui/icons-material/House';
 import ExploreIcon from '@mui/icons-material/Explore';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MailIcon from '@mui/icons-material/Mail';
@@ -17,8 +16,11 @@ import Tooltip from '@mui/material/Tooltip';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Sidebar = () => {
+  const userId = useSelector((state) => state.user.credentials.user.id);
+  const avatarUrl = useSelector((state) => state.user.avatarUrl)
   return (
     <Drawer variant="permanent" sx={{ width: 275 }}>
       <List>
@@ -28,18 +30,14 @@ const Sidebar = () => {
             <ListItemText primary="Ouroute" />
           </ListItemIcon>
         </ListItem>
-        <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
-          <ListItemIcon>
-            <HouseIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
+        <Link to="/mainFeed">
         <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
           <ListItemIcon>
             <ExploreIcon />
           </ListItemIcon>
           <ListItemText primary="Routes" />
         </ListItem>
+        </Link>
         <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
           <ListItemIcon>
             <NotificationsIcon />
@@ -79,9 +77,9 @@ const Sidebar = () => {
       </List>
       <Divider />
       <Tooltip title="Profile">
-        <Link to="/profilePage">
+        <Link to="/mainProfile">
         <IconButton sx={{ ml: 'auto', mt: 2 }}>
-          <Avatar alt="User Avatar" src="/path_to_avatar.jpg" />
+          <Avatar alt={`User ${userId} Avatar`} src={avatarUrl} />
         </IconButton>
         </Link>
       </Tooltip>

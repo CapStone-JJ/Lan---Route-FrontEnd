@@ -32,6 +32,9 @@ const postSlice = createSlice({
           .addMatcher(postApi.endpoints.getPost.matchFulfilled, (state, { payload }) => {
             state.currentPost= payload; // Add new comment to comments array
           })
+          .addMatcher(postApi.endpoints.userPost.matchFulfilled, (state, { payload }) => {
+            state.posts= payload; // Add new comment to comments array
+          })
           .addMatcher(postApi.endpoints.searchPost.matchFulfilled, (state, {payload}) => {
             return {
                 ...state,
