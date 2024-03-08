@@ -77,3 +77,4 @@ export const {
   useGetFeedQuery,
 } = postApi;
 export default postApi;
+

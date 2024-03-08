@@ -1,12 +1,15 @@
-import { useParams } from 'react-router-dom';
-import { useGetPostQuery, useDeletePostMutation, useEditPostMutation } from '../../api/posts';
-import { useGetTagsQuery } from '../../api/tags';
-import Comment from '../Comments/Comment'
-import { useNavigate } from 'react-router-dom';
-import formatDate from '../Inputs/formatDate';
-import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
-import "../Styles/post.css"
+import { useParams } from "react-router-dom";
+import {
+  useGetPostQuery,
+  useDeletePostMutation,
+  useEditPostMutation,
+} from "../../api/posts";
+import { useGetTagsQuery } from "../../api/tags";
+import Comment from "../Comments/Comment";
+import { useNavigate } from "react-router-dom";
+import formatDate from "../Inputs/formatDate";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -16,7 +19,6 @@ const PostPage = () => {
   const [editPost] = useEditPostMutation();
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.credentials.user.id);
-
   const [editedContent, setEditedContent] = useState('');
   const [editedTags, setEditedTags] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -30,6 +32,8 @@ const PostPage = () => {
       setEditedTags(tagNames.join(', '));
     }
   }, [postData]);
+
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeletePost = async (postId) => {
     setIsDeleting(true);
@@ -68,7 +72,7 @@ const PostPage = () => {
   const username = author.username;
   const tagNames = Post_tag ? Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
   
-  return (
+return (
     <div className='container'>
     <div className="post">
       <div>{username}</div>
