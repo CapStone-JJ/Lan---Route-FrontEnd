@@ -19,6 +19,7 @@ const PostPage = () => {
 
   const [editedContent, setEditedContent] = useState('');
   const [editedTags, setEditedTags] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false); // Track whether the user is editing
 
   useEffect(() => {
@@ -31,17 +32,15 @@ const PostPage = () => {
   }, [postData]);
 
   const handleDeletePost = async (postId) => {
+    setIsDeleting(true);
     try {
       await deletePost(postId).unwrap(); 
       navigate('/mainFeed');
     } catch (error) {
-      if (error.status === 404) {
-        console.error('Post not found');
-        alert('Post not found');
-      } else {
-        console.error('Error deleting post:', error);
-        
-      }
+      console.error("Error deleting post:", error);
+      alert("Error deleting post");
+    } finally {
+      setIsDeleting(false);
     }
   };
   
@@ -94,7 +93,9 @@ const PostPage = () => {
       {!isEditing && (
         <>
           <button onClick={() => setIsEditing(true)}>Edit</button>
-          <button onClick={() => handleDeletePost(postId)}>Delete</button>
+          <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>
+        Delete
+      </button>
         </>
       )}
       {isEditing && (
