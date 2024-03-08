@@ -1,63 +1,54 @@
-import { useState } from 'react';
-import { useAddLikeMutation } from '../../api/posts';
+import { useState } from "react";
+import { useAddLikeMutation, useDeleteLikeMutation } from "../../api/posts";
 import Button from "../Inputs/button";
-import { useDispatch, useSelector } from "react-redux";
-import PropTypes from 'prop-types';
+import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
 const LikePost = ({ postId, initialLikes }) => {
-    const [likes, setLikes] = useState(initialLikes.count || initialLikes);
-    const [isLiked, setIsLiked] = useState(false);
-    const [addLike, { isLoading: likeLoading }] = useAddLikeMutation();
-    const dispatch = useDispatch();
+  const [likes, setLikes] = useState(initialLikes.count || initialLikes);
+  const [isLiked, setIsLiked] = useState(false);
+  const [addLike, { isLoading: addingLike }] = useAddLikeMutation();
+  const [deleteLike, { isLoading: deletingLike }] = useDeleteLikeMutation();
 
-    // Retrieve userId from Redux store
-    const userId = useSelector(state => state.user.credentials.user.userId);
+  // Retrieve userId from Redux store
+  const userId = useSelector((state) => state.user.credentials.user.userId);
 
-    const handleLike = async () => {
-        try {
-            // Call the addLike mutation
-            const response = await addLike({ 
-                postId,
-                userId
-            });
-    
-            console.log(response); // Log the response object to check its structure
-    
-            // Check if the response contains an error
-            if (response.error) {
-                console.error('Error liking post:', response.error);
-                // Handle error
-            } else {
-                // Ensure that the response contains the expected data structure
-                if (response.data && response.data.likes !== undefined) {
-                    // Update the likes count and isLiked state based on the response
-                    setLikes(response.data.likes);
-                    setIsLiked(true);
-                } else {
-                    console.error('Invalid response format:', response);
-                }
-            }
-        } catch (error) {
-            console.error('Error liking post:', error);
-            // Handle error
-        }
-    };
-    
+  const handleLike = async () => {
+    try {
+      await addLike({ postId, userId });
+      setLikes((prev) => prev + 1);
+      setIsLiked(true);
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
 
-    return (
-        <div>
-            <Button click={handleLike} disabled={likeLoading || isLiked}>
-                {isLiked ? 'Liked' : 'Like'}
-            </Button>
-            <span>{likes}</span>
-        </div>
-    );
+  const handleUnlike = async () => {
+    try {
+      await deleteLike({ postId, userId });
+      setLikes((prev) => prev - 1);
+      setIsLiked(false);
+    } catch (error) {
+      console.error("Error removing like from post:", error);
+    }
+  };
+
+  return (
+    <div>
+      <Button
+        click={isLiked ? handleUnlike : handleLike}
+        disabled={addingLike || deletingLike}
+      >
+        {isLiked ? "Liked" : "Like"}
+      </Button>
+      <span>{likes}</span>
+    </div>
+  );
 };
 
 LikePost.propTypes = {
-    postId: PropTypes.number.isRequired,
-    initialLikes: PropTypes.number.isRequired, // Add initialLikes as a required prop
+  postId: PropTypes.number.isRequired,
+  initialLikes: PropTypes.number.isRequired, // Add initialLikes as a required prop
 };
 
 export default LikePost;
-

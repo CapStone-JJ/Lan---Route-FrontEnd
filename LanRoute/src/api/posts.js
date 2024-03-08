@@ -66,7 +66,6 @@ const postApi = lanRouteApi.injectEndpoints({
 export const {
     useGetPostsQuery,
     useGetPostQuery,
-    useUserPostQuery,
     useSearchPostQuery,
     useAddPostMutation,
     useDeletePostMutation,
@@ -75,5 +74,4 @@ export const {
     useDeleteLikeMutation,
     useGetFeedQuery,
 } = postApi;
-
-    export default postApi;
+export default postApi;
