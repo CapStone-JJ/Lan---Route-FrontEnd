@@ -9,7 +9,8 @@ import Comment from "../Comments/Comment";
 import { useNavigate } from "react-router-dom";
 import formatDate from "../Inputs/formatDate";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import "../Styles/post.css"
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -32,8 +33,6 @@ const PostPage = () => {
       setEditedTags(tagNames.join(', '));
     }
   }, [postData]);
-
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeletePost = async (postId) => {
     setIsDeleting(true);
