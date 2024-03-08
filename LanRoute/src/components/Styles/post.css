@@ -1,0 +1,70 @@
+/* Post container */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Set height to full viewport height */
+  }
+  
+.post {
+    background-color: #f9f9f9; /* Light background color */
+    border: 1px solid #e0e0e0; /* Light border color */
+    border-radius: 12px; /* Slightly rounded corners */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    width: 100%; /* Take full width */
+    max-width: 500px; /* Limit maximum width */
+  }
+  
+  /* Username */
+  .post > div:first-child {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px; /* Add spacing between username and content */
+  }
+  
+  /* Content */
+  .post > div:nth-child(2) {
+    color: #555;
+    margin-bottom: 16px; /* Add spacing between content and tags */
+    resize: none;
+  }
+  
+  /* Tags */
+  .post > div:nth-child(3) {
+    color: #888;
+    font-size: 14px; /* Increase font size for tags */
+    margin-bottom: 16px; /* Add spacing between tags and date */
+  }
+  
+  /* Date */
+  .post > div:nth-child(4) {
+    font-size: 12px;
+    color: #999;
+  }
+  
+  /* Edit and delete buttons */
+  .post > button {
+    margin-top: 10px;
+    cursor: pointer;
+    color: #999;
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .post > button:hover {
+    background-color: #f0f0f0; /* Light background color on hover */
+  }
+
+  .post textarea {
+  resize: none; /* Disable resizing */
+  align-items: center;
+  align-content: center;
+  
+}
+
+  

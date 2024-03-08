@@ -13,9 +13,7 @@ import { useState } from "react";
 
 const PostPage = () => {
   const { postId } = useParams();
-  console.log("Post ID:", postId);
-  const { data: postData, isLoading: postLoading } = useGetPostQuery(postId);
-  console.log(postData);
+  const { data: postData, isLoading: postLoading, refetch: refetchPost } = useGetPostQuery(postId);
   const { data: tagsData } = useGetTagsQuery();
   const [deletePost] = useDeletePostMutation();
   const [editPost] = useEditPostMutation();
@@ -26,8 +24,8 @@ const PostPage = () => {
   const handleDeletePost = async (postId) => {
     setIsDeleting(true);
     try {
-      await deletePost(postId).unwrap();
-      navigate("/Feed");
+      await deletePost(postId).unwrap(); 
+      navigate('/mainFeed');
     } catch (error) {
       console.error("Error deleting post:", error);
       alert("Error deleting post");
@@ -35,13 +33,15 @@ const PostPage = () => {
       setIsDeleting(false);
     }
   };
-
-  const handleEdit = async (newContent) => {
+  
+  const handleEdit = async () => {
     try {
-      await editPost({ id: postId, content: newContent });
+      await editPost({ id: postId, content: editedContent, tags: editedTags });
+      setIsEditing(false); // Exit edit mode after saving changes
       // Handle successful edit
+      await refetchPost();
     } catch (error) {
-      console.error("Error editing post:", error);
+      console.error('Error editing post:', error);
       // Handle error
     }
   };
@@ -53,17 +53,32 @@ const PostPage = () => {
   if (!postData) {
     return <div>Post not found</div>;
   }
-
-  const { id, content, createdAt, authorId, author, post_tag } = postData;
-
+  
+  const { content, createdAt, author, Post_tag } = postData;
   const username = author.username;
-
-  const tagNames = post_tag ? post_tag.map((tag) => tag.name) : [];
-
+  const tagNames = Post_tag ? Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
+  
   return (
-    <div>
+    <div className='container'>
+    <div className="post">
       <div>{username}</div>
-      <div>{content}</div>
+      {isEditing ? (
+        <>
+          <div>
+            Content:
+            <textarea value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
+          </div>
+          <div>
+            Tags:
+            <input type="text" value={editedTags} onChange={(e) => setEditedTags(e.target.value)} />
+          </div>
+        </>
+      ) : (
+        <>
+          <div>{content}</div>
+          <div>{tagNames.join(', ')}</div>
+        </>
+      )}
       <div>{formatDate(createdAt)}</div>
       <div>Tags: {tagNames.join(", ")}</div>
       <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>
@@ -72,7 +87,13 @@ const PostPage = () => {
       <button onClick={() => handleEdit("New content")}>Edit</button>
       <Comment postId={postId} />
     </div>
+    </div>
   );
 };
 
 export default PostPage;
+
+
+
+
+

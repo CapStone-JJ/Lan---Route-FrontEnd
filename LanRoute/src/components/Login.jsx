@@ -1,4 +1,3 @@
-import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -36,7 +35,7 @@ export default function Login() {
     sessionStorage.setItem("authToken", token);
     setAuthToken(token);
     setIsLoggedIn(true);
-    navigate("/Feed")
+    navigate("/mainFeed")
     console.log(token);
   };
   
@@ -48,7 +47,7 @@ export default function Login() {
         const token = response.data.token;
         handleLoginSuccess(token);
         setIsLoggedIn(true);
-        navigate("/Feed")
+        navigate("/mainFeed")
         } catch (error) {
         console.error("Login failed:", error);
         

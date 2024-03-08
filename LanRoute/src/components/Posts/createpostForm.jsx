@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useGetTagsQuery, useAddTagMutation } from '../../api/tags';
 import { useAddPostMutation, useGetPostsQuery } from '../../api/posts';
 import { useDispatch, useSelector } from 'react-redux';
+import "../Styles/createPost.css"
 
 
 const CreatePostForm = () => {
@@ -17,10 +18,36 @@ const CreatePostForm = () => {
 
 
   const handleTagInputChange = (event) => {
-    setTagInput(event.target.value);
+    const inputValue = event.target.value;
+  
+    // Add "#" before each word
+    let formattedInputValue = inputValue.trim().split(/\s+/).join(' #');
+  
+    // Add "#" after each comma if there's a word after it
+    formattedInputValue = formattedInputValue.replace(/,(?=\S)/g, ', #');
+  
+    // Remove consecutive "#" symbols
+    formattedInputValue = formattedInputValue.replace(/#+/g, '#');
+  
+    // Add "#" at the beginning if the input is not empty
+    if (formattedInputValue.length > 0 && !formattedInputValue.startsWith('#')) {
+      formattedInputValue = `#${formattedInputValue}`;
+    }
+  
+    setTagInput(formattedInputValue);
+  
+    // Regular expressions to detect hashtags and mentions
+    const hashtagRegex = /#(\w+)/g;
+  
+    // Extract hashtags and mentions from input value
+    const hashtags = formattedInputValue.match(hashtagRegex);
+  
+    console.log("Detected hashtags:", hashtags);
+  
+    // Update selectedTags state with detected hashtags and mentions
+    setSelectedTags([...(hashtags || [])]);
   };
-
-
+  
   const handleAddTag = () => {
     if (tagInput.trim() !== '' && !selectedTags.includes(tagInput)) {
         try {
@@ -86,6 +113,7 @@ const handlePostSubmit = async () => {
     // Clear form fields after successful post creation
     setContent('');
     setSelectedTags([]);
+    setTagInput('');
   } catch (error) {
     console.error('Error creating post:', error);
     // Handle error
@@ -96,28 +124,26 @@ const handlePostSubmit = async () => {
 
 
 return (
+  <div className="create-post-form">
+  <textarea
+    className="post-content"
+    placeholder="What's happening?"
+    value={content}
+    onChange={(e) => setContent(e.target.value)}
+  />
   <div>
-    <textarea
-      placeholder="What's happening?"
-      value={content}
-      onChange={(e) => setContent(e.target.value)}
+    <input
+      className="tag-input"
+      type="text"
+      value={tagInput}
+      onChange={handleTagInputChange} // Handle changes in the tag input field
+      placeholder="Type a tag..."
     />
-    <div>
-      <input
-        type="text"
-        value={tagInput}
-        onChange={handleTagInputChange}
-        placeholder="Type a tag..."
-      />
-      <button onClick={handleAddTag}>Add Tag</button>
-    </div>
-    <div>
-      {selectedTags.map((tag, index) => (
-        <span key={index}>{tag}</span>
-      ))}
-    </div>
-    <button onClick={handlePostSubmit} disabled={createPostLoading}>Post</button>
   </div>
+  <button className="post-button" onClick={handlePostSubmit} disabled={createPostLoading}>
+    Post
+  </button>
+</div>
 );
 };
 
