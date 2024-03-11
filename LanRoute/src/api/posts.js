@@ -7,8 +7,8 @@ const postApi = lanRouteApi.injectEndpoints({
     getPost: builder.query({
       query: (id) => "/api/posts/" + id,
     }),
-    userPost: builder.query({ 
-        query: (userId)=> `/api/posts/user/${userId}`, 
+    userPost: builder.query({
+      query: (userId) => `/api/posts/user/${userId}`,
     }),
     // getPagePost: builder.query({
     //     query: (num)=> '/api/posts/page/'+num
@@ -57,6 +57,7 @@ const postApi = lanRouteApi.injectEndpoints({
           body,
         };
       },
+      invalidatesTags: ["Posts"],
     }),
     getFeed: builder.query({
       query: () => "api/feed",
@@ -77,4 +78,3 @@ export const {
   useGetFeedQuery,
 } = postApi;
 export default postApi;
-

@@ -9,7 +9,7 @@ const LikePost = ({ postId, initialLikes }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [addLike, { isLoading: addingLike }] = useAddLikeMutation();
   const [deleteLike, { isLoading: deletingLike }] = useDeleteLikeMutation();
-  
+
   // Retrieve userId from Redux store
   const userId = useSelector((state) => state.user.credentials.user.userId);
 
@@ -41,7 +41,7 @@ const LikePost = ({ postId, initialLikes }) => {
       >
         {isLiked ? "Liked" : "Like"}
       </Button>
-      <span>{likes}</span>
+      {likes > 0 && <span>{likes}</span>}
     </div>
   );
 };
