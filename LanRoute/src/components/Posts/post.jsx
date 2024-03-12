@@ -23,7 +23,7 @@ const PostPage = () => {
   const [editedContent, setEditedContent] = useState('');
   const [editedTags, setEditedTags] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isEditing, setIsEditing] = useState(false); // Track whether the user is editing
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     // Set initial state when component mounts

@@ -17,11 +17,14 @@ const authApi = lanRouteApi.injectEndpoints({
       }),
     }),
     editUser: builder.mutation({
-      query: (cred) => ({
-        url: `/auth/${id}`,
-        method: "PUT",
-        body: cred,
-      }),
+      query(data) {
+        const { id, ...body } = data;
+        return {
+          url: `/auth/${id}`,
+          method: "PUT",
+          body,
+        };
+      },
     }),
     logout: builder.mutation({
       queryFn: () => ({ data: {} }),

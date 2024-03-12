@@ -1,12 +1,13 @@
 import Sidebar from '../Inputs/sidebar';
 import ProfilePage from '../UserProfile/profilePage';
 import ProfileHeader from '../Inputs/profileHeader';
-import CreatePostForm from '../Posts/createpostForm';
+import SearchBar from '../Inputs/searchBar';
 
 const MainProfile = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <Sidebar />
+      <SearchBar />
       <div style={{ width: '600px', marginLeft: '20px' }}>
         <ProfileHeader />
         <ProfilePage />
