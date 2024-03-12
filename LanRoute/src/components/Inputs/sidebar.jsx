@@ -17,6 +17,7 @@ import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 
 const Sidebar = () => {
   const userId = useSelector((state) => state.user.credentials.user.id);
@@ -44,12 +45,14 @@ const Sidebar = () => {
           </ListItemIcon>
           <ListItemText primary="Notifications" />
         </ListItem>
+        <Link to="/themePage">
         <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
           <ListItemIcon>
-            <MailIcon />
+            <SettingsSuggestIcon />
           </ListItemIcon>
-          <ListItemText primary="Messages" />
+          <ListItemText primary="Theme Settings" />
         </ListItem>
+        </Link>
         <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
           <ListItemIcon>
             <BookmarkIcon />

@@ -1,0 +1,30 @@
+/* themes.css */
+
+:root {
+    /* Define theme variables */
+    --primary-color: #3498db;
+    --secondary-color: #f39c12;
+    --font-family: Arial, sans-serif;
+    --background-image: '';
+  }
+  
+  /* Apply styles based on theme variables */
+  body {
+    font-family: var(--font-family);
+  }
+  
+  .header {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  /* Additional styles can be added as needed */
+  
