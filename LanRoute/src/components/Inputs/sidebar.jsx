@@ -17,6 +17,26 @@ import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ExploreIcon from '@mui/icons-material/Explore';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MailIcon from '@mui/icons-material/Mail';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ChatIcon from '@mui/icons-material/Chat';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import SwapCallsIcon from '@mui/icons-material/SwapCalls';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Divider from '@mui/material/Divider';
+import Avatar from '@mui/material/Avatar';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 
 const Sidebar = () => {
   const userId = useSelector((state) => state.user.credentials.user.id);
@@ -47,12 +67,22 @@ const Sidebar = () => {
           </ListItem>
         </Link>
         <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
+        <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
           <ListItemIcon>
-            <MailIcon />
+            <NotificationsIcon />
           </ListItemIcon>
-          <ListItemText primary="Messages" />
+          <ListItemText primary="Notifications" />
+        </ListItem>
+        <Link to="/themePage">
+        <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
+          <ListItemIcon>
+            <SettingsSuggestIcon />
+          </ListItemIcon>
+          <ListItemText primary="Theme Settings" />
         </ListItem>
         <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
+        </Link>
+        <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
           <ListItemIcon>
             <BookmarkIcon />
           </ListItemIcon>
