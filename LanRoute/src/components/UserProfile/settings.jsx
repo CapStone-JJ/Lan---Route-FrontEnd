@@ -123,7 +123,7 @@ SettingsComponent.propTypes = {
   userData: PropTypes.shape({
     username: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-    bio: PropTypes.string.isRequired,
+    bio: PropTypes.string,
     location: PropTypes.string.isRequired,
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,

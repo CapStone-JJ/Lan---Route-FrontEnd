@@ -12,8 +12,8 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import "../Styles/post.css";
 import { Link } from "react-router-dom";
-import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
-import LogoutButton from "./logoutButton";
+// import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
+// import LogoutButton from "./logoutButton";
 
 const PostPage = () => {
   const { postId: postIdString } = useParams();
