@@ -1,37 +1,24 @@
-import React, { useState } from 'react';
-import { useGetUserQuery, useEditUserMutation, useDeleteUserMutation } from '../../api/auth';
+import React, { useState, useEffect } from 'react';
+import { useEditUserMutation } from '../../api/auth';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { useSelector } from "react-redux";
 import DeleteAccountButton from '../Inputs/deleteButton';
+import Avatar from '../Inputs/avatar';
+import PropTypes from 'prop-types';
 
 
 
-const SettingsComponent = () => {
-  const { data, loading, error } = useGetUserQuery();
+const SettingsComponent = ({ userData }) => {
+  console.log(userData)
   const [editUser] = useEditUserMutation();
-  const [deleteUser] = useDeleteUserMutation();
-
-  console.log(data)
-
-  const [formData, setFormData] = useState(() => {
-    if (data) {
-      return {
-        username: data.username || '',
-        email: data.email || '',
-        bio: data.bio || '',
-        location: data.location || '',
-        password: '',
-      };
-    } else {
-      return {
-        username: '',
-        email: '',
-        bio: '',
-        location: '',
-        password: '',
-      };
-    }
+  const [formData, setFormData] = useState({
+    username: userData?.username || '',
+    email: userData?.email || '',
+    bio: userData?.bio || '',
+    location: userData?.location || '',
+    password: '',
+    firstName: userData?.firstName || '',
+    lastName: userData?.lastName || '',
   });
 
   const handleChange = (e) => {
@@ -40,83 +27,113 @@ const SettingsComponent = () => {
       ...formData,
       [name]: value,
     });
-    console.log("Password:", value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        await editUser({
-            id: data.id,
-            body: {
-                username: formData.username,
-                email: formData.email,
-                bio: formData.bio,
-                location: formData.location,
-                password: formData.password,
-            },
-        });
+      await editUser({
+        id: userData.id,
+        body: {
+          username: formData.username,
+          email: formData.email,
+          bio: formData.bio,
+          location: formData.location,
+          password: formData.password,
+        },
+        onSucces: () => {
+          refetch();
+        }
+      });
+      // Handle submission success
     } catch (error) {
-        console.error('Error updating user:', error);
-        // Handle error state
+      console.error('Error updating user:', error);
+      // Handle error state
     }
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <Avatar mod={true} src={userData.image} userData={userData} />
+        <Box component="div" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }} noValidate autoComplete="off">
+        <TextField
+            label="First Name"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+          <TextField
+            label="Last Name"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+          <TextField
+            label="Username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            label="Bio"
+            name="bio"
+            value={formData.bio}
+            onChange={handleChange}
+            multiline
+            fullWidth
+          />
+          <TextField
+            label="Location"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            label="Password"
+            name="password"
+            type="password" // Set input type to password
+            value={formData.password}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+        </Box>
+        <button type="submit">Save Changes</button> {/* Move inside the form and change type to "submit" */}
+      </form>
+      <DeleteAccountButton />
+    </div>
+  );
 };
 
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching user data: {error.message}</p>;
-
-    return (
-        <div>
-          <h2>Settings</h2>
-          <form onSubmit={handleSubmit}> {/* Change div to form */}
-            <Box component="div" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }} noValidate autoComplete="off">
-              <TextField
-                label="Username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                fullWidth
-              />
-              <TextField
-                label="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                fullWidth
-              />
-              <TextField
-                label="Bio"
-                name="bio"
-                value={formData.bio}
-                onChange={handleChange}
-                multiline
-                fullWidth
-              />
-              <TextField
-                label="Location"
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                fullWidth
-              />
-              <TextField
-                label="Password"
-                name="password"
-                type="password" // Set input type to password
-                value={formData.password}
-                onChange={handleChange}
-                fullWidth
-                required
-              />
-            </Box>
-            <button type="submit">Save Changes</button> {/* Move inside the form and change type to "submit" */}
-          </form>
-          <DeleteAccountButton />
-        </div>
-      );
-      
+SettingsComponent.propTypes = {
+  userData: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    bio: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    mod: PropTypes.bool,
+    refetch: PropTypes.func.isRequired
+  }).isRequired,
 };
 
 export default SettingsComponent;
+
 

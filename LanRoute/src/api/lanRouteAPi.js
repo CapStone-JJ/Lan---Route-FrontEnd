@@ -15,7 +15,8 @@ export const lanRouteApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Posts'],
+  tagTypes: ['Posts', 'User'],
+
   endpoints: (builder) => ({
     getVerificationToken: builder.query({
       query: (identifier, token) => ({

@@ -5,7 +5,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ExploreIcon from '@mui/icons-material/Explore';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MailIcon from '@mui/icons-material/Mail';
+import SearchIcon from '@material-ui/icons/Search';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -18,9 +18,10 @@ import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import LogoutButton from './logoutButton';
 
 const Sidebar = () => {
-  const userId = useSelector((state) => state.user.credentials.user.id);
+  const username = useSelector((state) => state.user.credentials.user.username);
   const avatarUrl = useSelector((state) => state.user.avatarUrl)
   return (
     <Drawer variant="permanent" sx={{ width: 275 }}>
@@ -53,12 +54,14 @@ const Sidebar = () => {
           <ListItemText primary="Theme Settings" />
         </ListItem>
         </Link>
+        <Link to="/searchBar">
         <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
           <ListItemIcon>
-            <BookmarkIcon />
+            <SearchIcon />
           </ListItemIcon>
-          <ListItemText primary="Bookmarks" />
+          <ListItemText primary="Search" />
         </ListItem>
+        </Link>
         <ListItem button sx={{ borderRadius: '30px', my: 1 }}>
           <ListItemIcon>
             <ListAltIcon />
@@ -80,17 +83,16 @@ const Sidebar = () => {
       </List>
       <Divider />
       <Tooltip title="Profile">
-        <Link to="/mainProfile">
+        <Link to={`/profile/${username}`}>
         <IconButton sx={{ ml: 'auto', mt: 2 }}>
-          <Avatar alt={`User ${userId} Avatar`} src={avatarUrl} />
+          <Avatar alt={`profile/${username} Avatar`} src={avatarUrl} />
         </IconButton>
         </Link>
       </Tooltip>
+      <LogoutButton />
     </Drawer>
   );
 };
 
 export default Sidebar;
-
-
 

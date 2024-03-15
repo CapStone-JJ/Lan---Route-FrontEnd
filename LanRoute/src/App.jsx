@@ -7,6 +7,8 @@ import MainFeed from "./components/Main/mainFeed";
 import MainProfile from "./components/Main/mainProfile";
 import ThemePage from "./components/Themes/themePage";
 import { ThemeProvider } from "./components/Themes/themeProvider";
+import SearchBar from "./components/Inputs/searchBar";
+import MainUserProfile from "./components/Main/mainUserProfile";
 
 const PostPageWrapper = () => {
   const { postId } = useParams();
@@ -26,6 +28,8 @@ function App() {
           <Route path="/posts/:postId" element={<PostPageWrapper />} />
           <Route path="/mainProfile" element={<MainProfile />} />
           <Route path="/themePage" element={<ThemePage />} />
+          <Route path="/searchBar" element={<SearchBar />} />
+          <Route path="/profile/:username" element={<MainUserProfile />} />
         </Routes>
       </div>
     </ThemeProvider>

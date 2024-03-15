@@ -11,6 +11,7 @@ import formatDate from "../Inputs/formatDate";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import "../Styles/post.css"
+import { Link } from "react-router-dom";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -33,6 +34,11 @@ const PostPage = () => {
       setEditedTags(tagNames.join(', '));
     }
   }, [postData]);
+
+  console.log("userId:", userId);
+  console.log("author userId:", postData?.author.userId);
+  console.log("Post Data:", postData);
+
 
   const handleDeletePost = async (postId) => {
     setIsDeleting(true);
@@ -67,6 +73,7 @@ const PostPage = () => {
     return <div>Post not found</div>;
   }
   
+  const authorUserId = postData.author.id;
   const { content, createdAt, author, Post_tag } = postData;
   const username = author.username;
   const tagNames = Post_tag ? Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
@@ -74,7 +81,10 @@ const PostPage = () => {
 return (
     <div className='container'>
     <div className="post">
-      <div>{username}</div>
+      <Link to={`/profile/${username}`}>
+      <div>{username}
+      </div>
+      </Link>
       {isEditing ? (
         <>
           <div>
@@ -93,7 +103,7 @@ return (
         </>
       )}
       <div>{formatDate(createdAt)}</div>
-      {!isEditing && (
+      {authorUserId === userId && !isEditing && (
         <>
           <button onClick={() => setIsEditing(true)}>Edit</button>
           <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>

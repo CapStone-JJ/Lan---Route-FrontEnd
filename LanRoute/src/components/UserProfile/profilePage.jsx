@@ -22,18 +22,7 @@ const ProfilePage = () => {
     const [editedTags, setEditedTags] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-
-    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-    // Function to open the popup window
-    const openSettingsPopup = () => {
-      setIsSettingsOpen(true);
-    };
-
-  // Function to close the popup window
-    const closeSettingsPopup = () => {
-      setIsSettingsOpen(false);
-    };
+    const [postId, setPostId] = useState(null);
 
     const handlePostSubmit = async (postData) => {
         try {
@@ -82,17 +71,6 @@ const ProfilePage = () => {
       <div className='profile-page'>
         <div className='create-post-form-container'> {/* Add this container around the CreatePostForm */}
         {/* Render SettingsComponent inside the popup window */}
-        {isSettingsOpen && (
-            <div className="settings-popup">
-                <div className="settings-popup-content">
-                    <SettingsComponent />
-                    <button onClick={closeSettingsPopup}>Close</button>
-                </div>
-            </div>
-        )}
-
-        {/* Button to open the popup window */}
-        <button onClick={openSettingsPopup}>Edit Profile</button>
           <CreatePostForm onSubmit={handlePostSubmit} />
           
         </div>
@@ -104,6 +82,7 @@ const ProfilePage = () => {
               to={{ pathname: `/posts/${post.id}`, state: { userId: post.userId } }}>
               <p>{post.content}</p>
               <p>{formatDate(post.createdAt)}</p>
+              <LikePost postId={post.id} initialLikes={post.likes ? post.likes.length : 0} userId={post.userId} />
               </Link>
               </div>
           ))}
