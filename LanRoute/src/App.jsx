@@ -8,6 +8,8 @@ import MainProfile from "./components/Main/mainProfile";
 import Notifications from "./components/Notifications";
 import ThemePage from "./components/Themes/themePage";
 import { ThemeProvider } from "./components/Themes/themeProvider";
+import SearchBar from "./components/Inputs/searchBar";
+import MainUserProfile from "./components/Main/mainUserProfile";
 
 const PostPageWrapper = () => {
   const { postId } = useParams();
@@ -28,6 +30,8 @@ function App() {
           <Route path="/mainProfile" element={<MainProfile />} />
           <Route path="/Notifications" element={<Notifications />} />
           <Route path="/themePage" element={<ThemePage />} />
+          <Route path="/searchBar" element={<SearchBar />} />
+          <Route path="/profile/:username" element={<MainUserProfile />} />
         </Routes>
       </div>
     </ThemeProvider>

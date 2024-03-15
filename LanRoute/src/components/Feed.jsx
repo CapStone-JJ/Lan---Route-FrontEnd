@@ -53,6 +53,7 @@ const Feed = () => {
               }}
             >
               <p>{post.username}</p>
+              <p>{post.image}</p>
               <p>{post.content}</p>
               <p>{formatDate(post.createdAt)}</p>
               <LikePost

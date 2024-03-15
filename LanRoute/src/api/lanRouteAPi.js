@@ -17,13 +17,12 @@ export const lanRouteApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Posts", "Notifications"],
+  tagTypes: ['Posts', 'User', 'Notifications'],
   endpoints: (builder) => ({
-    getVerificationToken: builder.query({
+    // Define your endpoints here
+    verifyToken: builder.query({
       query: (identifier, token) => ({
-        query: () => ({
-          url: `api/tokenverification/verify/${identifier}/${token}`,
-        }),
+        url: `api/tokenverification/verify/${identifier}/${token}`,
       }),
     }),
 
@@ -37,6 +36,7 @@ export const lanRouteApi = createApi({
 });
 
 export const {
-  useGetVerificationTokenQuery,
+  useVerifyTokenQuery,
   useDeleteVerificationTokenMutation,
 } = lanRouteApi;
+

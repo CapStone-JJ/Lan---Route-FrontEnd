@@ -32,7 +32,7 @@ const userSlice = createSlice({
       friends: [],
     },
     reducers:{
-        clearSearch: (state) => {
+        clearUserSearch : (state) => {
             return {
                 ...state,
                 results: {

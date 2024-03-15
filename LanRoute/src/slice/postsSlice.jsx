@@ -14,7 +14,7 @@ const postSlice = createSlice({
         feed: [],
     },
     reducers:{
-        clearSearch: (state) => {
+        clearPostSearch: (state) => {
             return {
                 ...state,
                 results: {

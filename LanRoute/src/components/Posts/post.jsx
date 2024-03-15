@@ -11,6 +11,9 @@ import formatDate from "../Inputs/formatDate";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import "../Styles/post.css";
+import { Link } from "react-router-dom";
+import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
+import LogoutButton from "./logoutButton";
 
 const PostPage = () => {
   const { postId: postIdString } = useParams();
@@ -35,7 +38,6 @@ const PostPage = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    // Set initial state when component mounts
     if (postData) {
       setEditedContent(postData.content);
       const tagNames = postData.Post_tag
@@ -61,12 +63,10 @@ const PostPage = () => {
   const handleEdit = async () => {
     try {
       await editPost({ id: postId, content: editedContent, tags: editedTags });
-      setIsEditing(false); // Exit edit mode after saving changes
-      // Handle successful edit
+      setIsEditing(false);
       await refetchPost();
     } catch (error) {
       console.error("Error editing post:", error);
-      // Handle error
     }
   };
 
@@ -78,18 +78,17 @@ const PostPage = () => {
     return <div>Post not found</div>;
   }
 
+  const authorUserId = postData.author.id;
   const { content, createdAt, author, Post_tag } = postData;
   const username = author.username;
-  const tagNames = Post_tag
-    ? Post_tag.map((entry) => entry.tag.name || entry.tag?.name)
-    : [];
-
-  console.log("Highlight comment ID:", commentIdToHighlight);
+  const tagNames = Post_tag ? Post_tag.map((entry) => entry.tag.name || entry.tag?.name) : [];
 
   return (
     <div className="container">
       <div className="post">
-        <div>{username}</div>
+        <Link to={`/profile/${username}`}>
+          <div>{username}</div>
+        </Link>
         {isEditing ? (
           <>
             <div>
@@ -115,15 +114,10 @@ const PostPage = () => {
           </>
         )}
         <div>{formatDate(createdAt)}</div>
-        {!isEditing && (
+        {authorUserId === userId && !isEditing && (
           <>
             <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button
-              onClick={() => handleDeletePost(postId)}
-              disabled={isDeleting}
-            >
-              Delete
-            </button>
+            <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>Delete</button>
           </>
         )}
         {isEditing && (
@@ -132,10 +126,11 @@ const PostPage = () => {
             <button onClick={() => setIsEditing(false)}>Cancel</button>
           </>
         )}
-        <Comment postId={postId} commentIdToHighlight={commentIdToHighlight} />
+        <Comment postId={postId} />
       </div>
     </div>
   );
 };
 
 export default PostPage;
+

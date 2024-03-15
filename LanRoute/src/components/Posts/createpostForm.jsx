@@ -9,6 +9,7 @@ const CreatePostForm = () => {
   const [content, setContent] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
   const [tagInput, setTagInput] = useState('');
+  const [mediaFiles, setMediaFiles] = useState([]); 
   const { data: tagsData, refetch: refetchTags } = useGetTagsQuery();
   const [createPost, { isLoading: createPostLoading }] = useAddPostMutation();
   const dispatch = useDispatch();
@@ -120,33 +121,55 @@ const handlePostSubmit = async () => {
   }
 };
 
+const handleMediaUpload = (event) => {
+  const files = event.target.files;
+  setMediaFiles([...mediaFiles, ...files]);
+}
 
-
-
-return (
-  <div className="create-post-form">
-  <textarea
-    className="post-content"
-    placeholder="What's happening?"
-    value={content}
-    onChange={(e) => setContent(e.target.value)}
-  />
-  <div>
-    <input
-      className="tag-input"
-      type="text"
-      value={tagInput}
-      onChange={handleTagInputChange} // Handle changes in the tag input field
-      placeholder="Type a tag..."
-    />
-  </div>
-  <button className="post-button" onClick={handlePostSubmit} disabled={createPostLoading}>
-    Post
-  </button>
-</div>
-);
+  return (
+    <div className="create-post-form">
+      <textarea
+        className="post-content"
+        placeholder="What's happening?"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
+      <div>
+        <input
+          className="tag-input"
+          type="text"
+          value={tagInput}
+          onChange={handleTagInputChange}
+          placeholder="Type a tag..."
+        />
+      </div>
+      {/* Input for uploading media files */}
+      <input
+        type="file"
+        accept="image/*, video/*"
+        multiple
+        onChange={handleMediaUpload}
+      />
+      <button className="post-button" onClick={handlePostSubmit} disabled={createPostLoading}>
+        Post
+      </button>
+      {/* Display uploaded media files */}
+      <div className="media-preview">
+        {mediaFiles.map((file, index) => (
+          <div key={index}>
+            {file.type.startsWith('image/') && <img src={URL.createObjectURL(file)} alt={`Image ${index}`} />}
+            {file.type.startsWith('video/') && (
+              <video controls>
+                <source src={URL.createObjectURL(file)} type={file.type} />
+                Your browser does not support the video tag.
+              </video>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
-
 
 export default CreatePostForm;
 
