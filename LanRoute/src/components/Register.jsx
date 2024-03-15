@@ -61,7 +61,7 @@ export default function Register() {
     let response;
     try {
       response = await addNewUser(formData);
-
+      console.log(response.data.user.id)
       if (response.data.user.id) {
         console.log("User registration successful.");
         navigate("/Login");

@@ -1,4 +1,5 @@
 import { lanRouteApi } from "./lanRouteAPi";
+
 const postApi = lanRouteApi.injectEndpoints({
   endpoints: (builder) => ({
     getPosts: builder.query({
@@ -40,13 +41,14 @@ const postApi = lanRouteApi.injectEndpoints({
         method: "POST",
         body: body,
       }),
+      invalidatesTags: ["Notifications"],
     }),
     deleteLike: builder.mutation({
       query: ({ postId, userId }) => ({
         url: `/api/likes?userId=${userId}&postId=${postId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Posts"],
+      invalidatesTags: ["Posts", "Notifications"],
     }),
     editPost: builder.mutation({
       query(data) {
