@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   useGetPostQuery,
   useDeletePostMutation,
@@ -10,41 +10,48 @@ import { useNavigate } from "react-router-dom";
 import formatDate from "../Inputs/formatDate";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import "../Styles/post.css"
+import "../Styles/post.css";
 import { Link } from "react-router-dom";
+import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
+import LogoutButton from "./logoutButton";
 
 const PostPage = () => {
-  const { postId } = useParams();
-  const { data: postData, isLoading: postLoading, refetch: refetchPost } = useGetPostQuery(postId);
+  const { postId: postIdString } = useParams();
+  const postId = parseInt(postIdString, 10);
+  const location = useLocation();
+  const commentIdToHighlight = location.state?.commentId;
+  const {
+    data: postData,
+    isLoading: postLoading,
+    isError,
+    error,
+    refetch: refetchPost,
+  } = useGetPostQuery(postId);
   const { data: tagsData } = useGetTagsQuery();
   const [deletePost] = useDeletePostMutation();
   const [editPost] = useEditPostMutation();
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.credentials.user.id);
-  const [editedContent, setEditedContent] = useState('');
-  const [editedTags, setEditedTags] = useState('');
+  const [editedContent, setEditedContent] = useState("");
+  const [editedTags, setEditedTags] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    // Set initial state when component mounts
     if (postData) {
       setEditedContent(postData.content);
-      const tagNames = postData.Post_tag ? postData.Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
-      setEditedTags(tagNames.join(', '));
+      const tagNames = postData.Post_tag
+        ? postData.Post_tag.map((entry) => entry.tag.name || entry.tag?.name)
+        : [];
+      setEditedTags(tagNames.join(", "));
     }
   }, [postData]);
-
-  console.log("userId:", userId);
-  console.log("author userId:", postData?.author.userId);
-  console.log("Post Data:", postData);
-
 
   const handleDeletePost = async (postId) => {
     setIsDeleting(true);
     try {
-      await deletePost(postId).unwrap(); 
-      navigate('/mainFeed');
+      await deletePost(postId).unwrap();
+      navigate("/mainFeed");
     } catch (error) {
       console.error("Error deleting post:", error);
       alert("Error deleting post");
@@ -52,80 +59,78 @@ const PostPage = () => {
       setIsDeleting(false);
     }
   };
-  
+
   const handleEdit = async () => {
     try {
       await editPost({ id: postId, content: editedContent, tags: editedTags });
-      setIsEditing(false); // Exit edit mode after saving changes
-      // Handle successful edit
+      setIsEditing(false);
       await refetchPost();
     } catch (error) {
-      console.error('Error editing post:', error);
-      // Handle error
+      console.error("Error editing post:", error);
     }
   };
 
   if (postLoading) {
     return <div>Loading...</div>;
   }
-
+  if (isError) return <div>Error: {error.message}</div>;
   if (!postData) {
     return <div>Post not found</div>;
   }
-  
+
   const authorUserId = postData.author.id;
   const { content, createdAt, author, Post_tag } = postData;
   const username = author.username;
-  const tagNames = Post_tag ? Post_tag.map(entry => entry.tag.name || entry.tag?.name) : [];
-  
-return (
-    <div className='container'>
-    <div className="post">
-      <Link to={`/profile/${username}`}>
-      <div>{username}
+  const tagNames = Post_tag ? Post_tag.map((entry) => entry.tag.name || entry.tag?.name) : [];
+
+  return (
+    <div className="container">
+      <div className="post">
+        <Link to={`/profile/${username}`}>
+          <div>{username}</div>
+        </Link>
+        {isEditing ? (
+          <>
+            <div>
+              Content:
+              <textarea
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+              />
+            </div>
+            <div>
+              Tags:
+              <input
+                type="text"
+                value={editedTags}
+                onChange={(e) => setEditedTags(e.target.value)}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div>{content}</div>
+            <div>{tagNames.join(", ")}</div>
+          </>
+        )}
+        <div>{formatDate(createdAt)}</div>
+        {authorUserId === userId && !isEditing && (
+          <>
+            <button onClick={() => setIsEditing(true)}>Edit</button>
+            <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>Delete</button>
+          </>
+        )}
+        {isEditing && (
+          <>
+            <button onClick={handleEdit}>Save Changes</button>
+            <button onClick={() => setIsEditing(false)}>Cancel</button>
+          </>
+        )}
+        <Comment postId={postId} />
       </div>
-      </Link>
-      {isEditing ? (
-        <>
-          <div>
-            Content:
-            <textarea value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
-          </div>
-          <div>
-            Tags:
-            <input type="text" value={editedTags} onChange={(e) => setEditedTags(e.target.value)} />
-          </div>
-        </>
-      ) : (
-        <>
-          <div>{content}</div>
-          <div>{tagNames.join(', ')}</div>
-        </>
-      )}
-      <div>{formatDate(createdAt)}</div>
-      {authorUserId === userId && !isEditing && (
-        <>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-          <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>
-        Delete
-      </button>
-        </>
-      )}
-      {isEditing && (
-        <>
-          <button onClick={handleEdit}>Save Changes</button>
-          <button onClick={() => setIsEditing(false)}>Cancel</button>
-        </>
-      )}
-      <Comment postId={postId} />
-    </div>
     </div>
   );
 };
 
 export default PostPage;
-
-
-
-
 

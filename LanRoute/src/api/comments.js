@@ -11,12 +11,14 @@ const commentApi = lanRouteApi.injectEndpoints({
         method: "POST",
         body: body,
       }),
+      invalidatesTags: ["Notifications"],
     }),
     deleteComment: builder.mutation({
       query: (id) => ({
         url: `/api/comments/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Notifications"],
     }),
     getVotes: builder.query({
       query: () => "/api/votes",
@@ -27,12 +29,14 @@ const commentApi = lanRouteApi.injectEndpoints({
         method: "POST",
         body: body,
       }),
+      invalidatesTags: ["Notifications"],
     }),
     deleteVote: builder.mutation({
       query: (id) => ({
         url: `/api/votes/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Notifications"],
     }),
   }),
 });

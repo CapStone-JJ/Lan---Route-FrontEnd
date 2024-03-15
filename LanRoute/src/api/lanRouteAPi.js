@@ -7,22 +7,22 @@ export const lanRouteApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3333",
     prepareHeaders: (headers, { getState }) => {
-      const credentials = JSON.parse(window.sessionStorage.getItem(CREDENTIALS));
-      const token = (credentials?.token || "{}");
+      const credentials = JSON.parse(
+        window.sessionStorage.getItem(CREDENTIALS)
+      );
+      const token = credentials?.token || "{}";
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
-  tagTypes: ['Posts', 'User'],
-
+  tagTypes: ['Posts', 'User', 'Notifications'],
   endpoints: (builder) => ({
-    getVerificationToken: builder.query({
+    // Define your endpoints here
+    verifyToken: builder.query({
       query: (identifier, token) => ({
-        query: () => ({
-          url: `api/tokenverification/verify/${identifier}/${token}`,
-        }),
+        url: `api/tokenverification/verify/${identifier}/${token}`,
       }),
     }),
 
@@ -36,7 +36,7 @@ export const lanRouteApi = createApi({
 });
 
 export const {
-  useGetVerificationTokenQuery,
+  useVerifyTokenQuery,
   useDeleteVerificationTokenMutation,
 } = lanRouteApi;
 
