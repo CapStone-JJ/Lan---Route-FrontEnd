@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 
 
-const SettingsComponent = ({ userData }) => {
+const SettingsComponent = ({ userData, refetchProfile }) => {
   console.log(userData)
   const [editUser] = useEditUserMutation();
   const [formData, setFormData] = useState({
@@ -40,11 +40,11 @@ const SettingsComponent = ({ userData }) => {
           bio: formData.bio,
           location: formData.location,
           password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
         },
-        onSucces: () => {
-          refetch();
-        }
       });
+      refetchProfile();
       // Handle submission success
     } catch (error) {
       console.error('Error updating user:', error);
@@ -132,6 +132,7 @@ SettingsComponent.propTypes = {
     mod: PropTypes.bool,
     refetch: PropTypes.func.isRequired
   }).isRequired,
+    refetchProfile: PropTypes.func.isRequired,
 };
 
 export default SettingsComponent;

@@ -13,7 +13,7 @@ const ProfileHeader = () => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const authenticatedUsername = useSelector((state) => state.user.credentials.user.username);
 
-    console.log(data)
+    console.log('userData:', data);
 
     // Function to open the popup window
     const openSettingsPopup = () => {
@@ -60,15 +60,10 @@ const ProfileHeader = () => {
     return (
         <div className='app'>
             {/* Cover Image */}
-            <Avatar mod={false} src={data.image} userData={data} />
-          <div className='cover-image'>
-            <div className='cover-image__overlay'></div>
-            <div className='cover-image__text'></div>
-            <img className='cover-image__image' src='cover_photo_url_here' alt='Cover' />
-          </div>
           {/* Header */}
           <div className='header'>
             <div className='header__user'>
+              <Avatar mod={false} src={data.image} userData={data} />
               <h1 className='header__user-name'>{data.username}</h1>
               <span className='header__user-handle'>@{data.username}</span>
             </div>
@@ -89,7 +84,7 @@ const ProfileHeader = () => {
           {isOwnProfile && isSettingsOpen && (
             <div className="settings-popup">
                 <div className="settings-popup-content">
-                  <SettingsComponent userData={data}  refetch={refetch} mod={isOwnProfile} />
+                  <SettingsComponent userData={data}  refetchProfile={refetch} mod={isOwnProfile} />
                     <button onClick={closeSettingsPopup}>Close</button>
                 </div>
             </div>

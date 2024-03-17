@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import "../Styles/post.css";
 import { Link } from "react-router-dom";
+import Avatar from "../Inputs/avatar";
 // import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 // import LogoutButton from "./logoutButton";
 
@@ -87,6 +88,7 @@ const PostPage = () => {
     <div className="container">
       <div className="post">
         <Link to={`/profile/${username}`}>
+          <Avatar alt={`${username} Avatar`} src={username.image} />
           <div>{username}</div>
         </Link>
         {isEditing ? (

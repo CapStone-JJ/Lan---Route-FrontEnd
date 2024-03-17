@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useGetFeedQuery } from '../../api/posts';
+import { useUserProfileQuery } from '../../api/auth';
 import formatDate from '../Inputs/formatDate';
 import { Link } from 'react-router-dom';
 import CreatePostForm from './createpostForm';
 import { useAddPostMutation } from '../../api/posts';
 import LikePost from '../Likes/likes';
 import "../Styles/feed.css"
+import Avatar from '../Inputs/avatar';
+import { useSelector } from 'react-redux';
 
 const Feed = () => {
     const [token, setToken] = useState('');
+    const username = useSelector((state) => state.user.credentials.user.username);
+    const { data } = useUserProfileQuery(username);
     const [headers, setHeaders] = useState({
         Authorization: '',
         'Content-Type': 'application/json',
@@ -57,6 +62,7 @@ const Feed = () => {
                   >
                     {/* Link the username to the user's profile page */}
                     <p className="author">
+                      <Avatar alt={`${post.author?.username} Avatar`} src={post.author?.image} />
                       <Link to={{ pathname: `/profile/${post.author?.username}` }}>
                         {post.author?.username}
                       </Link>

@@ -6,7 +6,6 @@ import { Avatar as MuiAvatar, CircularProgress } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const Avatar = ({ mod, userData, src }) => {
-  console.log(userData)
   const { image } = useSelector((state) => state.user.credentials.user); // Get user's image from Redux store
   const [editUser, { isLoading }] = useEditUserMutation();
   const [uploading, setUploading] = useState(false);

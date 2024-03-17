@@ -9,7 +9,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import "../Styles/profilePage.css";
-import SettingsComponent from './settings';
 
 const ProfilePage = () => {
     const [deletePost] = useDeletePostMutation();
