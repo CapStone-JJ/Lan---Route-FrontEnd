@@ -50,6 +50,26 @@ const Sidebar = () => {
             <ListItemText primary="Notifications" />
           </ListItem>
         </Link>
+        <Link to="/friends">
+          <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
+            <ListItemIcon>
+              <NotificationsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Friends" />
+          </ListItem>
+        </Link>
+        <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
+          <ListItemIcon>
+            <MailIcon />
+          </ListItemIcon>
+          <ListItemText primary="Messages" />
+        </ListItem>
+        <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
+          <ListItemIcon>
+            <BookmarkIcon />
+          </ListItemIcon>
+          <ListItemText primary="Bookmarks" />
+        </ListItem>
         <Link to="/themePage">
           <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
             <ListItemIcon>

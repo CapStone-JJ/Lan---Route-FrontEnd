@@ -17,7 +17,7 @@ export const lanRouteApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Posts', 'User', 'Notifications'],
+  tagTypes: ["Posts", "Notifications", "Friends", "FriendRequests", "User"],
   endpoints: (builder) => ({
     // Define your endpoints here
     verifyToken: builder.query({
