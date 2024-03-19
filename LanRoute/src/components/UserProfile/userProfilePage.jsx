@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useUserProfileQuery } from "../../api/auth";
 import { useUserPostQuery, useAddPostMutation } from "../../api/posts";
+import { useSendFriendRequestMutation } from "../../api/friendRequest";
 import LikePost from "../Likes/likes";
 import { Link, useParams } from "react-router-dom";
 import formatDate from "../Inputs/formatDate";
 import CreatePostForm from "../Posts/createpostForm";
-import SpotifyEmbed from "../Inputs/playlistConverter"; // Import the SpotifyEmbed component
+import { useSelector } from "react-redux";
+
 
 const UserProfile = () => {
     const { username } = useParams();
@@ -14,19 +16,9 @@ const UserProfile = () => {
     const [userProfile, setUserProfile] = useState(null);
     const [error, setError] = useState(null);
     const { data: userPosts, isLoading: postLoading, error: postError, refetch: refetchPosts } = useUserPostQuery(userProfile?.id);
-    const [playlistUrl, setPlaylistUrl] = useState('');
-    const [submittedUrl, setSubmittedUrl] = useState('');
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Set the submitted URL and clear the input field
-        setSubmittedUrl(playlistUrl);
-        setPlaylistUrl('');
-    };
-
-    const handleChange = (event) => {
-        setPlaylistUrl(event.target.value);
-    };
+    const [sendFriendRequest, { isLoading, isSuccess, isError }] = useSendFriendRequestMutation();
+    const loggedInUserId = useSelector((state) => state.user.credentials.user.id);
+    const { userId: profileUserId } = useParams();
 
     console.log(userProfileData);
 
@@ -49,8 +41,6 @@ const UserProfile = () => {
         return <div>User Not Found</div>;
     }
 
-    const { widgets } = userProfile;
-
     if (!userPosts || !Array.isArray(userPosts)) {
         return <div>No posts found for this user.</div>;
     }
@@ -66,10 +56,29 @@ const UserProfile = () => {
         }
     };
 
+    const handleSendFriendRequest = async () => {
+      try {
+        await sendFriendRequest({ recipientId: profileUserId }).unwrap();
+        // Handle success feedback
+      } catch (error) {
+        console.error("Error sending friend request:", error);
+        // Handle error feedback
+      }
+    };
+
     const sortedPosts = [...userPosts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return (
         <div className='profile-page'>
+              {parseInt(profileUserId) !== loggedInUserId && (
+                <div className="send-friend-request">
+                  <button onClick={handleSendFriendRequest} disabled={isLoading}>
+                  Send Friend Request
+                 </button>
+                    {isSuccess && <p>Friend request sent!</p>}
+                    {isError && <p>Error sending friend request.</p>}
+                </div>
+                )}
             <div className='create-post-form-container'> {/* Add this container around the CreatePostForm */}
                 {/* Render SettingsComponent inside the popup window */}
                 <CreatePostForm onSubmit={handlePostSubmit} />
@@ -87,27 +96,7 @@ const UserProfile = () => {
                     </div>
                 ))}
             </div>
-            {/* Add the SpotifyEmbed component here */}
-            <div>
-                <h2>Favorite Playlist</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Enter Spotify Playlist URL:
-                        <input
-                            type="text"
-                            value={playlistUrl}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <button type="submit">Submit</button>
-                </form>
-                {submittedUrl && (
-                  <div>
-                      {/* Render the SpotifyEmbed component with the submitted playlist URL */}
-                      <SpotifyEmbed playlistId={submittedUrl} />
-                  </div>
-                  )}
-            </div>
+            
         </div>
     );
 };
