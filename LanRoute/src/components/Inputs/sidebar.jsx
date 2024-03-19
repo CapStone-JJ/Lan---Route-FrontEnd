@@ -46,6 +46,14 @@ const Sidebar = () => {
             <ListItemText primary="Notifications" />
           </ListItem>
         </Link>
+        <Link to="/friends">
+          <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
+            <ListItemIcon>
+              <NotificationsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Friends" />
+          </ListItem>
+        </Link>
         <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
           <ListItemIcon>
             <MailIcon />

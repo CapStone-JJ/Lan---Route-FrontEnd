@@ -44,9 +44,11 @@ const authApi = lanRouteApi.injectEndpoints({
     }),
     getAllFriends: builder.query({
       query: () => "/api/friends",
+      providesTags: ["Friends"], // Add this to indicate that this query provides 'Friends' data
     }),
     getUserFriends: builder.query({
       query: (userId) => `/api/friends/users/${userId}/friends`,
+      providesTags: ["Friends"], // Indicates that this query also provides 'Friends' data
     }),
     addFriend: builder.mutation({
       query: (body) => ({
@@ -54,12 +56,14 @@ const authApi = lanRouteApi.injectEndpoints({
         method: "POST",
         body: body,
       }),
+      invalidatesTags: ["Friends"],
     }),
     deleteFriend: builder.mutation({
       query: (id) => ({
         url: "/api/friends/" + id,
         method: "DELETE",
       }),
+      invalidatesTags: ["Friends"],
     }),
   }),
 });
