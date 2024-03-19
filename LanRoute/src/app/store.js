@@ -5,6 +5,7 @@ import postReducer from "../slice/postsSlice";
 import tagReducer from "../slice/tagsSlice";
 import userReducer from "../slice/userSlice";
 import widgetReducer from "../slice/widgetsSlice";
+import userProfileReducer from "../slice/userProfileSlice"
 
 
 export const store = configureStore({
@@ -14,7 +15,8 @@ export const store = configureStore({
         post: postReducer,
         tag: tagReducer,
         user: userReducer,
-        widget: widgetReducer
+        widget: widgetReducer,
+        userProfile: userProfileReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(lanRouteApi.middleware),

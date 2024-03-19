@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import { useEditUserMutation } from '../../api/auth';
 import { Avatar as MuiAvatar, CircularProgress } from '@mui/material';
+import PropTypes from 'prop-types';
 
-const Avatar = ({ mod }) => {
+const Avatar = ({ mod, userData, src }) => {
   const { image } = useSelector((state) => state.user.credentials.user); // Get user's image from Redux store
   const [editUser, { isLoading }] = useEditUserMutation();
   const [uploading, setUploading] = useState(false);
@@ -14,7 +15,17 @@ const Avatar = ({ mod }) => {
       setUploading(true);
       const file = event.target.files[0];
       const base64Image = await convertBase64(file);
-      await editUser({ image: base64Image });
+      await editUser({
+        id: userData.id, 
+        body: {
+          username: userData.username,
+          email: userData.email,
+          bio: userData.bio,
+          location: userData.location,
+          password: userData.password,
+          image: base64Image,
+        },
+      });
       setUploading(false);
       alert('Profile image updated successfully!');
     } catch (error) {
@@ -23,6 +34,7 @@ const Avatar = ({ mod }) => {
       setUploading(false);
     }
   };
+  
 
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -39,7 +51,7 @@ const Avatar = ({ mod }) => {
 
   return (
     <>
-      <MuiAvatar alt="Profile Image" src={image} />
+      <MuiAvatar alt="Profile Image" src={src} />
       {uploading && <CircularProgress />}
       {mod && (
         <>
@@ -57,6 +69,18 @@ const Avatar = ({ mod }) => {
       )}
     </>
   );
+};
+
+Avatar.propTypes = {
+  mod: PropTypes.bool.isRequired, // Mod prop should be a boolean and required
+  userData: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    bio: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+  }).isRequired, // userData prop should be an object with specific shape and required
 };
 
 export default Avatar;

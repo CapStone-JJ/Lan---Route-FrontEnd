@@ -1,4 +1,4 @@
-import "./App.css";
+import "./components/Styles/themes.css"
 import { Routes, Route, useParams } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -7,6 +7,10 @@ import MainFeed from "./components/Main/mainFeed";
 import MainProfile from "./components/Main/mainProfile";
 import Notifications from "./components/Notifications";
 import FriendsPage from './components/Friends/FriendsPage';
+import ThemePage from "./components/Themes/themePage";
+import { ThemeProvider } from "./components/Themes/themeProvider";
+import SearchBar from "./components/Inputs/searchBar";
+import MainUserProfile from "./components/Main/mainUserProfile";
 
 const PostPageWrapper = () => {
   const { postId } = useParams();
@@ -16,7 +20,7 @@ const PostPageWrapper = () => {
 
 function App() {
   return (
-    <>
+    <ThemeProvider>
       <div>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -27,9 +31,12 @@ function App() {
           <Route path="/mainProfile" element={<MainProfile />} />
           <Route path="/Notifications" element={<Notifications />} />
           <Route path="/friends" element={<FriendsPage />} />
+          <Route path="/themePage" element={<ThemePage />} />
+          <Route path="/searchBar" element={<SearchBar />} />
+          <Route path="/profile/:username" element={<MainUserProfile />} />
         </Routes>
       </div>
-    </>
+    </ThemeProvider>
   );
 }
 

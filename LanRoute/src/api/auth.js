@@ -17,14 +17,22 @@ const authApi = lanRouteApi.injectEndpoints({
       }),
     }),
     editUser: builder.mutation({
-      query: (cred) => ({
-        url: `/auth/${id}`,
-        method: "PUT",
-        body: cred,
-      }),
+      query(data) {
+        const { id, ...body } = data;
+        return {
+          url: `/auth/${id}`,
+          method: "PUT",
+          body,
+        };
+      },
+      invalidatesTags: ['User'],
     }),
     logout: builder.mutation({
       queryFn: () => ({ data: {} }),
+    }),
+    userProfile: builder.query({
+      query: (username) => `auth/${username}`,
+      providesTags: ['User'],
     }),
     getUser: builder.query({
       query: (cred) => ({
@@ -40,7 +48,7 @@ const authApi = lanRouteApi.injectEndpoints({
       }),
     }),
     searchName: builder.query({
-      query: (search) => "/api/nameSearch/" + search,
+      query: (search) => `/api/nameSearch/${search}`,
     }),
     getAllFriends: builder.query({
       query: () => "/api/friends",
@@ -73,9 +81,10 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useEditUserMutation,
+  useUserProfileQuery,
   useGetUserQuery,
   useDeleteUserMutation,
-  useSearchNameQuery,
+  useLazySearchNameQuery,
   useGetAllFriendsQuery,
   useGetUserFriendsQuery,
   useAddFriendMutation,
