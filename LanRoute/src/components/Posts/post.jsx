@@ -128,7 +128,7 @@ const PostPage = () => {
             <button onClick={() => setIsEditing(false)}>Cancel</button>
           </>
         )}
-        <Comment postId={postId} />
+        <Comment postId={postId} commentIdToHighlight={commentIdToHighlight} />
       </div>
     </div>
   );

@@ -6,8 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ExploreIcon from "@mui/icons-material/Explore";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SearchIcon from "@mui/icons-material/Search";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
-import ListAltIcon from "@mui/icons-material/ListAlt";
+import WidgetsIcon from '@mui/icons-material/Widgets';
 import ChatIcon from "@mui/icons-material/Chat";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SwapCallsIcon from "@mui/icons-material/SwapCalls";
@@ -66,12 +65,14 @@ const Sidebar = () => {
             <ListItemText primary="Search" />
           </ListItem>
         </Link>
+        <Link to="/widgets">
         <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
           <ListItemIcon>
-            <ListAltIcon />
+            <WidgetsIcon />
           </ListItemIcon>
-          <ListItemText primary="Lists" />
+          <ListItemText primary="Widgets" />
         </ListItem>
+        </Link>
         <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
           <ListItemIcon>
             <ChatIcon />
