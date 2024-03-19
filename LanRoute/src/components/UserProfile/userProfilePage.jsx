@@ -18,7 +18,7 @@ const UserProfile = () => {
     const { data: userPosts, isLoading: postLoading, error: postError, refetch: refetchPosts } = useUserPostQuery(userProfile?.id);
     const [sendFriendRequest, { isLoading, isSuccess, isError }] = useSendFriendRequestMutation();
     const loggedInUserId = useSelector((state) => state.user.credentials.user.id);
-    const { userId: profileUserId } = useParams();
+    const { userId } = useParams();
 
     console.log(userProfileData);
 
@@ -58,19 +58,25 @@ const UserProfile = () => {
 
     const handleSendFriendRequest = async () => {
       try {
-        await sendFriendRequest({ recipientId: profileUserId }).unwrap();
-        // Handle success feedback
+          // Get the recipientId from userProfileData.id
+          const recipientId = parseInt(userProfileData.id);
+
+          // Call the sendFriendRequest mutation with the recipientId
+          await sendFriendRequest({ recipientId });
+
+          // Handle success feedback
       } catch (error) {
-        console.error("Error sending friend request:", error);
-        // Handle error feedback
+          console.error("Error sending friend request:", error);
+          // Handle error feedback
       }
-    };
+  };
+    console.log(userProfileData.id)
 
     const sortedPosts = [...userPosts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return (
         <div className='profile-page'>
-              {parseInt(profileUserId) !== loggedInUserId && (
+              {parseInt(userProfileData.id) !== loggedInUserId && (
                 <div className="send-friend-request">
                   <button onClick={handleSendFriendRequest} disabled={isLoading}>
                   Send Friend Request

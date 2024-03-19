@@ -11,7 +11,6 @@ import ThemePage from "./components/Themes/themePage";
 import { ThemeProvider } from "./components/Themes/themeProvider";
 import SearchBar from "./components/Inputs/searchBar";
 import MainUserProfile from "./components/Main/mainUserProfile";
-import WidgetSelectionPage from "./components/Widgets/widgets/widgetsPage";
 
 const PostPageWrapper = () => {
   const { postId } = useParams();
@@ -35,7 +34,6 @@ function App() {
           <Route path="/themePage" element={<ThemePage />} />
           <Route path="/searchBar" element={<SearchBar />} />
           <Route path="/profile/:username" element={<MainUserProfile />} />
-          <Route path="/widgets" element={<WidgetSelectionPage />} />
         </Routes>
       </div>
     </ThemeProvider>

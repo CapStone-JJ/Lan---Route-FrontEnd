@@ -1,6 +1,6 @@
 import { ThemeProvider, useTheme } from './themeProvider';
 import ThemeCustomizer from './themeCustomizer';
-import ProfilePage from '../UserProfile/profilePage';
+import ProfilePage from '../../components/UserProfile/userProfilePage';
 
 const ThemePage = () => {
   const { theme, handleThemeChange } = useTheme(); // Use the useTheme hook to access theme values

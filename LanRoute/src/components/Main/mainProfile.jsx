@@ -1,7 +1,6 @@
 import Sidebar from '../Inputs/sidebar';
-import ProfilePage from '../UserProfile/profilePage';
+import ProfilePage from '../UserProfile/userProfilePage';
 import ProfileHeader from '../Inputs/profileHeader';
-import SearchBar from '../Inputs/searchBar';
 
 const MainProfile = () => {
   return (
