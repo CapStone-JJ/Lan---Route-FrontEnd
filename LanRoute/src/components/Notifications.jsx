@@ -102,7 +102,7 @@ const Notifications = () => {
   if (isError) return <div>Error loading notifications.</div>;
 
   return (
-    <div>
+    <div className="notifications">
       <h2>Notifications</h2>
       <button onClick={handleMarkAllAsRead}>Mark all as read</button>
       <button onClick={deleteSelected} style={{ marginLeft: "10px" }}>
@@ -113,6 +113,7 @@ const Notifications = () => {
           {notifications.map((notification) => (
             <li
               key={notification.id}
+              className="notification"
               style={{ display: "flex", alignItems: "center" }}
             >
               <input

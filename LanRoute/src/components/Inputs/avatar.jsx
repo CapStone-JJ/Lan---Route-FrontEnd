@@ -5,7 +5,7 @@ import { useEditUserMutation } from '../../api/auth';
 import { Avatar as MuiAvatar, CircularProgress } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const Avatar = ({ mod, userData, src }) => {
+const Avatar = ({ mod, userData, src, alt }) => {
   const { image } = useSelector((state) => state.user.credentials.user); // Get user's image from Redux store
   const [editUser, { isLoading }] = useEditUserMutation();
   const [uploading, setUploading] = useState(false);
@@ -72,7 +72,7 @@ const Avatar = ({ mod, userData, src }) => {
 };
 
 Avatar.propTypes = {
-  mod: PropTypes.bool.isRequired, // Mod prop should be a boolean and required
+  mod: PropTypes.bool,
   userData: PropTypes.shape({
     id: PropTypes.number.isRequired,
     username: PropTypes.string.isRequired,
@@ -80,10 +80,15 @@ Avatar.propTypes = {
     bio: PropTypes.string,
     location: PropTypes.string,
     password: PropTypes.string.isRequired,
-    src: PropTypes.string,
-    avatar: PropTypes.string
-  }).isRequired, // userData prop should be an object with specific shape and required
+    image: PropTypes.string, // Assuming `image` is the property name for the user's image
+    alt: PropTypes.string,
+  }).isRequired,
+  src: PropTypes.string, // Assuming `src` is the property name for the image source
+  alt: PropTypes.string,
 };
+
+
+
 
 export default Avatar;
 
