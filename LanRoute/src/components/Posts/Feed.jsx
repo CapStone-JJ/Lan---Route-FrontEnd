@@ -51,22 +51,27 @@ const Feed = () => {
           {/* Render feed posts */}
           {feedData &&
             feedData.map(post => {
-              // Log the post author's username
-              console.log("Post author username:", post.author?.username);
+              const userData = post.author;
+              const avatarSrc = post.author?.image;
       
               return (
                 <div key={post.id} className="post">
+                  {/* Render the username link outside of the post-link */}
+                  <div className="author">
+                    <Link to={{ pathname: `/profile/${post.author?.username}` }}>
+                    <Avatar
+                      alt={`${post.author?.username} Avatar`}
+                      src={avatarSrc}
+                      userData={userData} // Pass userData to Avatar component
+                    />
+                      {post.author?.username}
+                    </Link>
+                  </div>
                   <Link
                     className="post-link"
                     to={{ pathname: `/posts/${post.id}`, state: { userId: post.userId } }}
                   >
-                    {/* Link the username to the user's profile page */}
-                    <p className="author">
-                      <Avatar alt={`${post.author?.username} Avatar`} src={post.author?.image} />
-                      <Link to={{ pathname: `/profile/${post.author?.username}` }}>
-                        {post.author?.username}
-                      </Link>
-                    </p>
+                    {/* Render the post content */}
                     <p>{post.image}</p>
                     <p className="content">{post.content}</p>
                     <p className="tags">{post.tags?.map(tag => tag.name).join(", ")}</p>

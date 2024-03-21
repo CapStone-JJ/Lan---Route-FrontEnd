@@ -5,7 +5,7 @@ const CREDENTIALS = "credentials";
 export const lanRouteApi = createApi({
   reducerPath: "lanRouteApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3333",
+    baseUrl: import.meta.env.VITE_URL,
     prepareHeaders: (headers, { getState }) => {
       const credentials = JSON.parse(
         window.sessionStorage.getItem(CREDENTIALS)
