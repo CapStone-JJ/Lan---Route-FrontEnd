@@ -1,5 +1,6 @@
 import React from "react";
 import { useGetAllFriendsQuery } from "../../api/auth";
+import { Link } from "react-router-dom";
 
 const FriendsList = () => {
   const { data: friends, isLoading, isError } = useGetAllFriendsQuery();
@@ -13,7 +14,9 @@ const FriendsList = () => {
       {friends && friends.length > 0 ? (
         <ul>
           {friends.map((friend) => (
-            <li key={friend.id}>{friend.username}</li>
+            <li key={friend.id}>
+              <Link to={`/profile/${friend.username}`}>{friend.username}</Link>
+              </li>
           ))}
         </ul>
       ) : (

@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import LogoutButton from "./logoutButton";
 import { useUserProfileQuery } from "../../api/auth";
 
+
 const Sidebar = () => {
   const username = useSelector((state) => state.user.credentials.user.username);
   const { data } = useUserProfileQuery(username);
@@ -33,7 +34,7 @@ const Sidebar = () => {
           </ListItemIcon>
           <ListItemText primary="Ouroute" />
         </ListItem>
-        <Link to="/mainFeed">
+        <Link to="/feed">
           <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
             <ListItemIcon>
               <ExploreIcon />
@@ -41,7 +42,7 @@ const Sidebar = () => {
             <ListItemText primary="Routes" />
           </ListItem>
         </Link>
-        <Link to="/Notifications">
+        <Link to="/notifications">
           <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
             <ListItemIcon>
               <NotificationsIcon />
@@ -73,12 +74,12 @@ const Sidebar = () => {
             <ListItemText primary="Search" />
           </ListItem>
         </Link>
-        <Link to="/widgets">
+        <Link to="/playlists">
         <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
           <ListItemIcon>
             <WidgetsIcon />
           </ListItemIcon>
-          <ListItemText primary="Widgets" />
+          <ListItemText primary="Playlists" />
         </ListItem>
         </Link>
         <ListItem button sx={{ borderRadius: "30px", my: 1 }}>

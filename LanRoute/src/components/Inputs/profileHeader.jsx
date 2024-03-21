@@ -6,14 +6,16 @@ import SettingsComponent from '../UserProfile/settings';
 import { Link, useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress component from Material-UI
 import { useSelector } from 'react-redux';
+import FriendsList from './userFriendsModal'
 
 const ProfileHeader = () => {
-    const { username } = useParams();
+    const { username, userId } = useParams();
     const { data, isLoading, isError, refetch } = useUserProfileQuery(username);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const authenticatedUsername = useSelector((state) => state.user.credentials.user.username);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    console.log('userData:', data);
+    console.log(username, userId);
 
     // Function to open the popup window
     const openSettingsPopup = () => {
@@ -56,7 +58,7 @@ const ProfileHeader = () => {
     }
 
     const isOwnProfile = username === authenticatedUsername;
-
+    
     return (
         <div className='app'>
             {/* Cover Image */}
@@ -90,10 +92,12 @@ const ProfileHeader = () => {
             </div>
         )}
 
-        {/* Button to open the popup window */}
+        {/* Button to open the popup window for Edit Profile*/}
         {isOwnProfile && !isSettingsOpen && (
         <button onClick={openSettingsPopup}>Edit Profile</button>
         )}
+        {/* Button to open the popup window for Friends */}
+        <FriendsList userId={userId} />
         </div>
       );
 }
