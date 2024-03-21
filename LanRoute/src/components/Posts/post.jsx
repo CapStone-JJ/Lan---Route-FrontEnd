@@ -48,6 +48,11 @@ const PostPage = () => {
     }
   }, [postData]);
 
+  if (postData && postData.image) {
+    console.log(postData.image);
+    // Use the image URL/path in an <img> tag or however you need
+  }
+
   const handleDeletePost = async (postId) => {
     setIsDeleting(true);
     try {
@@ -82,7 +87,9 @@ const PostPage = () => {
   const authorUserId = postData.author.id;
   const { content, createdAt, author, Post_tag } = postData;
   const username = author.username;
-  const tagNames = Post_tag ? Post_tag.map((entry) => entry.tag.name || entry.tag?.name) : [];
+  const tagNames = Post_tag
+    ? Post_tag.map((entry) => entry.tag.name || entry.tag?.name)
+    : [];
 
   return (
     <div className="container">
@@ -91,6 +98,15 @@ const PostPage = () => {
           <Avatar alt={`${username} Avatar`} src={username.image} />
           <div>{username}</div>
         </Link>
+        {postData.image && ( // Check if there's an image URL/path
+          <div className="post-image-container">
+            <img
+              src={`http://localhost:3333${postData.image}`}
+              alt="Post"
+              style={{ maxWidth: "100%", height: "auto" }}
+            />
+          </div>
+        )}
         {isEditing ? (
           <>
             <div>
@@ -119,7 +135,12 @@ const PostPage = () => {
         {authorUserId === userId && !isEditing && (
           <>
             <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>Delete</button>
+            <button
+              onClick={() => handleDeletePost(postId)}
+              disabled={isDeleting}
+            >
+              Delete
+            </button>
           </>
         )}
         {isEditing && (
@@ -135,4 +156,3 @@ const PostPage = () => {
 };
 
 export default PostPage;
-
