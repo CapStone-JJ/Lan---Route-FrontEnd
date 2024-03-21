@@ -4,13 +4,13 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import PostPage from "./components/Posts/post";
 import MainFeed from "./components/Main/mainFeed";
-import MainProfile from "./components/Main/mainProfile";
-import Notifications from "./components/Notifications";
-import FriendsPage from './components/Friends/FriendsPage';
+import MainNotifications from "./components/Main/mainNotifications";
+import MainFriends from "./components/Main/mainFriends";
 import ThemePage from "./components/Themes/themePage";
 import { ThemeProvider } from "./components/Themes/themeProvider";
-import SearchBar from "./components/Inputs/searchBar";
+import MainSearch from "./components/Main/MainSearch";
 import MainUserProfile from "./components/Main/mainUserProfile";
+import MainPlaylists from "./components/Main/mainPlaylists";
 
 const PostPageWrapper = () => {
   const { postId } = useParams();
@@ -26,14 +26,14 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
-          <Route path="/mainFeed" element={<MainFeed />} />
+          <Route path="/feed" element={<MainFeed />} />
           <Route path="/posts/:postId" element={<PostPageWrapper />} />
-          <Route path="/mainProfile" element={<MainProfile />} />
-          <Route path="/Notifications" element={<Notifications />} />
-          <Route path="/friends" element={<FriendsPage />} />
+          <Route path="/notifications" element={<MainNotifications />} />
+          <Route path="/friends" element={<MainFriends />} />
           <Route path="/themePage" element={<ThemePage />} />
-          <Route path="/searchBar" element={<SearchBar />} />
+          <Route path="/searchBar" element={<MainSearch />} />
           <Route path="/profile/:username" element={<MainUserProfile />} />
+          <Route path="/playlists" element={<MainPlaylists />} />
         </Routes>
       </div>
     </ThemeProvider>

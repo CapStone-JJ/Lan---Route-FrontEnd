@@ -7,10 +7,12 @@ import { Link, useParams } from "react-router-dom";
 import formatDate from "../Inputs/formatDate";
 import CreatePostForm from "../Posts/createpostForm";
 import { useSelector } from "react-redux";
+import ProfilePlaylists from "../Inputs/profilePlaylists";
+import '../Styles/playlistOnProfile.css'
 
 
 const UserProfile = () => {
-    const { username } = useParams();
+    const { username, profileId } = useParams();
     const [createPost] = useAddPostMutation();
     const { data: userProfileData, isLoading: userProfileLoading, error: userProfileError, refetch: refetchProfile } = useUserProfileQuery(username);
     const [userProfile, setUserProfile] = useState(null);
@@ -19,8 +21,7 @@ const UserProfile = () => {
     const [sendFriendRequest, { isLoading, isSuccess, isError }] = useSendFriendRequestMutation();
     const loggedInUserId = useSelector((state) => state.user.credentials.user.id);
     const { userId } = useParams();
-
-    console.log(userProfileData);
+    const [embeddedPlaylists, setEmbeddedPlaylists] = useState([]);
 
     useEffect(() => {
         if (!userProfileLoading && userProfileData) {
@@ -70,7 +71,6 @@ const UserProfile = () => {
           // Handle error feedback
       }
   };
-    console.log(userProfileData.id)
 
     const sortedPosts = [...userPosts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
@@ -88,6 +88,12 @@ const UserProfile = () => {
             <div className='create-post-form-container'> {/* Add this container around the CreatePostForm */}
                 {/* Render SettingsComponent inside the popup window */}
                 <CreatePostForm onSubmit={handlePostSubmit} />
+            </div>
+            <div>
+              <ProfilePlaylists username={username} />
+                {embeddedPlaylists.map((embedCode, index) => (
+                    <div key={index} dangerouslySetInnerHTML={{ __html:embedCode}} />
+                ))}
             </div>
             <div className="user-posts">
                 {sortedPosts.map(post => (

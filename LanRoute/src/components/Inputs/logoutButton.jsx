@@ -1,5 +1,7 @@
 import { useLogoutMutation } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
+import LogoutIcon from '@mui/icons-material/Logout';
+import Button from "@mui/material/Button";
 
 function LogoutButton() {
   const [logout] = useLogoutMutation();
@@ -14,7 +16,9 @@ function LogoutButton() {
     }
   };
 
-  return <a onClick={handleLogout}>Logout</a>;
+  return <Button variant="contained" color="primary" onClick={handleLogout} startIcon={<LogoutIcon />}>
+  Logout
+</Button>;
 }
 
 export default LogoutButton;

@@ -77,9 +77,11 @@ Avatar.propTypes = {
     id: PropTypes.number.isRequired,
     username: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-    bio: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
+    bio: PropTypes.string,
+    location: PropTypes.string,
     password: PropTypes.string.isRequired,
+    src: PropTypes.string,
+    avatar: PropTypes.string
   }).isRequired, // userData prop should be an object with specific shape and required
 };
 

@@ -9,6 +9,7 @@ import Button from "./button";
 import SearchInput from "./searchInput";
 import formatDate from '../Inputs/formatDate';
 import { Link } from "react-router-dom";
+import "../Styles/searchBar.css"
 
 function SearchBar() {
     const [text, setText] = useState("");
@@ -21,8 +22,14 @@ function SearchBar() {
     const [isSuccessName, setIsSuccessName] = useState(false);
     const [dataPost, setDataPost] = useState([]);
     const [dataName, setDataName] = useState([]);
-    const userId = useSelector((state) => state.user.userId);
-  
+
+    const selectUserCredentials = (state) => state.user.credentials;
+
+    // Then, use this selector in your component:
+    const userId = useSelector((state) => selectUserCredentials(state)?.user?.userId);
+    const username = useSelector((state) => selectUserCredentials(state)?.user?.username);
+
+
     const [triggerPost, { isLoading: postLoading }] = useLazySearchPostQuery();
     const [triggerName, { isLoading: nameLoading }] = useLazySearchNameQuery();
   
@@ -80,44 +87,43 @@ function SearchBar() {
     };
   
     return (
-        <div className="searchWrap">
-          {(postLoading || nameLoading) && (
-            <div className="searchLoad">Loading...</div>
+      <div className="searchWrap">
+        {(postLoading || nameLoading) && (
+          <div className="searchLoad">Loading...</div>
+        )}
+        <div className="searchBar">
+          <SearchInput value={text} onChange={(e) => setText(e.target.value)} className="searchInput" />
+          <Button click={handleSearch} theme="submit" className="searchButton">
+            <span>SEARCH</span>
+          </Button>
+          {showClearButton && (
+            <div className="clear" onClick={onClear}>
+              Clear
+            </div>
           )}
-          <div className="searchBar">
-            <SearchInput value={text} onChange={(e) => setText(e.target.value)} />
-            <Button click={handleSearch} theme="submit">
-              <span>SEARCH</span>
-            </Button>
-            {showClearButton && (
-              <div className="clear" onClick={onClear}>
-                Clear
-              </div>
-            )}
-            {isSuccessPost && dataPost.length === 0 && isSuccessName && dataName.length === 0 && (
-              <div>No results found.</div>
-            )}
-            {isSuccessPost && dataPost.map((result) => (
-              <div key={result.id}>
-                <Link to={{ pathname: `/posts/${result.id}`, state: { userId: result.userId }}}>
-                  <p>{result.content}</p>
-                  <p>{formatDate(result.createdAt)}</p>
-                </Link>
-              </div>
-            ))}
-            {isSuccessName && dataName.map((result) => (
-              <div key={result.id}>
-                <Link to={{ pathname: `${userId}`, state: { userId: result.userId }}}>
-                  <p>{result.username}</p>
-                  <p>{result.bio}</p>
-                  <p>{result.location}</p>
-                </Link>
-              </div>
-            ))}
-          </div>
+          {isSuccessPost && dataPost.length === 0 && isSuccessName && dataName.length === 0 && (
+            <div className="noResults">No results found.</div>
+          )}
+          {isSuccessPost && dataPost.map((result) => (
+            <div key={result.id} className="postResult">
+              <Link to={{ pathname: `/posts/${result.id}`, state: { userId: result.userId }}}>
+                <p>{result.content}</p>
+                <p>{formatDate(result.createdAt)}</p>
+              </Link>
+            </div>
+          ))}
+          {isSuccessName && dataName.map((result) => (
+            <div key={result.username} className="nameResult">
+              <Link to={{ pathname: `/profile/${result.username}`, state: { userId: result.userId }}}>
+                <p>{result.username}</p>
+                <p>{result.bio}</p>
+                <p>{result.location}</p>
+              </Link>
+            </div>
+          ))}
         </div>
-      );
+      </div>
+    );
 }
   
-
 export default SearchBar;
