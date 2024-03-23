@@ -3,10 +3,9 @@ import { useUserProfileQuery } from '../../api/auth';
 import Avatar from './avatar';
 import '../Styles/profileHeader.css'; // Import CSS for styling
 import SettingsComponent from '../UserProfile/settings';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress component from Material-UI
 import { useSelector } from 'react-redux';
-import FriendsList from './userFriendsModal'
 import { Button } from '@mui/material';
 import FriendsButton from './friendsButton';
 
@@ -15,7 +14,6 @@ const ProfileHeader = () => {
     const { data, isLoading, isError, refetch } = useUserProfileQuery(username);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const authenticatedUsername = useSelector((state) => state.user.credentials.user.username);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     console.log(username, userId);
 

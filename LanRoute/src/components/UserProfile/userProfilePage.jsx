@@ -7,6 +7,7 @@ import LikePost from "../Likes/likes";
 import { Link, useParams } from "react-router-dom";
 import formatDate from "../Inputs/formatDate";
 import "../Styles/playlistOnProfile.css";
+import "../Styles/profilePage.css"
 
 const UserProfile = () => {
   const { username } = useParams();

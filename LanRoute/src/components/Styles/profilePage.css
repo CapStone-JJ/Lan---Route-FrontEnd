@@ -13,13 +13,13 @@
 
 .profile-page-user-posts {
   background-color: #f9f9f9; /* Light background color */
-    border: 1px solid #e0e0e0; /* Light border color */
     border-radius: 12px; /* Slightly rounded corners */
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
     width: 200%; /* Take full width */
     max-width: 500px; /* Limit maximum width */
     text-align: center;
+    margin-right:414px;
 }
 
 .profile-page-post {
@@ -27,37 +27,12 @@
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
+  width: 500px;
 }
 
 .interaction-options {
   display: flex;
   justify-content: space-between; /* Align buttons to the ends */
-}
-
-.create-post-form-container {
-  width: 100%; /* Make the form container full width */
-  max-width: 600px; /* Limit the width of the form container */
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin: 20px auto; /* Center the form horizontally and add margin from the top and bottom */
-}
-
-.create-post-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.create-post-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.create-post-form button {
-  align-self: flex-end; /* Align the button to the right */
 }
 
   
