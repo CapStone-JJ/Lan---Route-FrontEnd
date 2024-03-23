@@ -7,6 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress component from Material-UI
 import { useSelector } from 'react-redux';
 import FriendsList from './userFriendsModal'
+import { Button } from '@mui/material';
 
 const ProfileHeader = () => {
     const { username, userId } = useParams();
@@ -59,6 +60,7 @@ const ProfileHeader = () => {
 
     const isOwnProfile = username === authenticatedUsername;
     
+    console.log(data)
     return (
         <div className='app'>
             {/* Cover Image */}
@@ -68,11 +70,15 @@ const ProfileHeader = () => {
               <Avatar mod={false} src={data.image} userData={data} />
               <h1 className='header__user-name'>{data.username}</h1>
               <span className='header__user-handle'>@{data.username}</span>
+              {isOwnProfile && (
+                <Button onClick={openSettingsPopup}>Edit Profile</Button>
+              )}
             </div>
             <p className='header__bio'>{data.bio}</p>
             <div className='header__general-info'>
               {/* Add any additional general info here */}
               <p>Location: {data.location}</p>
+          
 
             </div>
             <div className='header__follow-info'>
@@ -83,6 +89,9 @@ const ProfileHeader = () => {
           {/* Profile Content */}
           <div className='content'>
           </div>
+          {/* Edit Profile Button */}
+          {/* Show Friends Button */}
+          {/* Settings Popup */}
           {isOwnProfile && isSettingsOpen && (
             <div className="settings-popup">
                 <div className="settings-popup-content">
@@ -90,19 +99,14 @@ const ProfileHeader = () => {
                     <button onClick={closeSettingsPopup}>Close</button>
                 </div>
             </div>
-        )}
-
-        {/* Button to open the popup window for Edit Profile*/}
-        {isOwnProfile && !isSettingsOpen && (
-        <button onClick={openSettingsPopup}>Edit Profile</button>
-        )}
-        {/* Button to open the popup window for Friends */}
-        <FriendsList userId={userId} />
+          )}
         </div>
       );
 }
 
 export default ProfileHeader;
+
+
 
 
 

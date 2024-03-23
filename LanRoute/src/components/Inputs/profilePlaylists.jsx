@@ -10,9 +10,6 @@ function ProfilePlaylists({ username }) {
     const [playlists, setPlaylists] = useState([]);
     const { data: userData, error: userError } = useUserProfileQuery(username);
     const { data, error, refetch } = useGetUserPlaylistsQuery(userId);
-    const createMarkup = (htmlString) => ({ __html: htmlString });
-
-    console.log(userData);
 
     useEffect(() => {
         if (userData) {
@@ -33,21 +30,21 @@ function ProfilePlaylists({ username }) {
     }, [data]);
 
     return (
-        <div className="playlist-group">
-            <h2>Playlists</h2>
-            <ul className="playlist-list">
-                {error && <p>Error loading playlists: {error.message}</p>}
-                {playlists.length === 0 && <p>No playlists added yet.</p>}
-                <ul>
-                    {playlists && playlists.slice(0, 3).map(playlist => (
-                        <li key={playlist.id} className="playlist-item">
-                            <h3>{playlist.title}</h3>
-                            <p>{playlist.description}</p>
-                            <div dangerouslySetInnerHTML={createMarkup(playlist.embedCode)} />
+        <div className="profile-playlists-container">
+            <h2 className="profile-playlists-heading">My Playlists</h2>
+            <div className="profile-playlists-list">
+                {error && <p className="profile-playlists-error-message">Error loading playlists: {error.message}</p>}
+                {playlists.length === 0 && <p className="profile-playlists-no-playlists-message">No playlists added yet.</p>}
+                <ul className="profile-playlists-items">
+                    {playlists && playlists.slice(0, 4).map(playlist => (
+                        <li key={playlist.id} className="profile-playlists-item">
+                            <h3 className="profile-playlists-title">{playlist.title}</h3>
+                            <p className="profile-playlists-description">{playlist.description}</p>
+                            <div className="profile-playlists-embed" dangerouslySetInnerHTML={{ __html: playlist.embedCode }} />
                         </li>
                     ))}
                 </ul>
-            </ul>
+            </div>
         </div>
     );
 }
@@ -57,4 +54,5 @@ ProfilePlaylists.propTypes = {
 };
 
 export default ProfilePlaylists;
+
 

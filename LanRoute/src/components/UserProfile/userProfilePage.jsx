@@ -9,15 +9,13 @@ import { useSendFriendRequestMutation } from "../../api/friendRequest";
 import LikePost from "../Likes/likes";
 import { Link, useParams } from "react-router-dom";
 import formatDate from "../Inputs/formatDate";
-import CreatePostForm from "../Posts/createpostForm";
 import { useSelector } from "react-redux";
-import ProfilePlaylists from "../Inputs/profilePlaylists";
 import "../Styles/playlistOnProfile.css";
+import { Button } from "@mui/material";
 
 const UserProfile = () => {
   const { username } = useParams();
   const loggedInUserId = useSelector((state) => state.user.credentials.user.id);
-  const [createPost] = useAddPostMutation();
   const {
     data: userProfileData,
     isLoading: userProfileLoading,
@@ -33,7 +31,6 @@ const UserProfile = () => {
   ] = useSendFriendRequestMutation();
   const [deleteFriend, { isLoading: isDeleting, isSuccess: isDeleteSuccess }] =
     useDeleteFriendMutation(); // Hook to delete a friend
-
   const [userProfile, setUserProfile] = useState(null);
   const [error, setError] = useState(null);
   const {
@@ -42,15 +39,12 @@ const UserProfile = () => {
     error: postError,
     refetch: refetchPosts,
   } = useUserPostQuery(username);
-
-  const { userId } = useParams();
-  const [embeddedPlaylists, setEmbeddedPlaylists] = useState([]);
   const { data: friendshipStatus, isLoading: checkingFriendship } =
     useCheckFriendshipStatusQuery(userProfileData?.id, {
       skip: !userProfileData?.id, // Skip this query if userProfileData.id is not available
     });
   const [message, setMessage] = useState({ type: "", content: "" });
-
+  
   useEffect(() => {
     if (!userProfileLoading && userProfileData) {
       setUserProfile(userProfileData);
@@ -59,7 +53,7 @@ const UserProfile = () => {
       setError(userProfileError);
     }
   }, [userProfileData, userProfileLoading, userProfileError]);
-
+  
   if (userProfileLoading) {
     return <div>Loading...</div>;
   }
@@ -69,22 +63,10 @@ const UserProfile = () => {
   if (!userProfile) {
     return <div>User Not Found</div>;
   }
-
   if (!userPosts || !Array.isArray(userPosts)) {
     return <div>No posts found for this user.</div>;
   }
-
-  const handlePostSubmit = async (postData) => {
-    try {
-      await createPost(postData);
-      // Refetch the user's posts after successful post creation
-      refetchPosts();
-    } catch (error) {
-      console.error("Error creating post:", error);
-      // Handle error
-    }
-  };
-
+  
   // Handle sending friend requests
   const handleSendFriendRequest = async () => {
     if (!userProfileData || userProfileData.id === loggedInUserId) {
@@ -110,35 +92,29 @@ const UserProfile = () => {
       setMessage({ type: "error", content });
     }
   };
-
   // Handle unfriending
   const handleUnfriend = async () => {
     if (!friendshipStatus?.areFriends) {
       console.error("You are not friends, cannot unfriend.");
       return;
     }
-
     try {
       const currentUserId = loggedInUserId; // The ID of the logged-in user
       const otherUserId = userProfileData.id; // The ID of the other user
-
       await deleteFriend({
         currentUserId,
         otherUserId,
       }).unwrap();
-
       console.log("Unfriended successfully");
     } catch (error) {
       console.error("Error unfriending:", error);
     }
   };
-
   // Conditionally render the friend action button based on the friendship status
   const renderFriendActionButton = () => {
     if (checkingFriendship || isSending || isDeleting) {
       return <button disabled>Loading...</button>;
     }
-
     return friendshipStatus?.areFriends ? (
       <button onClick={handleUnfriend} disabled={isDeleting}>
         Unfriend
@@ -149,15 +125,7 @@ const UserProfile = () => {
       </button>
     );
   };
-
-  if (userProfileLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (userProfileError) {
-    return <div>Error fetching user profile: {userProfileError.message}</div>;
-  }
-
+ 
   const sortedPosts = [...userPosts].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
@@ -175,23 +143,11 @@ const UserProfile = () => {
           {isDeleteSuccess && <p>Friend removed successfully.</p>}
         </div>
       )}
-      <div className="create-post-form-container">
-        {" "}
-        {/* Add this container around the CreatePostForm */}
-        {/* Render SettingsComponent inside the popup window */}
-        <CreatePostForm onSubmit={handlePostSubmit} />
-      </div>
-      <div>
-        <ProfilePlaylists username={username} />
-        {embeddedPlaylists.map((embedCode, index) => (
-          <div key={index} dangerouslySetInnerHTML={{ __html: embedCode }} />
-        ))}
-      </div>
-      <div className="user-posts">
+      <div className="profile-page-user-posts">
         {sortedPosts.map((post) => (
-          <div key={post.id} className="post">
+          <div key={post.id} className="profile-page-post">
             <Link
-              className="post-link"
+              className="profile-page-post-link"
               to={{
                 pathname: `/posts/${post.id}`,
                 state: { userId: post.userId },
@@ -199,17 +155,16 @@ const UserProfile = () => {
             >
               <p>{post.content}</p>
               <p>{formatDate(post.createdAt)}</p>
-              <LikePost
+            </Link>
+            <LikePost
                 postId={post.id}
                 initialLikes={post.likes ? post.likes.length : 0}
                 userId={post.userId}
               />
-            </Link>
           </div>
         ))}
       </div>
     </div>
   );
 };
-
 export default UserProfile;

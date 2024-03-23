@@ -1,13 +1,13 @@
 import Sidebar from '../Inputs/sidebar';
-import PlaylistManager from '../Inputs/playListManager';
+import PostPage from '../Posts/post';
 
-const MainPlaylists = () => {
+const MainPost = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
       <Sidebar />
-      <PlaylistManager />
+      <PostPage />
     </div>
   );
 };
 
-export default MainPlaylists;
+export default MainPost;

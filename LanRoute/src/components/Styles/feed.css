@@ -1,79 +1,94 @@
 /* Feed container */
-.feed {
-  display: grid; /* Change display to grid for better layout control */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid layout */
-  gap: 20px; /* Space between posts */
-  justify-items: center; /* Center items horizontally */
-  align-items: center; /* Center items vertically */
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* Post container */
-.post {
+/* Feed post container */
+.feed-post {
   background-color: #f9f9f9; /* Light background color */
   border: 1px solid #e0e0e0; /* Light border color */
   border-radius: 12px; /* Slightly rounded corners */
   padding: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  width: 100%; /* Take full width of the grid cell */
-  max-width: 500px; /* Limit maximum width for larger screens */
+  width: 200%; /* Take full width of the grid cell */
   text-align: center;
+  max-height: 175px;
+  margin-bottom: 20px;
 }
 
-.post:hover {
+.feed-post:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
 }
 
+/* Post divider */
+.feed-post-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px 0; /* Adjust margin as needed */
+}
+
 /* Post author */
-.author {
+.feed-author {
   font-weight: bold;
   color: #333;
   margin-bottom: 8px; /* Add spacing between author and content */
 }
 
 /* Post content */
-.content {
+.feed-content {
   color: #555;
   margin-bottom: 16px; /* Add spacing between content and tags */
 }
 
 /* Post tags */
-.tags {
+.feed-tags {
   color: #888;
   font-size: 14px; /* Increase font size for tags */
   margin-bottom: 16px; /* Add spacing between tags and date */
 }
 
 /* Post date */
-.date {
+.feed-date {
   font-size: 12px;
   color: #999;
 }
 
 /* Like button */
-.like-button {
+.feed-like-button {
   cursor: pointer;
   color: #999;
 }
 
 /* Like count */
-.like-count {
+.feed-like-count {
   margin-left: 5px;
   font-size: 12px;
   color: #999;
 }
 
-.post-link {
+/* Post link */
+.feed-post-link {
   text-decoration: none; /* Remove underline */
   color: inherit; /* Inherit color from parent */
   display: block; /* Make the link a block element */
 }
 
-.post-link:hover {
+.feed-post-link:hover {
   text-decoration: none; /* Remove underline on hover */
 }
 
-.post-link:focus {
+.feed-post-link:focus {
   outline: none; /* Remove focus outline */
 }
+
+.like-post-container { 
+position: relative;
+  bottom: 0;
+  left: 0;
+}
+
 
   

@@ -23,8 +23,7 @@ export default function Login() {
   const [loginUser] = useLoginMutation();
 
   const [authToken, setAuthToken] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "" });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -34,7 +33,6 @@ export default function Login() {
     console.log("hello")
     sessionStorage.setItem("authToken", token);
     setAuthToken(token);
-    setIsLoggedIn(true);
     navigate("/feed")
     console.log(token);
   };
@@ -46,7 +44,6 @@ export default function Login() {
         console.log(response);
         const token = response.data.token;
         handleLoginSuccess(token);
-        setIsLoggedIn(true);
         navigate("/feed")
         } catch (error) {
         console.error("Login failed:", error);

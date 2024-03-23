@@ -1,29 +1,124 @@
-.playlist-group {
-    margin-bottom: 40px; /* Increase margin bottom for better separation */
+.playlist-manager-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.add-playlist-form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center; /* Horizontally center the form */
+    margin-top: 50px; /* Adjust margin-top to move the form down from the top */
+}
+
+.user-playlists,
+.new-playlists,
+.spotify-playlists {
+    width: 100%;
+    margin-top: 20px;
 }
 
 .playlist-list {
     list-style: none;
     padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 200px; /* Adjust the gap between playlists */
-    justify-content: space-between; /* Distribute items evenly */
-    justify-content: center;
-    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    justify-items: center;
 }
 
 .playlist-item {
-    flex: 0 0 calc(30% - 20px); /* Adjust the width of each playlist item */
-    max-width: calc(30% - 20px); /* Adjust the maximum width of each playlist item */
-    background-color: #f9f9f9; /* Add a light background color */
-    padding: 10px; /* Add some padding */
-    border-radius: 8px; /* Add border radius for rounded corners */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
-    transition: transform 0.2s ease-in-out; /* Add smooth transition effect */
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.playlist-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.edit-form {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.edit-form input,
+.edit-form textarea {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+/* Additional styling for playlists */
+.playlist-item h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.playlist-item p {
+    margin-bottom: 10px;
+}
+
+.playlist-item a {
+    color: blue;
+    text-decoration: none;
+}
+
+.playlist-item a:hover {
+    text-decoration: underline;
+}
+
+.playlist-divider {
+    border-top: 1px solid #ccc;
+    margin-top: 20px;
+    width: 100%;
 }
 
 .playlist-item:hover {
-    transform: translateY(-5px); /* Add hover effect */
+    transform: scale(1.05); 
+    transition: transform 0.5s ease; 
 }
+
+.playlist-buttons button:hover {
+    background-color: #f0f0f0; /* Light background color on hover */
+    color: #333; /* Darker text color on hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.playlist-item a:hover {
+    text-decoration: underline;
+    transition: text-decoration 0.3s ease; /* Smooth underline transition */
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px); /* Start position */
+        opacity: 0; /* Start opacity */
+    }
+    to {
+        transform: translateY(0); /* End position */
+        opacity: 1; /* End opacity */
+    }
+}
+
+.user-playlists,
+.new-playlists,
+.spotify-playlists {
+    animation: slideIn 0.5s ease-in-out; /* Apply animation */
+}
+
+
+
+
 

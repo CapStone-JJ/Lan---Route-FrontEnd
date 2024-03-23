@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useEditUserMutation } from '../../api/auth';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { Button } from '@mui/material';
 import DeleteAccountButton from '../Inputs/deleteButton';
 import Avatar from '../Inputs/avatar';
 import PropTypes from 'prop-types';
@@ -112,7 +113,7 @@ const SettingsComponent = ({ userData, refetchProfile }) => {
             required
           />
         </Box>
-        <button type="submit">Save Changes</button> {/* Move inside the form and change type to "submit" */}
+        <Button type="submit">Save Changes</Button> {/* Move inside the form and change type to "submit" */}
       </form>
       <DeleteAccountButton />
     </div>

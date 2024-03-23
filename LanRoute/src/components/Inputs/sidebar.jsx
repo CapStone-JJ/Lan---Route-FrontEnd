@@ -58,14 +58,6 @@ const Sidebar = () => {
             <ListItemText primary="Friends" />
           </ListItem>
         </Link>
-        <Link to="/themePage">
-          <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
-            <ListItemIcon>
-              <SettingsSuggestIcon />
-            </ListItemIcon>
-            <ListItemText primary="Theme Settings" />
-          </ListItem>
-        </Link>
         <Link to="/searchBar">
           <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
             <ListItemIcon>
@@ -82,18 +74,6 @@ const Sidebar = () => {
           <ListItemText primary="Playlists" />
         </ListItem>
         </Link>
-        <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
-          <ListItemIcon>
-            <ChatIcon />
-          </ListItemIcon>
-          <ListItemText primary="Moments" />
-        </ListItem>
-        <ListItem button sx={{ borderRadius: "30px", my: 1 }}>
-          <ListItemIcon>
-            <MoreHorizIcon />
-          </ListItemIcon>
-          <ListItemText primary="More" />
-        </ListItem>
       </List>
       <Divider />
       <Tooltip title="Profile">

@@ -1,8 +1,11 @@
+// LikePost.js
 import { useState } from "react";
 import { useAddLikeMutation, useDeleteLikeMutation } from "../../api/posts";
-import Button from "../Inputs/button";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import { Button } from "@mui/material";
 
 const LikePost = ({ postId, initialLikes }) => {
   const [likes, setLikes] = useState(initialLikes.count || initialLikes);
@@ -34,19 +37,24 @@ const LikePost = ({ postId, initialLikes }) => {
   };
 
   return (
-    <div>
+    <div className="like-post-container">
       <Button
-        click={isLiked ? handleUnlike : handleLike}
+        className={`like-button ${isLiked ? 'liked' : ''}`}
+        onClick={isLiked ? handleUnlike : handleLike} // Corrected prop name to onClick
         disabled={addingLike || deletingLike}
+        style={{ background: 'none', border: 'none', padding: '0' }} // Add custom styles to remove box
       >
-        {isLiked ? "Liked" : "Like"}
+        {isLiked ? <ThumbUpAltIcon className="like-icon" /> : <ThumbUpOffAltIcon className="like-icon" />}
+        <span className="like-count">{likes}</span>
       </Button>
-      {likes > 0 && <span>{likes}</span>}
     </div>
   );
 };
+
 LikePost.propTypes = {
   postId: PropTypes.number.isRequired,
   initialLikes: PropTypes.number.isRequired, // Add initialLikes as a required prop
 };
+
 export default LikePost;
+

@@ -11,12 +11,7 @@ import { ThemeProvider } from "./components/Themes/themeProvider";
 import MainSearch from "./components/Main/MainSearch";
 import MainUserProfile from "./components/Main/mainUserProfile";
 import MainPlaylists from "./components/Main/mainPlaylists";
-
-const PostPageWrapper = () => {
-  const { postId } = useParams();
-
-  return <PostPage postId={parseInt(postId)} />;
-};
+import MainPost from "./components/Main/mainPost";
 
 function App() {
   return (
@@ -27,7 +22,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/feed" element={<MainFeed />} />
-          <Route path="/posts/:postId" element={<PostPageWrapper />} />
+          <Route path="/posts/:postId" element={<MainPost />} />
           <Route path="/notifications" element={<MainNotifications />} />
           <Route path="/friends" element={<MainFriends />} />
           <Route path="/themePage" element={<ThemePage />} />
