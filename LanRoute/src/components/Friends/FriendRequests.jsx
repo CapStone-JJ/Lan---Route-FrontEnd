@@ -1,5 +1,10 @@
 import React from 'react';
 import { useGetFriendRequestsQuery, useAcceptFriendRequestMutation, useDeclineFriendRequestMutation } from '../../api/friendRequest';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Button from '@mui/material/Button';
+import { Divider } from '@mui/material';
 
 const FriendRequestsList = () => {
     const { data: friendRequests, isLoading, isError } = useGetFriendRequestsQuery();
@@ -20,24 +25,32 @@ const FriendRequestsList = () => {
     };
 
     return (
-        <div>
+        <List>
             {friendRequests && friendRequests.length > 0 ? (
-                <ul>
-                    {friendRequests.map((request) => (
-                        <li key={request.id}>
-                            {request.sender.username}
-                            <button onClick={() => handleAccept(request.id)}>Accept</button>
-                            <button onClick={() => handleDecline(request.id)}>Decline</button>
-                        </li>
-                    ))}
-                </ul>
+                friendRequests.map((request) => (
+                    <React.Fragment key={request.id}>
+                        <ListItem 
+                            secondaryAction={
+                                <>
+                                    <Button onClick={() => handleAccept(request.id)} color="primary">Accept</Button>
+                                    <Button onClick={() => handleDecline(request.id)} color="secondary">Decline</Button>
+                                </>
+                            }>
+                            <ListItemText primary={request.sender.username} />
+                        </ListItem>
+                        <Divider component="li" />
+                    </React.Fragment>
+                ))
             ) : (
-                <p>No friend requests</p>
+                <ListItem>
+                    <ListItemText primary="No friend requests" />
+                </ListItem>
             )}
-        </div>
+        </List>
     );
 };
 
 export default FriendRequestsList;
+
 
 

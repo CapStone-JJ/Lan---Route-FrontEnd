@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {
   useGetCommentsQuery,
   useAddCommentMutation,
@@ -60,11 +60,20 @@ const Comment = ({ postId, commentIdToHighlight }) => {
             key={comment.id}
             ref={(el) => (commentRefs.current[comment.id] = el)} // Assign ref to this comment
             style={{
+              padding: "10px",
+              margin: "10px 0",
+              borderRadius: "5px",
+              boxShadow:
+                commentIdToHighlight === comment.id
+                  ? "0 0 10px rgba(0, 0, 0, 0.1)"
+                  : "none",
               backgroundColor:
-                commentIdToHighlight === comment.id ? "#ff0" : "transparent", // Highlight if this comment is to be highlighted
+                commentIdToHighlight === comment.id ? "#e8f0fe" : "#f9f9f9", // Softer blue for highlight
+              transition: "background-color 0.3s ease",
             }}
           >
-            <p>{comment.text}</p>
+            <strong>{comment.user.username}</strong>: {comment.text}{" "}
+            {/* Display username */}
             <Votes commentId={comment.id} userId={userId} />
             {comment.userId === userId && ( // Only show the delete button for the user's own comments
               <button onClick={() => handleDeleteComment(comment.id)}>

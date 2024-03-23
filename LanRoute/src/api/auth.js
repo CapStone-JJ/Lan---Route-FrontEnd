@@ -25,14 +25,14 @@ const authApi = lanRouteApi.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['User'],
+      invalidatesTags: ["User"],
     }),
     logout: builder.mutation({
       queryFn: () => ({ data: {} }),
     }),
     userProfile: builder.query({
       query: (username) => `auth/${username}`,
-      providesTags: ['User'],
+      providesTags: ["User"],
     }),
     getUser: builder.query({
       query: (cred) => ({
@@ -58,6 +58,10 @@ const authApi = lanRouteApi.injectEndpoints({
       query: (userId) => `/api/friends/users/${userId}/friends`,
       providesTags: ["Friends"], // Indicates that this query also provides 'Friends' data
     }),
+    checkFriendshipStatus: builder.query({
+      query: (userId) => `/api/friends/check/${userId}`,
+      providesTags: ["Friends"],
+    }),
     addFriend: builder.mutation({
       query: (body) => ({
         url: "/api/friends",
@@ -67,9 +71,10 @@ const authApi = lanRouteApi.injectEndpoints({
       invalidatesTags: ["Friends"],
     }),
     deleteFriend: builder.mutation({
-      query: (id) => ({
-        url: "/api/friends/" + id,
+      query: ({ currentUserId, otherUserId }) => ({
+        url: "/api/friends/",
         method: "DELETE",
+        body: { currentUserId, otherUserId },
       }),
       invalidatesTags: ["Friends"],
     }),
@@ -87,6 +92,7 @@ export const {
   useLazySearchNameQuery,
   useGetAllFriendsQuery,
   useGetUserFriendsQuery,
+  useCheckFriendshipStatusQuery,
   useAddFriendMutation,
   useDeleteFriendMutation,
 } = authApi;
