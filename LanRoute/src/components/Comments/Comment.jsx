@@ -8,6 +8,9 @@ import {
   useDeleteCommentMutation,
 } from "../../api/comments";
 import Votes from "./Votes";
+import { Link } from "react-router-dom";
+
+
 const Comment = ({ postId, commentIdToHighlight }) => {
   const [newCommentText, setNewCommentText] = useState("");
   const {
@@ -19,7 +22,7 @@ const Comment = ({ postId, commentIdToHighlight }) => {
   const [addComment] = useAddCommentMutation();
   const [deleteComment] = useDeleteCommentMutation();
   const userId = useSelector((state) => state.user.credentials.user.id);
-  console.log(userId);
+
   // Ref for comments to enable scrolling into view
   const commentRefs = useRef({});
   useEffect(() => {
@@ -31,6 +34,7 @@ const Comment = ({ postId, commentIdToHighlight }) => {
       });
     }
   }, [commentIdToHighlight, comments]);
+
   const handleAddComment = async () => {
     if (!newCommentText.trim()) return; // Check if the comment text is not just whitespace
     console.log(typeof postId);
@@ -39,12 +43,14 @@ const Comment = ({ postId, commentIdToHighlight }) => {
     console.log(comments);
     setNewCommentText(""); // Clear the textarea after posting a comment
   };
+
   const handleDeleteComment = async (commentId) => {
     await deleteComment(commentId).unwrap();
     refetch(); // Refetch comments to update the list
   };
   if (isLoading) return <p>Loading comments...</p>;
   if (error) return <p>Error loading comments!</p>;
+
   return (
     <div>
       <hr style={{ width: '100%', marginTop: '20px', marginBottom: '20px', border: 'none', borderBottom: '1px solid #ccc' }} />
@@ -68,8 +74,9 @@ const Comment = ({ postId, commentIdToHighlight }) => {
               transition: "background-color 0.3s ease",
             }}
           >
-            
+            <Link to={`/profile/${comment.user.username}`}>
             <p style={{ fontWeight: "bold" }}>{comment.user.username}</p>
+            </Link>
               {/* Comment text */}
               <p style={{ fontWeight: 'normal'}}>{comment.text}</p>
             <Votes commentId={comment.id} userId={userId} />

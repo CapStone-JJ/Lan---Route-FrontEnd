@@ -111,9 +111,6 @@ function SearchBar() {
             Clear
           </Typography>
         )}
-        {isSuccessPost && dataPost.length === 0 && isSuccessName && dataName.length === 0 && (
-          <Typography variant="body1" className="noResults">No results found.</Typography>
-        )}
         {isSuccessPost && dataPost.map((result, index) => (
           <React.Fragment key={result.id}>
             <Card elevation={1} className="postResult">
@@ -144,7 +141,6 @@ function SearchBar() {
       </Paper>
     </div>
   );
-  
 }
 
 export default SearchBar;

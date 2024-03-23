@@ -10,7 +10,7 @@ function PlaylistManager() {
     const [playlistUrl, setPlaylistUrl] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [category, setCategory] = useState('new', 'Spotify');
+    const [category, setCategory] = useState('Spotify');
     const [error, setError] = useState('');
     const { data: playlistsData, error: playlistsError, refetch: refetchPlaylists } = useGetPlaylistsQuery(category);
     const [addPlaylist] = useAddPlaylistMutation();

@@ -10,9 +10,7 @@
 }
 
 .searchBar {
-  display: flex;
   align-items: center;
-  justify-content: center; /* Center horizontally */
   background-color: #f9f9f9;
   border-radius: 5px;
   padding: 8px;
