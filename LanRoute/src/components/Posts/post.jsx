@@ -13,8 +13,8 @@ import { useState, useEffect } from "react";
 import "../Styles/post.css";
 import { Link } from "react-router-dom";
 import Avatar from "../Inputs/avatar";
-// import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
-// import LogoutButton from "./logoutButton";
+import { Button, TextField, Box } from "@mui/material";
+
 
 const PostPage = () => {
   const { postId: postIdString } = useParams();
@@ -94,16 +94,21 @@ const PostPage = () => {
         {isEditing ? (
           <>
             <div>
-              Content:
-              <textarea
+              <TextField
+                label="Content"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={4}
                 value={editedContent}
                 onChange={(e) => setEditedContent(e.target.value)}
               />
             </div>
             <div>
-              Tags:
-              <input
-                type="text"
+              <TextField
+                label="Tags"
+                variant="outlined"
+                fullWidth
                 value={editedTags}
                 onChange={(e) => setEditedTags(e.target.value)}
               />
@@ -118,14 +123,14 @@ const PostPage = () => {
         <div>{formatDate(createdAt)}</div>
         {authorUserId === userId && !isEditing && (
           <>
-            <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>Delete</button>
+            <Button onClick={() => setIsEditing(true)}>Edit</Button>
+            <Button onClick={() => handleDeletePost(postId)} disabled={isDeleting}>Delete</Button>
           </>
         )}
         {isEditing && (
           <>
-            <button onClick={handleEdit}>Save Changes</button>
-            <button onClick={() => setIsEditing(false)}>Cancel</button>
+            <Button onClick={handleEdit}>Save Changes</Button>
+            <Button onClick={() => setIsEditing(false)}>Cancel</Button>
           </>
         )}
         <Comment postId={postId} commentIdToHighlight={commentIdToHighlight} />

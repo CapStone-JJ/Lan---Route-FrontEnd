@@ -9,6 +9,7 @@ import CreatePostForm from "../Posts/createpostForm";
 import { useSelector } from "react-redux";
 import ProfilePlaylists from "../Inputs/profilePlaylists";
 import '../Styles/playlistOnProfile.css'
+import { Button } from "@mui/material";
 
 
 const UserProfile = () => {
@@ -21,7 +22,6 @@ const UserProfile = () => {
     const [sendFriendRequest, { isLoading, isSuccess, isError }] = useSendFriendRequestMutation();
     const loggedInUserId = useSelector((state) => state.user.credentials.user.id);
     const { userId } = useParams();
-    const [embeddedPlaylists, setEmbeddedPlaylists] = useState([]);
 
     useEffect(() => {
         if (!userProfileLoading && userProfileData) {
@@ -77,34 +77,24 @@ const UserProfile = () => {
     return (
         <div className='profile-page'>
               {parseInt(userProfileData.id) !== loggedInUserId && (
-                <div className="send-friend-request">
-                  <button onClick={handleSendFriendRequest} disabled={isLoading}>
+                <div className="profile-page-send-friend-request">
+                  <Button onClick={handleSendFriendRequest} disabled={isLoading}>
                   Send Friend Request
-                 </button>
+                 </Button>
                     {isSuccess && <p>Friend request sent!</p>}
                     {isError && <p>Error sending friend request.</p>}
                 </div>
                 )}
-            <div className='create-post-form-container'> {/* Add this container around the CreatePostForm */}
-                {/* Render SettingsComponent inside the popup window */}
-                <CreatePostForm onSubmit={handlePostSubmit} />
-            </div>
-            <div>
-              <ProfilePlaylists username={username} />
-                {embeddedPlaylists.map((embedCode, index) => (
-                    <div key={index} dangerouslySetInnerHTML={{ __html:embedCode}} />
-                ))}
-            </div>
-            <div className="user-posts">
+            <div className="profile-page-user-posts">
                 {sortedPosts.map(post => (
-                    <div key={post.id} className="post">
+                    <div key={post.id} className="profile-page-post">
                         <Link
-                            className="post-link"
+                            className="profile-page-post-link"
                             to={{ pathname: `/posts/${post.id}`, state: { userId: post.userId } }}>
                             <p>{post.content}</p>
                             <p>{formatDate(post.createdAt)}</p>
-                            <LikePost postId={post.id} initialLikes={post.likes ? post.likes.length : 0} userId={post.userId} />
                         </Link>
+                        <LikePost postId={post.id} initialLikes={post.likes ? post.likes.length : 0} userId={post.userId} />
                     </div>
                 ))}
             </div>

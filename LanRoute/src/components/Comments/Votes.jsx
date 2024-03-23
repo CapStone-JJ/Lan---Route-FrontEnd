@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {
   useAddVoteMutation,
   useDeleteVoteMutation,
   useGetVotesQuery,
 } from "../../api/comments";
+
 
 const Votes = ({ commentId }) => {
   const { data: votes, isLoading, refetch: refetchVotes } = useGetVotesQuery();
@@ -39,10 +42,12 @@ const Votes = ({ commentId }) => {
 
   return (
     <div>
-      <span>Votes: {totalVotes}</span>
-      <button onClick={handleVote} disabled={isLoading}>
-        {userVote ? "Remove Vote" : "Vote"}
-      </button>
+      {userVote ? (
+        <FavoriteIcon color="primary" onClick={handleVote} />
+      ) : (
+        <FavoriteBorderIcon color="primary" onClick={handleVote} />
+      )}
+      <span>{totalVotes}</span>
     </div>
   );
 };

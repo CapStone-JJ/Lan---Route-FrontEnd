@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from 'prop-types';
-import {
-  useGetCommentsQuery,
-  useAddCommentMutation,
-  useDeleteCommentMutation,
-} from "../../api/comments";
+import { useGetCommentsQuery, useAddCommentMutation, useDeleteCommentMutation } from "../../api/comments";
+import { Button, TextField } from "@mui/material";
 import Votes from "./Votes";
+import formatDate from "../Inputs/formatDate";
 
 const Comment = ({ postId, commentIdToHighlight }) => {
   const [newCommentText, setNewCommentText] = useState("");
@@ -19,7 +17,7 @@ const Comment = ({ postId, commentIdToHighlight }) => {
   const [addComment] = useAddCommentMutation();
   const [deleteComment] = useDeleteCommentMutation();
   const userId = useSelector((state) => state.user.credentials.user.id);
-  console.log(userId);
+  console.log(comments);
 
   // Ref for comments to enable scrolling into view
   const commentRefs = useRef({});
@@ -53,7 +51,9 @@ const Comment = ({ postId, commentIdToHighlight }) => {
 
   return (
     <div>
+      <hr /> {/* Horizontal line after the "Comments" heading */}
       <h3>Comments</h3>
+      <hr /> {/* Horizontal line after the "Comments" heading */}
       <div>
         {comments?.map((comment) => (
           <div
@@ -62,25 +62,32 @@ const Comment = ({ postId, commentIdToHighlight }) => {
             style={{
               backgroundColor:
                 commentIdToHighlight === comment.id ? "#ff0" : "transparent", // Highlight if this comment is to be highlighted
+              marginBottom: "16px", // Add margin bottom between each comment
+              padding: "16px", // Add padding to improve spacing
             }}
           >
+            <p>{comment.username}</p>
             <p>{comment.text}</p>
+            <p>{formatDate(comment.createdAt)}</p>
             <Votes commentId={comment.id} userId={userId} />
             {comment.userId === userId && ( // Only show the delete button for the user's own comments
-              <button onClick={() => handleDeleteComment(comment.id)}>
+              <Button onClick={() => handleDeleteComment(comment.id)}>
                 Delete Comment
-              </button>
+              </Button>
             )}
           </div>
         ))}
       </div>
       <div>
-        <textarea
+        <TextField
           value={newCommentText}
           onChange={(e) => setNewCommentText(e.target.value)}
           placeholder="Write a comment..."
+          multiline
+          fullWidth
+          sx={{ marginBottom: '16px' }}
         />
-        <button onClick={handleAddComment}>Post Comment</button>
+        <Button variant="contained" onClick={handleAddComment}>Post Comment</Button>
       </div>
     </div>
   );
@@ -92,3 +99,4 @@ Comment.propTypes = {
 };
 
 export default Comment;
+

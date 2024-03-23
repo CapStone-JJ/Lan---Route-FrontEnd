@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useGetAllFriendsQuery, useUserProfileQuery } from "../../api/auth";
 import { Link, useParams } from "react-router-dom";
 import "../Styles/friendsListModal.css";
+import { Button } from "@mui/material";
 
 const FriendsModal = ({ userId }) => {
   const { data: friends, isLoading, isError } = useGetAllFriendsQuery(userId);
@@ -41,7 +42,7 @@ const [showModal, setShowModal] = useState(false);
 
   return (
     <div>
-      <button onClick={toggleModal}>Show Friends</button>
+      <Button onClick={toggleModal}>Show Friends</Button>
       {showModal && <FriendsModal userId={userData.id} />}
     </div>
   );

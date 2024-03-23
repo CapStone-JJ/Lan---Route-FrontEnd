@@ -3,7 +3,7 @@ import Sidebar from "../Inputs/sidebar";
 
 const MainSearch = () => {
     return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
           <Sidebar />
           <SearchBar />
         </div>

@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useGetTagsQuery, useAddTagMutation } from '../../api/tags';
 import { useAddPostMutation, useGetPostsQuery } from '../../api/posts';
+import { useUserProfileQuery } from '../../api/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import "../Styles/createPost.css"
+import Avatar from '../Inputs/avatar';
+import { Button } from '@mui/material';
 
 
 const CreatePostForm = () => {
@@ -144,15 +147,9 @@ const handleMediaUpload = (event) => {
         />
       </div>
       {/* Input for uploading media files */}
-      <input
-        type="file"
-        accept="image/*, video/*"
-        multiple
-        onChange={handleMediaUpload}
-      />
-      <button className="post-button" onClick={handlePostSubmit} disabled={createPostLoading}>
+      <Button className="post-button" onClick={handlePostSubmit} disabled={createPostLoading}>
         Post
-      </button>
+      </Button>
       {/* Display uploaded media files */}
       <div className="media-preview">
         {mediaFiles.map((file, index) => (

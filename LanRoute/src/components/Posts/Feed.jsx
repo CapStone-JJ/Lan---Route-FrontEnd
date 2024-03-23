@@ -44,45 +44,48 @@ const Feed = () => {
       
 
       return (
-        <div className="feed">
-          {/* Render the CreatePostForm component with handlePostSubmit passed as prop */}
-          <CreatePostForm onSubmit={handlePostSubmit} />
-      
+        <div className="feed-container">
           {/* Render feed posts */}
           {feedData &&
             feedData.map(post => {
               const userData = post.author;
               const avatarSrc = post.author?.image;
-      
+              
               return (
-                <div key={post.id} className="post">
+                <div key={post.id} className="feed-post">
                   {/* Render the username link outside of the post-link */}
-                  <div className="author">
-                    <Link to={{ pathname: `/profile/${post.author?.username}` }}>
-                    <Avatar
-                      alt={`${post.author?.username} Avatar`}
-                      src={avatarSrc}
-                      userData={userData} // Pass userData to Avatar component
-                    />
+                  <div className="feed-author">
+                    <Link to={{ pathname: `/profile/${post.author?.username}` }} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {/* Avatar component without the visible hyperlink */}
+                      <Avatar
+                        alt={`${post.author?.username} Avatar`}
+                        src={avatarSrc}
+                        userData={userData} // Pass userData to Avatar component
+                      />
+                      {/* Username */}
                       {post.author?.username}
                     </Link>
                   </div>
                   <Link
-                    className="post-link"
+                    className="feed-post-link"
                     to={{ pathname: `/posts/${post.id}`, state: { userId: post.userId } }}
                   >
                     {/* Render the post content */}
                     <p>{post.image}</p>
-                    <p className="content">{post.content}</p>
-                    <p className="tags">{post.tags?.map(tag => tag.name).join(", ")}</p>
-                    <p className="date">{formatDate(post.createdAt)}</p>
-                    <LikePost postId={post.id} initialLikes={post.likes.length} userId={post.userId} />
+                    <p className="feed-content">{post.content}</p>
+                    <p className="feed-tags">{post.tags?.map(tag => tag.name).join(", ")}</p>
+                    <p className="feed-date">{formatDate(post.createdAt)}</p>
                   </Link>
+                  <div className="like-post-container">
+                    <LikePost postId={post.id} initialLikes={post.likes.length} userId={post.userId} />
+                  </div>
                 </div>
               );
             })}
         </div>
       );
+      
+      
     };
     
     export default Feed;

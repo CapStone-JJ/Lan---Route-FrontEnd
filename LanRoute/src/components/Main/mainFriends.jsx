@@ -3,7 +3,7 @@ import Sidebar from "../Inputs/sidebar";
 
 const MainFriends = () => {
     return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
           <Sidebar />
           <FriendsPage />
         </div>

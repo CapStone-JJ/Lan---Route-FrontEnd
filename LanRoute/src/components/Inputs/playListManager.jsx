@@ -43,8 +43,9 @@ function PlaylistManager() {
             // Call the edit mutation to update the playlist
             await editPlaylist({ body: { id: selectedPlaylistId, title: newTitle, description: newDescription } });
             // Refetch playlists
-            refetchUserPlaylist();
-            refetchUserPlaylist();
+            await refetchPlaylists();
+        // Await the completion of the first refetch before starting the second one
+            await refetchUserPlaylist();
             // Clear the edit form and hide it
             handleCancelEdit();
         } catch (error) {
@@ -74,6 +75,7 @@ function PlaylistManager() {
 
             // Refetch playlists to update the list
             refetchPlaylists();
+            refetchUserPlaylist();
         } catch (error) {
             console.error('Error adding playlist:', error);
             setError('An error occurred while adding the playlist. Please try again later.');
@@ -102,49 +104,51 @@ function PlaylistManager() {
     const spotifyPlaylists = playlistsData?.playlists.filter(playlist => playlist.url.includes('open.spotify.com'));
     const newPlaylists = playlistsData?.playlists.filter(playlist => playlist.url.includes('open.spotify.com'));
 
-return (
-        <div>
-            <form onSubmit={handleSubmit}>
-        {/* Replace regular HTML input with MUI TextField */}
-        <TextField
-          id="playlistUrl"
-          label="Playlist URL"
-          value={playlistUrl}
-          onChange={(event) => setPlaylistUrl(event.target.value)}
-          required
-        />
-        <TextField
-          id="title"
-          label="Title"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-        />
-        <TextField
-          id="description"
-          label="Description"
-          multiline
-          rows={1}
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-        />
-        <TextField
-          id="category"
-          select
-          label="Category"
-          value={category}
-          onChange={(event) => setCategory(event.target.value)}
-          required
-        >
-          <MenuItem value="AppleMusic">Apple Music</MenuItem>
-          <MenuItem value="Spotify">Spotify</MenuItem>
-        </TextField>
-        <Button type="submit" variant="contained" color="primary">
-          Add Playlist
-        </Button>
-      </form>
-        {playlistsError && <p>Error loading playlists: {playlistsError.message}</p>}
-        {/* User's Playlists */}
-            <div className="playlist-group">
+    return (
+        <div className="playlist-manager-container">
+            <h1>Add Your Playlist</h1>
+            <div className="playlist-divider"></div>
+            <form onSubmit={handleSubmit} className="add-playlist-form">
+                <TextField
+                    id="playlistUrl"
+                    label="Playlist URL"
+                    value={playlistUrl}
+                    onChange={(event) => setPlaylistUrl(event.target.value)}
+                    required
+                />
+                <TextField
+                    id="title"
+                    label="Title"
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
+                />
+                <TextField
+                    id="description"
+                    label="Description"
+                    multiline
+                    rows={1}
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
+                />
+                <TextField
+                    id="category"
+                    select
+                    label="Category"
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
+                    required
+                    sx={{ width: '200px' }}
+                >
+                    <MenuItem value="Spotify">Spotify</MenuItem>
+                </TextField>
+                <Button type="submit" variant="contained" color="primary">
+                    Add Playlist
+                </Button>
+            </form>
+            <div className="playlist-divider"></div>
+            {playlistsError && <p>Error loading playlists: {playlistsError.message}</p>}
+            {/* User's Playlists */}
+            <div className="user-playlists">
                 <h2>Your Playlists</h2>
                 <ul className="playlist-list">
                     {userPlaylistsData && userPlaylistsData.playlists.map(playlist => (
@@ -152,77 +156,91 @@ return (
                             <h3>{playlist.title}</h3>
                             <p>{playlist.description}</p>
                             <div dangerouslySetInnerHTML={createMarkup(playlist.embedCode)} />
-                            <div>
-                            <button onClick={() => handleEditClick(playlist.id, playlist.title, playlist.description)}>Edit</button>
-
-                                <button onClick={() => handleDelete(playlist.id)}>Delete</button>
+                            <div className="playlist-buttons">
+                                <Button onClick={() => handleEditClick(playlist.id, playlist.title, playlist.description)}>Edit</Button>
+                                <Button onClick={() => handleDelete(playlist.id)}>Delete</Button>
                             </div>
                         </li>
                     ))}
                 </ul>
             </div>
+            
             {/* Edit Form */}
             {editMode && (
-                <div className="edit-form">
-                    <h3>Edit Playlist</h3>
-                    <input
-                        type="text"
-                        placeholder="New Title"
+            <div className="edit-form">
+                <h3>Edit Playlist</h3>
+                    <TextField
+                        id="newTitle"
+                        label="New Title"
                         value={newTitle}
                         onChange={(event) => setNewTitle(event.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
                     />
-                    <textarea
-                        placeholder="New Description"
+                    <TextField
+                        id="newDescription"
+                        label="New Description"
                         value={newDescription}
                         onChange={(event) => setNewDescription(event.target.value)}
+                        fullWidth
+                        multiline
+                        rows={4}
+                        margin="normal"
+                        variant="outlined"
                     />
-                    <div>
-                        <button onClick={handleEditSubmit}>Save</button>
-                        <button onClick={handleCancelEdit}>Cancel</button>
+                    <div className="edit-buttons">
+                        <Button onClick={handleEditSubmit} variant="contained" color="primary">
+                            Save
+                        </Button>
+                        <Button onClick={handleCancelEdit} variant="contained" color="secondary">
+                            Cancel
+                        </Button>
                     </div>
                 </div>
             )}
-        {/* New Playlists */}
-        <div className="playlist-group">
-            <h2>New Playlists</h2>
-            <ul className="playlist-list">
-                {newPlaylists && newPlaylists.slice(0, 6).map(playlist => (
-                    <li key={playlist.id} className="playlist-item">
-                        <h3>{playlist.title}</h3>
-                        <p>{playlist.description}</p>
-                        <p>
-                        <Link to={`/profile/${playlist.owner.username}`}>
-                        {playlist.owner.username}
-                        </Link>
-                        </p>
-                        <div dangerouslySetInnerHTML={createMarkup(playlist.embedCode)} />
-                    </li>
-                ))}
-            </ul>
+            <div className="playlist-divider"></div>
+            {/* New Playlists */}
+            <div className="new-playlists">
+                <h2>New Playlists</h2>
+                <ul className="playlist-list">
+                    {newPlaylists && newPlaylists.slice(0, 6).map(playlist => (
+                        <li key={playlist.id} className="playlist-item">
+                         <h3>{playlist.title}</h3>
+                            <p>{playlist.description}</p>
+                            <p>
+                                <Link to={`/profile/${playlist.owner.username}`}>
+                                    {playlist.owner.username}
+                                </Link>
+                            </p>
+                            <div dangerouslySetInnerHTML={createMarkup(playlist.embedCode)} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="playlist-divider"></div>
+            {/* Spotify Playlists */}
+            <div className="spotify-playlists">
+                <h2>Spotify Playlists</h2>
+                <ul className="playlist-list">
+                    {spotifyPlaylists && spotifyPlaylists.slice(0, 6).map(playlist => (
+                        <li key={playlist.id} className="playlist-item">
+                            <h3>{playlist.title}</h3>
+                            <p>{playlist.description}</p>
+                            <p>
+                                <Link to={`/profile/${playlist.owner.username}`}>
+                                    {playlist.owner.username}
+                                </Link>
+                            </p>
+                            <div dangerouslySetInnerHTML={createMarkup(playlist.embedCode)} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            {/* Error message */}
+            {error && <p>{error}</p>}
         </div>
-
-        {/* Spotify Playlists */}
-        <div className="playlist-group">
-            <h2>Spotify Playlists</h2>
-            <ul className="playlist-list">
-                {spotifyPlaylists && spotifyPlaylists.slice(0, 6).map(playlist => (
-                    <li key={playlist.id} className="playlist-item">
-                        <h3>{playlist.title}</h3>
-                        <p>{playlist.description}</p>
-                        <p>
-                        <Link to={`/profile/${playlist.owner.username}`}>
-                        {playlist.owner.username}
-                        </Link>
-                        </p>
-                        <div dangerouslySetInnerHTML={createMarkup(playlist.embedCode)} />
-                    </li>
-                ))}
-            </ul>
-        </div>
-        {/* Error message */}
-        {error && <p>{error}</p>}
-    </div>
-);
+    );
 }
 
 export default PlaylistManager;

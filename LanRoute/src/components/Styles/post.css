@@ -12,8 +12,9 @@
     border-radius: 12px; /* Slightly rounded corners */
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    width: 100%; /* Take full width */
+    width: 200%; /* Take full width */
     max-width: 500px; /* Limit maximum width */
+    text-align: center;
   }
   
   /* Username */
