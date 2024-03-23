@@ -12,16 +12,17 @@ function ProfilePlaylists({ username }) {
     const { data, error, refetch } = useGetUserPlaylistsQuery(userId);
 
     useEffect(() => {
-        if (userData) {
-            setUserId(userData.id); // Set the userId once user data is fetched
+        if (userData && userData.id) {
+            setUserId(userData.id); // Set the userId once user data is fetched and contains a valid id
         }
     }, [userData]);
 
     useEffect(() => {
-        if (userId) {
-            refetch();
+        if (userId !== null) {
+
+            refetch(); // Refetch playlists only if userId is not null
         }
-    }, [userId]);
+    }, [userId, refetch]);
 
     useEffect(() => {
         if (data) {

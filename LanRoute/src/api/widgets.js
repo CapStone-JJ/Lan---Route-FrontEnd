@@ -38,7 +38,7 @@ const widgetApi = lanRouteApi.injectEndpoints({
         }),
         getUserPlaylists: builder.query({
             query: (userId) => `/api/playlist/user/${userId}`,
-        }),
+        }),        
         getSpecificPlaylist: builder.query({
             query: (id) => `api/playlist/${id}`,
         }),
