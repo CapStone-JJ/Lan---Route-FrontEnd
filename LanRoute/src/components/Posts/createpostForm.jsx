@@ -142,6 +142,14 @@ const handlePostSubmit = async () => {
           placeholder="Type a tag..."
         />
       </div>
+      <Button
+        className="post-button"
+        type="submit"
+        onClick={handlePostSubmit}
+        disabled={createPostLoading}
+      >
+        Post
+      </Button>
     </div>
   );
 };

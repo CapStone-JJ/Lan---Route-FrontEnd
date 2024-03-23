@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import PropTypes from 'prop-types';
-import { useGetCommentsQuery, useAddCommentMutation, useDeleteCommentMutation } from "../../api/comments";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
+import PropTypes from "prop-types";
+import {
+  useGetCommentsQuery,
+  useAddCommentMutation,
+  useDeleteCommentMutation,
+} from "../../api/comments";
 import Votes from "./Votes";
-import formatDate from "../Inputs/formatDate";
-
 const Comment = ({ postId, commentIdToHighlight }) => {
   const [newCommentText, setNewCommentText] = useState("");
   const {
@@ -17,11 +19,9 @@ const Comment = ({ postId, commentIdToHighlight }) => {
   const [addComment] = useAddCommentMutation();
   const [deleteComment] = useDeleteCommentMutation();
   const userId = useSelector((state) => state.user.credentials.user.id);
-  console.log(comments);
-
+  console.log(userId);
   // Ref for comments to enable scrolling into view
   const commentRefs = useRef({});
-
   useEffect(() => {
     // Scroll to and highlight the comment if commentIdToHighlight is provided
     if (commentIdToHighlight && commentRefs.current[commentIdToHighlight]) {
@@ -31,7 +31,6 @@ const Comment = ({ postId, commentIdToHighlight }) => {
       });
     }
   }, [commentIdToHighlight, comments]);
-
   const handleAddComment = async () => {
     if (!newCommentText.trim()) return; // Check if the comment text is not just whitespace
     console.log(typeof postId);
@@ -40,20 +39,17 @@ const Comment = ({ postId, commentIdToHighlight }) => {
     console.log(comments);
     setNewCommentText(""); // Clear the textarea after posting a comment
   };
-
   const handleDeleteComment = async (commentId) => {
     await deleteComment(commentId).unwrap();
     refetch(); // Refetch comments to update the list
   };
-
   if (isLoading) return <p>Loading comments...</p>;
   if (error) return <p>Error loading comments!</p>;
-
   return (
     <div>
-      <hr /> {/* Horizontal line after the "Comments" heading */}
+      <hr style={{ width: '100%', marginTop: '20px', marginBottom: '20px', border: 'none', borderBottom: '1px solid #ccc' }} />
       <h3>Comments</h3>
-      <hr /> {/* Horizontal line after the "Comments" heading */}
+      <hr style={{ width: '100%', marginTop: '20px', marginBottom: '20px', border: 'none', borderBottom: '1px solid #ccc' }} />
       <div>
         {comments?.map((comment) => (
           <div
@@ -68,48 +64,38 @@ const Comment = ({ postId, commentIdToHighlight }) => {
                   ? "0 0 10px rgba(0, 0, 0, 0.1)"
                   : "none",
               backgroundColor:
-                commentIdToHighlight === comment.id ? "#ff0" : "transparent", // Highlight if this comment is to be highlighted
-              marginBottom: "16px", // Add margin bottom between each comment
-              padding: "16px", // Add padding to improve spacing
-            }}
-          >
-            <p>{comment.username}</p>
-            <p>{comment.text}</p>
-            <p>{formatDate(comment.createdAt)}</p>
-                commentIdToHighlight === comment.id ? "#e8f0fe" : "#f9f9f9", // Softer blue for highlight
+                commentIdToHighlight === comment.id ? "#E8F0FE" : "#F9F9F9", // Softer blue for highlight
               transition: "background-color 0.3s ease",
             }}
           >
-            <strong>{comment.user.username}</strong>: {comment.text}{" "}
-            {/* Display username */}
+            
+            <p style={{ fontWeight: "bold" }}>{comment.user.username}</p>
+              {/* Comment text */}
+              <p style={{ fontWeight: 'normal'}}>{comment.text}</p>
             <Votes commentId={comment.id} userId={userId} />
             {comment.userId === userId && ( // Only show the delete button for the user's own comments
               <Button onClick={() => handleDeleteComment(comment.id)}>
                 Delete Comment
               </Button>
             )}
+            <hr style={{ width: '100%', marginTop: '20px', marginBottom: '20px', border: 'none', borderBottom: '1px solid #ccc' }} />
           </div>
         ))}
       </div>
       <div>
-        <TextField
+        <textarea
           value={newCommentText}
           onChange={(e) => setNewCommentText(e.target.value)}
           placeholder="Write a comment..."
-          multiline
-          fullWidth
-          sx={{ marginBottom: '16px' }}
         />
-        <Button variant="contained" onClick={handleAddComment}>Post Comment</Button>
       </div>
+      <Button onClick={handleAddComment}>Post Comment</Button>
     </div>
   );
 };
-
 Comment.propTypes = {
   postId: PropTypes.number.isRequired,
   commentIdToHighlight: PropTypes.number, // This prop is not required, so it's not marked as `isRequired`
 };
-
 export default Comment;
 

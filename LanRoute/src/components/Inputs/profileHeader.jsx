@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress'; // Import Circula
 import { useSelector } from 'react-redux';
 import FriendsList from './userFriendsModal'
 import { Button } from '@mui/material';
+import FriendsButton from './friendsButton';
 
 const ProfileHeader = () => {
     const { username, userId } = useParams();
@@ -71,27 +72,21 @@ const ProfileHeader = () => {
               <h1 className='header__user-name'>{data.username}</h1>
               <span className='header__user-handle'>@{data.username}</span>
               {isOwnProfile && (
-                <Button onClick={openSettingsPopup}>Edit Profile</Button>
+                <Button onClick={openSettingsPopup}>Edit</Button>
               )}
             </div>
+
             <p className='header__bio'>{data.bio}</p>
             <div className='header__general-info'>
               {/* Add any additional general info here */}
               <p>Location: {data.location}</p>
-          
+              <div className='friend-button'>
+              <FriendsButton />
+              </div>
 
-            </div>
-            <div className='header__follow-info'>
-              {/* Add follow info here if needed */}
             </div>
           </div>
       
-          {/* Profile Content */}
-          <div className='content'>
-          </div>
-          {/* Edit Profile Button */}
-          {/* Show Friends Button */}
-          {/* Settings Popup */}
           {isOwnProfile && isSettingsOpen && (
             <div className="settings-popup">
                 <div className="settings-popup-content">

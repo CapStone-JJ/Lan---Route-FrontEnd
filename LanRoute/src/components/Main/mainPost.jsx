@@ -5,7 +5,9 @@ const MainPost = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
       <Sidebar />
+      <div style={{ width: '100%' }}>
       <PostPage />
+      </div>
     </div>
   );
 };

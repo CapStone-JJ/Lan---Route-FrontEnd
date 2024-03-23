@@ -3,7 +3,6 @@ import { useGetFeedQuery } from "../../api/posts";
 import { useUserProfileQuery } from "../../api/auth";
 import formatDate from "../Inputs/formatDate";
 import { Link } from "react-router-dom";
-import CreatePostForm from "./createpostForm";
 import { useAddPostMutation } from "../../api/posts";
 import LikePost from "../Likes/likes";
 import "../Styles/feed.css";
