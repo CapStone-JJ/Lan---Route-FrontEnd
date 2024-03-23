@@ -5,7 +5,7 @@ const CREDENTIALS = "credentials";
 export const lanRouteApi = createApi({
   reducerPath: "lanRouteApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_URL,
+    baseUrl: "http://localhost:3333",
     prepareHeaders: (headers, { getState }) => {
       const credentials = JSON.parse(
         window.sessionStorage.getItem(CREDENTIALS)
@@ -17,7 +17,14 @@ export const lanRouteApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Posts", "Notifications", "Friends", "FriendRequests", "User", "Playlist"],
+  tagTypes: [
+    "Posts",
+    "Notifications",
+    "Friends",
+    "FriendRequests",
+    "User",
+    "Playlist",
+  ],
   endpoints: (builder) => ({
     // Define your endpoints here
     verifyToken: builder.query({
@@ -35,8 +42,5 @@ export const lanRouteApi = createApi({
   }),
 });
 
-export const {
-  useVerifyTokenQuery,
-  useDeleteVerificationTokenMutation,
-} = lanRouteApi;
-
+export const { useVerifyTokenQuery, useDeleteVerificationTokenMutation } =
+  lanRouteApi;
