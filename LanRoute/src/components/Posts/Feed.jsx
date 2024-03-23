@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useGetFeedQuery } from '../../api/posts';
-import { useUserProfileQuery } from '../../api/auth';
-import formatDate from '../Inputs/formatDate';
-import { Link } from 'react-router-dom';
-import CreatePostForm from './createpostForm';
-import { useAddPostMutation } from '../../api/posts';
-import LikePost from '../Likes/likes';
-import "../Styles/feed.css"
-import Avatar from '../Inputs/avatar';
-import { useSelector } from 'react-redux';
-
+import { useState, useEffect } from "react";
+import { useGetFeedQuery } from "../../api/posts";
+import { useUserProfileQuery } from "../../api/auth";
+import formatDate from "../Inputs/formatDate";
+import { Link } from "react-router-dom";
+import CreatePostForm from "./createpostForm";
+import { useAddPostMutation } from "../../api/posts";
+import LikePost from "../Likes/likes";
+import "../Styles/feed.css";
+import Avatar from "../Inputs/avatar";
+import { useSelector } from "react-redux";
 const Feed = () => {
     const [token, setToken] = useState('');
     const username = useSelector((state) => state.user.credentials.user.username);
@@ -84,20 +83,6 @@ const Feed = () => {
             })}
         </div>
       );
-      
-      
     };
     
     export default Feed;
-
-
-
-
-
-
-
-
-
-
-
-

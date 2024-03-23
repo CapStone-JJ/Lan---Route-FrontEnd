@@ -1,6 +1,10 @@
 import React from "react";
 import { useGetAllFriendsQuery } from "../../api/auth";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import { Link } from "react-router-dom";
+import { Divider } from '@mui/material';
 
 const FriendsList = () => {
   const { data: friends, isLoading, isError } = useGetAllFriendsQuery();
@@ -9,21 +13,24 @@ const FriendsList = () => {
   if (isError) return <div>Error fetching friends.</div>;
 
   return (
-    <div>
-        
+    <List>
       {friends && friends.length > 0 ? (
-        <ul>
-          {friends.map((friend) => (
-            <li key={friend.id}>
-              <Link to={`/profile/${friend.username}`}>{friend.username}</Link>
-              </li>
-          ))}
-        </ul>
+        friends.map((friend) => (
+          <React.Fragment key={friend.id}>
+            <ListItem component={Link} to={`/profile/${friend.username}`}>
+              <ListItemText primary={friend.username} />
+            </ListItem>
+            <Divider component="li" />
+          </React.Fragment>
+        ))
       ) : (
-        <p>You have no friends yet.</p>
+        <ListItem>
+          <ListItemText primary="You have no friends yet." />
+        </ListItem>
       )}
-    </div>
+    </List>
   );
 };
 
 export default FriendsList;
+

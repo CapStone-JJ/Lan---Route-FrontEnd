@@ -60,6 +60,13 @@ const Comment = ({ postId, commentIdToHighlight }) => {
             key={comment.id}
             ref={(el) => (commentRefs.current[comment.id] = el)} // Assign ref to this comment
             style={{
+              padding: "10px",
+              margin: "10px 0",
+              borderRadius: "5px",
+              boxShadow:
+                commentIdToHighlight === comment.id
+                  ? "0 0 10px rgba(0, 0, 0, 0.1)"
+                  : "none",
               backgroundColor:
                 commentIdToHighlight === comment.id ? "#ff0" : "transparent", // Highlight if this comment is to be highlighted
               marginBottom: "16px", // Add margin bottom between each comment
@@ -69,6 +76,12 @@ const Comment = ({ postId, commentIdToHighlight }) => {
             <p>{comment.username}</p>
             <p>{comment.text}</p>
             <p>{formatDate(comment.createdAt)}</p>
+                commentIdToHighlight === comment.id ? "#e8f0fe" : "#f9f9f9", // Softer blue for highlight
+              transition: "background-color 0.3s ease",
+            }}
+          >
+            <strong>{comment.user.username}</strong>: {comment.text}{" "}
+            {/* Display username */}
             <Votes commentId={comment.id} userId={userId} />
             {comment.userId === userId && ( // Only show the delete button for the user's own comments
               <Button onClick={() => handleDeleteComment(comment.id)}>

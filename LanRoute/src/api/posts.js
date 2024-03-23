@@ -17,10 +17,10 @@ const postApi = lanRouteApi.injectEndpoints({
       query: (search) => `/api/postSearch/${search}`,
     }),
     addPost: builder.mutation({
-      query: (body) => ({
+      query: (formData) => ({
         url: "/api/posts",
         method: "POST",
-        body: body,
+        body: formData,
       }),
       invalidatesTags: ["Posts"], // Invalidate 'Posts' tag upon success
     }),

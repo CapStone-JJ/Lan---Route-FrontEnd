@@ -124,10 +124,6 @@ const handlePostSubmit = async () => {
   }
 };
 
-const handleMediaUpload = (event) => {
-  const files = event.target.files;
-  setMediaFiles([...mediaFiles, ...files]);
-}
 
   return (
     <div className="create-post-form">
@@ -146,29 +142,8 @@ const handleMediaUpload = (event) => {
           placeholder="Type a tag..."
         />
       </div>
-      {/* Input for uploading media files */}
-      <Button className="post-button" onClick={handlePostSubmit} disabled={createPostLoading}>
-        Post
-      </Button>
-      {/* Display uploaded media files */}
-      <div className="media-preview">
-        {mediaFiles.map((file, index) => (
-          <div key={index}>
-            {file.type.startsWith('image/') && <img src={URL.createObjectURL(file)} alt={`Image ${index}`} />}
-            {file.type.startsWith('video/') && (
-              <video controls>
-                <source src={URL.createObjectURL(file)} type={file.type} />
-                Your browser does not support the video tag.
-              </video>
-            )}
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
 
 export default CreatePostForm;
-
-
-

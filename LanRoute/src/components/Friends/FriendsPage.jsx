@@ -1,23 +1,28 @@
 import React from 'react';
 import FriendsList from './FriendsList';
 import FriendRequestsList from './FriendRequests';
+import { Grid, Typography, Container } from '@mui/material';
 
 const FriendsPage = () => {
   return (
-    <div className="friends-page">
-      <h1>Friends</h1>
-      <div className="friends-content">
-        <div className="friend-requests">
-          <h2>Friend Requests</h2>
+    <Container className="friends-page">
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={6}>
+          <Typography variant="h6" gutterBottom>
+            Friend Requests
+          </Typography>
           <FriendRequestsList />
-        </div>
-        <div className="current-friends">
-          <h2>My Friends</h2>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Typography variant="h6" gutterBottom>
+            My Friends
+          </Typography>
           <FriendsList />
-        </div>
-      </div>
-    </div>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
 export default FriendsPage;
+
