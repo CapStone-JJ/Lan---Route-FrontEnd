@@ -54,33 +54,38 @@ function PlaylistManager() {
         }
     };
 
-
-
-    useEffect(() => {
-        refetchPlaylists();
-    }, [category]);
-
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         try {
             // Call the API to add a new playlist
             await addPlaylist({ body: { playlistUrl, title, description, category, userId } });
-
+    
             // Reset form fields
             setPlaylistUrl('');
             setTitle('');
             setDescription('');
             setCategory('');
-
+    
             // Refetch playlists to update the list
-            refetchPlaylists();
-            refetchUserPlaylist();
+            await Promise.all([
+                refetchPlaylists('Spotify'), // Refetch for the 'Spotify' category
+                refetchPlaylists('new'), // Refetch for the 'new' category
+                refetchUserPlaylist() // Refetch the user's playlists
+            ]);
         } catch (error) {
             console.error('Error adding playlist:', error);
             setError('An error occurred while adding the playlist. Please try again later.');
         }
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await refetchPlaylists();
+        };
+    
+        fetchData();
+    }, [category, refetchPlaylists]);
 
     const handleDelete = async (playlistId) => {
         // Display a confirmation dialog

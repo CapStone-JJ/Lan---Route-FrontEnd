@@ -1,11 +1,15 @@
-import Sidebar from '../Inputs/sidebar';
+import PrimarySearchAppBar from '../Inputs/Header';
 import PlaylistManager from '../Inputs/playListManager';
 
 const MainPlaylists = () => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
-      <Sidebar />
-      <PlaylistManager />
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+        <PrimarySearchAppBar />
+      </div>
+      <div>
+        <PlaylistManager />
+      </div>
     </div>
   );
 };

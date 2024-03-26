@@ -1,12 +1,16 @@
 import SearchBar from "../Inputs/searchBar";
-import Sidebar from "../Inputs/sidebar";
+import PrimarySearchAppBar from "../Inputs/Header";
 
 const MainSearch = () => {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
-          <Sidebar />
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+          <PrimarySearchAppBar />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center', marginTop: '60px' }}>
           <SearchBar />
         </div>
+      </div>
       );
     };
 

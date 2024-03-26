@@ -1,26 +1,27 @@
 .profile-playlists-container {
-  margin-top: 20px;
 }
 
 .profile-playlists-heading {
   font-size: 22px;
-  margin-bottom: 10px;
 }
 
 .profile-playlists-list {
   background-color: #f9f9f9;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex; /* Use flexbox */
   flex-wrap: wrap; /* Allow items to wrap to the next line */
   justify-content: center; /* Center the items horizontally */
-  width: 750px;
-  margin-left: 100px;
+  align-items: center;
 }
 
 .profile-playlists-error-message {
   color: red;
+}
+
+.profile-playlists-item {
+  align-items: center;
+  margin: 10px; /* Add margin to create space between items */
 }
 
 .profile-playlists-no-playlists-message {
@@ -35,9 +36,7 @@
 }
 
 .profile-playlists-item {
-  width: calc(45% - 20px); /* Adjust width to fit two items per row */
-  margin-bottom: 20px; /* Add space below each item */
-  margin-right: 20px; /* Add space between items */
+align-items: center;
 }
 
 @media (max-width: 768px) {

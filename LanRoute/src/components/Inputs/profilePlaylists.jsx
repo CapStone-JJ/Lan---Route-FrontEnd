@@ -33,6 +33,7 @@ function ProfilePlaylists({ username }) {
     return (
         <div className="profile-playlists-container">
             <h2 className="profile-playlists-heading">My Playlists</h2>
+            <hr style={{ width: '100%', marginTop: '20px', marginBottom: '20px', border: 'none', borderBottom: '1px solid #ccc' }} />
             <div className="profile-playlists-list">
                 {error && <p className="profile-playlists-error-message">Error loading playlists: {error.message}</p>}
                 {playlists.length === 0 && <p className="profile-playlists-no-playlists-message">No playlists added yet.</p>}

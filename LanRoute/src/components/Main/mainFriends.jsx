@@ -1,12 +1,17 @@
 import FriendsPage from "../Friends/FriendsPage";
 import Sidebar from "../Inputs/sidebar";
+import PrimarySearchAppBar from "../Inputs/Header";
 
 const MainFriends = () => {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
-          <Sidebar />
+      <div>
+      <div>
+      <PrimarySearchAppBar />
+        </div>
+      <div style={{ display: 'flex', textAlign: 'center' }}>
           <FriendsPage />
         </div>
+      </div>
       );
     };
 

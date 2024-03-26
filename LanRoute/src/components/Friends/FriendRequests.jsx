@@ -43,7 +43,7 @@ const FriendRequestsList = () => {
                 ))
             ) : (
                 <ListItem>
-                    <ListItemText primary="No friend requests" />
+                    <ListItemText align="center" variant="body1" primary="No friend requests" />
                 </ListItem>
             )}
         </List>

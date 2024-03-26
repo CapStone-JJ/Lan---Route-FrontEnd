@@ -1,11 +1,15 @@
 import Notifications from "../Notifications";
-import Sidebar from "../Inputs/sidebar";
+import PrimarySearchAppBar from "../Inputs/Header";
 
 const MainNotifications = () => {
     return (
+      <div>
       <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
-          <Sidebar />
+          <PrimarySearchAppBar />
+      </div>
+      <div style={{ display: "flex", textAlign: 'center', }}>
           <Notifications />
+        </div>
         </div>
       );
     };

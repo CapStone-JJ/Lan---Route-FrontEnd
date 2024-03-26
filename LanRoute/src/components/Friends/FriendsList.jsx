@@ -4,7 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { Link } from "react-router-dom";
-import { Divider } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 
 const FriendsList = () => {
   const { data: friends, isLoading, isError } = useGetAllFriendsQuery();
@@ -24,9 +24,11 @@ const FriendsList = () => {
           </React.Fragment>
         ))
       ) : (
-        <ListItem>
-          <ListItemText primary="You have no friends yet." />
-        </ListItem>
+        <ListItem className="my-friends-text">
+      <ListItemText>
+        <Typography align="center" variant="body1">You have no friends yet.</Typography>
+      </ListItemText>
+    </ListItem>
       )}
     </List>
   );

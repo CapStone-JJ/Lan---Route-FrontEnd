@@ -2,20 +2,21 @@
 .feed-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center; /* Center items horizontally */
 }
 
 /* Feed post container */
 .feed-post {
-  background-color: #f9f9f9; /* Light background color */
+  background-color: #f5f5f5; /* Light background color */
   border: 1px solid #e0e0e0; /* Light border color */
   border-radius: 12px; /* Slightly rounded corners */
   padding: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  width: 200%; /* Take full width of the grid cell */
   text-align: center;
-  max-height: 175px;
+  max-width: 600px; /* Limit maximum width of each post */
+  width: 100%; /* Take full width of the container */
   margin-bottom: 20px;
+  width: 800px;
 }
 
 .feed-post:hover {
@@ -74,20 +75,6 @@
   text-decoration: none; /* Remove underline */
   color: inherit; /* Inherit color from parent */
   display: block; /* Make the link a block element */
-}
-
-.feed-post-link:hover {
-  text-decoration: none; /* Remove underline on hover */
-}
-
-.feed-post-link:focus {
-  outline: none; /* Remove focus outline */
-}
-
-.like-post-container { 
-position: relative;
-  bottom: 0;
-  left: 0;
 }
 
 

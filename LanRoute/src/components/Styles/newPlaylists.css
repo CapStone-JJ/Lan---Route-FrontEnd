@@ -1,67 +1,55 @@
-/* New Playlists container */
 .new-playlists-container {
-  margin-top: 20px;
+  width: 100%; /* Set the width of the container */
+}
+
+.new-playlists-list {
+  list-style-type: none; /* Remove default list styles */
+  padding: 0; /* Remove default padding */
+  display: flex; /* Display playlists horizontally */
+  justify-content: space-between; /* Space between playlists */
+  flex-wrap: wrap; /* Allow playlists to wrap to the next line */
+  align-items: center; /* Center playlists vertically */
+}
+
+
+.new-playlist-item {
+  width: calc(33.33% - 20px); /* Adjust width to fit three playlists in a row with margin */
+  margin-bottom: 20px; /* Add margin at the bottom */
+  border-radius: 8px; /* Add border radius for rounded corners */
   text-align: center;
-  justify-content: center;
-  padding: 20px; /* Add padding inside the border */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-  
-  /* New Playlists title */
-  .new-playlists-title {
-    font-size: 18px;
-    margin-bottom: 10px;
-    text-align: center;
-    justify-content: center;
-  }
-  
-  /* Playlist list */
-  .new-playlists-list {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-
-  }
-  
-  /* Playlist item */
-  .new-playlist-item {
-    width: calc(33.33% - 20px); /* Adjust width to fit three items per row */
-    margin-right: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Playlist item content */
-  .new-playlist-content {
-    padding: 15px;
-  }
-  
-  .new-playlist-title {
-    font-size: 16px;
-    margin: 10px 0;
-    text-align: center;
-  }
-  
-  .new-playlist-description {
-    font-size: 14px;
-    margin: 5px 0;
-  }
-  
-  /* Link to playlist owner */
-  .new-playlist-owner {
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  /* Embedded playlist */
-  .new-playlist-embed {
-    max-width: 200% !important; /* Use max-width instead of fixed width */
-    height: 300px;
-    object-fit: contain; /* Ensure the content fits within the specified dimensions */
+.new-playlist-content {
+  padding: 20px; /* Add padding inside each playlist */
+  flex: 1; /* Allow content to grow to fill the space */
+  display: flex; /* Use flexbox to center the content horizontally */
+  flex-direction: column; /* Arrange content vertically */
+  justify-content: space-between; /* Center content vertically */
 }
+
+.new-Playlist-Heading {
+  text-align: center;
+}
+
+.new-playlist-title {
+  margin-top: 0; /* Remove margin from the top of the title */
+}
+
+.new-playlist-description {
+  margin-bottom: 10px; /* Add margin at the bottom of the description */
+}
+
+.new-playlist-owner {
+  color: #333; /* Set color for the owner link */
+}
+
+.new-playlist-embed {
+  width: 100%; /* Ensure the embedded content fills the available width */
+  height: 100%;
+  justify-content: center; /* Ensure the embedded content fills the available height */
+}
+
   

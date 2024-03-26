@@ -7,6 +7,9 @@ const NewPlaylists = () => {
 
     return (
         <div className="new-playlists-container"> {/* Apply the new container class */}
+        <div className='new-Playlist-Heading'>
+            <h2>Ouroute New Playlists</h2>
+        </div>
             <ul className="new-playlists-list"> {/* Apply the new list class */}
                 {playlistsData?.playlists.slice(0, 3).map(playlist => (
                     <li key={playlist.id} className="new-playlist-item"> {/* Apply the new item class */}

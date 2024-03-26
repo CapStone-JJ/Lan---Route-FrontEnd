@@ -56,12 +56,21 @@
 
 /* Settings Popup */
 .settings-popup {
-    /* Add styles as needed */
+    text-align: center;
+    align-content: center;
 }
 
 .settings-popup-content {
     /* Add styles as needed */
 }
+
+.settings-box {
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 8px; /* Add border radius for rounded corners */
+    padding: 20px; /* Add padding */
+    background-color: #f9f9f9; /* Add background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a soft shadow */
+  }
 
 
 

@@ -86,13 +86,16 @@ const ProfileHeader = () => {
           </div>
       
           {isOwnProfile && isSettingsOpen && (
-            <div className="settings-popup">
-                <div className="settings-popup-content">
-                  <SettingsComponent userData={data}  refetchProfile={refetch} mod={isOwnProfile} />
-                    <button onClick={closeSettingsPopup}>Close</button>
-                </div>
+          <div className="settings-popup">
+            <div className="settings-popup-content">
+              <div className="settings-box">
+                <SettingsComponent userData={data} refetchProfile={refetch} mod={isOwnProfile} />
+                <button onClick={closeSettingsPopup}>Close</button>
+              </div>
             </div>
-          )}
+  </div>
+)}
+
         </div>
       );
 }
